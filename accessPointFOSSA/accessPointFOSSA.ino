@@ -201,6 +201,7 @@ AutoConnectAux saveAux;
 
 void setup()  
 {  
+  Serial.begin(9600);
   BTNA.begin();
   
   tft.init();
@@ -249,18 +250,8 @@ void setup()
 
     const JsonObject maRoot2 = doc[2];
     const char *maRoot2Char = maRoot2["value"];
-    const String billmech = maRoot2Char;
-    if(billmech == ""){
-      billAmountInt[0] = getValue(billmech, ',', 0).toInt();
-      billAmountInt[2] = getValue(billmech, ',', 2).toInt();
-      billAmountInt[3] = getValue(billmech, ',', 3).toInt();
-      billAmountInt[4] = getValue(billmech, ',', 4).toInt();
-      billAmountInt[5] = getValue(billmech, ',', 5).toInt();
-    }
-    const JsonObject maRoot3 = doc[3];
-    const char *maRoot3Char = maRoot3["value"];
     const String coinmech = maRoot2Char;
-    if(coinmech == ""){
+    if(coinmech != ""){
       coinAmountFloat[0] = getValue(coinmech, ',', 0).toFloat();
       coinAmountFloat[1] = getValue(coinmech, ',', 1).toFloat();
       coinAmountFloat[2] = getValue(coinmech, ',', 2).toFloat();
@@ -268,6 +259,18 @@ void setup()
       coinAmountFloat[4] = getValue(coinmech, ',', 4).toFloat();
       coinAmountFloat[5] = getValue(coinmech, ',', 5).toFloat();
     }
+
+    const JsonObject maRoot3 = doc[3];
+    const char *maRoot3Char = maRoot3["value"];
+    const String billmech = maRoot3Char;
+    if(billmech == ""){
+      billAmountInt[0] = getValue(billmech, ',', 0).toInt();
+      billAmountInt[2] = getValue(billmech, ',', 2).toInt();
+      billAmountInt[3] = getValue(billmech, ',', 3).toInt();
+      billAmountInt[4] = getValue(billmech, ',', 4).toInt();
+      billAmountInt[5] = getValue(billmech, ',', 5).toInt();
+    }
+
 
     const JsonObject maRoot4 = doc[4];
     const char *maRoot4Char = maRoot4["value"];
