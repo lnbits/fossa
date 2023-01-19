@@ -49,7 +49,7 @@ Can run with a coin mech and bill acceptor, or either on their own.
 > (Ignore all the hardware requirements for programming in the guide, you just need the host cable! Don't try using the programming cards in the guide, thats an old system these machines no longer support "Many Bothans died to bring us this information,")
 ### Mounting in box
 
-Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out standard UK A4. Its useful if the pins on the bill acceptor and coin mech are accessible.
+Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
 
 * For the `Aluminim Storage Box` solution, holes can be cut with a sharp knife (clearly not secure, but fine for somewhere you can keep an eye on the ATM or for demoes).
 
