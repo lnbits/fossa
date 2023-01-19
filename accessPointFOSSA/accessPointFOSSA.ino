@@ -263,12 +263,12 @@ void setup()
     const JsonObject maRoot3 = doc[3];
     const char *maRoot3Char = maRoot3["value"];
     const String billmech = maRoot3Char;
-    if(billmech == ""){
+    if(billmech != ""){
       billAmountInt[0] = getValue(billmech, ',', 0).toInt();
+      billAmountInt[1] = getValue(billmech, ',', 1).toInt();
       billAmountInt[2] = getValue(billmech, ',', 2).toInt();
       billAmountInt[3] = getValue(billmech, ',', 3).toInt();
       billAmountInt[4] = getValue(billmech, ',', 4).toInt();
-      billAmountInt[5] = getValue(billmech, ',', 5).toInt();
     }
 
 
