@@ -1,1 +1,1 @@
-##### Few people have used a case for the WC01, this does however add the security risk that people have access to the USB. A flush finish and not using a case is advised, but we thought we'd share anyway.
+##### Few people have used a case for the WT32, this does however add the security risk that people have access to the USB. A flush finish and not using a case is advised, but we thought we'd share anyway.
