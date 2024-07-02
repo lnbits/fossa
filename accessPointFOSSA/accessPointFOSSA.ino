@@ -56,7 +56,7 @@ String baseURLATM;
 String secretATM;
 String currencyATM = "";
 
-HardwareSerial printerSerial(1);
+HardwareSerial printerSerial(3);
 Adafruit_Thermal printer(&printerSerial);
 
 int bills;
@@ -528,6 +528,16 @@ void feedmefiat()
 
 void qrShowCodeLNURL(String message)
 {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_PURPLE);
+  tft.setTextSize(3);
+  tft.setCursor(40, 40);
+  tft.println("Please wait.");
+  tft.setCursor(40, 100);
+  tft.println("Printing receipt...");
+
+  printReceipt();
+
   tft.fillScreen(TFT_WHITE);
   qrData.toUpperCase();
   const char *qrDataChar = qrData.c_str();
@@ -554,8 +564,6 @@ void qrShowCodeLNURL(String message)
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
   tft.println(message);
-
-  printReceipt();
   
   bool waitForTap = true;
   while(waitForTap){
