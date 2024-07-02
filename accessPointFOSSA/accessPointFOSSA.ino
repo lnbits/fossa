@@ -27,6 +27,7 @@ bool format = false; // true for formatting FOSSA memory, use once, then make fa
 #include <WebServer.h>
 #include <FS.h>
 #include <SPIFFS.h>
+#include <SoftwareSerial.h>
 using WebServerClass = WebServer;
 fs::SPIFFSFS &FlashFS = SPIFFS;
 #define FORMAT_ON_FAIL true
@@ -56,7 +57,7 @@ String baseURLATM;
 String secretATM;
 String currencyATM = "";
 
-HardwareSerial printerSerial(3);
+SoftwareSerial printerSerial(RXP, TXP);
 Adafruit_Thermal printer(&printerSerial);
 
 int bills;
@@ -372,7 +373,7 @@ void setup()
   }
 
   Serial.println("Initialising printer");
-  printerSerial.begin(9600, SERIAL_8N1, RXP, TXP);
+  printerSerial.begin(9600);
   printer.begin();
   Serial.println("Printer initialized successfully");
 }
