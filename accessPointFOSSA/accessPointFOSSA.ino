@@ -451,7 +451,7 @@ void loop()
   Serial.println("Money timer done");
   makeLNURL();
   Serial.println("LNURL done");
-  qrShowCodeLNURL("SCAN ME. TAP SCREEN WHEN FINISHED");
+  qrShowCodeLNURL("SCAN ME OR VOUCHER. TAP SCREEN WHEN FINISHED");
   Serial.println("QR done");
 }
 
@@ -530,13 +530,11 @@ void feedmefiat()
 void qrShowCodeLNURL(String message)
 {
   tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_PURPLE);
+  tft.setTextColor(TFT_WHITE);
   tft.setTextSize(3);
-
-  tft.setCursor(40, 40);
-  tft.println("Please wait while");
-  tft.setCursor(40, 100);
-  tft.println("your voucher is printed.");
+  tft.setTextDatum(MC_DATUM);
+  tft.drawString("Please wait while your", tft.width() / 2, tft.height() / 2 - 20);
+  tft.drawString("voucher is printed", tft.width() / 2, tft.height() / 2 + 20);
   
   printReceipt();
 
@@ -563,7 +561,7 @@ void qrShowCodeLNURL(String message)
   }
 
   tft.setCursor(40, 290);
-  tft.setTextSize(2);
+  tft.setTextSize(1);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
   tft.println(message);
   
