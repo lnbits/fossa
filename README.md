@@ -69,4 +69,8 @@ https://github.com/espressif/arduino-esp32#installation-instructions
 
 Copy the libraries from this projects <a href="/libraries">libraries</a> folder, to your `"/Arduino/libraries"` folder (usually in OS `"Home"` directory)
 
+# Thanks and Credits
+
+Thanks to Leigh for sharing his code for [TheBAT](https://github.com/cos-it-is/TheBAT). Some of the code for printing QR codes on receipts was reused in this project.
+
 ![BITCOIN](https://i.imgur.com/mCfnhZN.png)
