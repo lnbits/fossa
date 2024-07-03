@@ -1,7 +1,7 @@
 #include <cstdlib> // Add this line to include the appropriate header file
 
 // define a list of quote Strings that can be used to print on the receipt
-const char* quotes[9] = {
+const char* quotes[13] = {
     "It's very attractive to the libertarian viewpoint if we can explain it properly. I'm better with code than with words though.\r\nSatoshi Nakamoto, Dec 14, 2008",
     "In a few decades when the reward gets too small, the transaction fee will become the main compensation for nodes.\r\nSatoshi Nakamoto, Feb 14, 2010",
     "I'm sure that in 20 years there will either be very large transaction volume or no volume.\r\nSatoshi Nakamoto, Feb 14, 2010",
@@ -19,5 +19,5 @@ const char* quotes[9] = {
 
 //  function that returns a random quote from the list of quotes
 const char* getRandomQuote() {
-    return quotes[random(0, 9)];
+    return quotes[random(0, 13)];
 }
