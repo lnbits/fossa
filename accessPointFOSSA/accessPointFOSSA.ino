@@ -532,11 +532,21 @@ void qrShowCodeLNURL(String message)
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_PURPLE);
   tft.setTextSize(3);
-  tft.setCursor(40, 40);
-  tft.println("Please wait.");
-  tft.setCursor(40, 100);
-  tft.println("Printing receipt...");
+  // get text width
+  int16_t x1, y1;
+  uint16_t w, h;
+  String text = "Please wait while";
+  tft.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  // center text on screen (320 x 240)
+  tft.setCursor((320 - w) / 2, 40);  
+  tft.println(text);
 
+  text = "your voucher is printed.";
+  tft.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  tft.setCursor((320 - w) / 2, 80);
+  tft.println(text);
+
+  delay(5000);
   printReceipt();
 
   tft.fillScreen(TFT_WHITE);
