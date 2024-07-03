@@ -420,7 +420,7 @@ void printReceipt() {
   printer.println("Thank you");
   printer.feed(1);
   printer.setSize('S');
-  printer.println("This voucher can be redeemed for " + String(total) + " " + currencyATM + " of Bitcoin");
+  printer.println("This voucher can be redeemed for " + String(float(total / 100)) + " " + currencyATM + " of Bitcoin");
   printer.feed(1);
   printer.underlineOn();
   printer.println("Scan me to get your Bitcoin");
