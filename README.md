@@ -42,7 +42,15 @@ Can run with a coin mech and bill acceptor, or either on their own.
 
 ### Bill acceptor wiring
 
+| NV10USB+ | WT32-SC01 | Power Supply   |
+|----------|-----------|----------------|
+| 1 (Tx)  | 31         | Do not connect |
+| 5 (Rx)  | 29         | Do not connect |
+| 15 (12V DC+) | Do not connect | 12V DC+ |
+| 16 (GND) | 5         | GND            |
+
 ![Bill acceptor - WT32-SC01 - pwer supply wiring](img/nv10-wiring.png)
+
 
 > The bill acceptor needs to be programmed to your currency and set to `SIO` mode, usually you can buy them preconfigured. If you have to program, buy <a href="https://www.innovative-technology.com/shop/cables/nv9-nv10-usb-host-cable-detail">this wire</a> and download the Validator Manager software <a href="https://www.dropbox.com/sh/2mle0czl2j2w7yq/AABie6AJQTq-tXmBv1TUhBUGa?dl=0">here</a> or <a href="http://www.innovative-technology.com/support/secure-download">here</a> (sadly only runs on windows, so use a friends machine). Details on programming can be found <a href="https://github.com/arcbtc/fossa/blob/main/NV10Manual_2.PDF.pdf">here</a>. Its relatively straight forward to program, plug in USB host cable, turn on holding config button for 2 secs, open the Validator Manager software.
 
