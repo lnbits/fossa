@@ -42,7 +42,7 @@ Can run with a coin mech and bill acceptor, or either on their own.
 
 ### Bill acceptor wiring
 
-| NV10USB+ | WT32-SC01 | Power Supply   |
+| NV10USB+ Pin | WT32-SC01 Pin No. (Not GPIO No.) | Power Supply   |
 |----------|-----------|----------------|
 | 1 (Tx)  | 31         | Do not connect |
 | 5 (Rx)  | 29         | Do not connect |
