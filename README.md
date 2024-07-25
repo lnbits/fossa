@@ -121,22 +121,30 @@ You should hear the bill acceptor and coin acceptors turn on.
 
 ### Step 2: Enclosure
 
+> Please note, that this ATM is designed to be attended (such as on a shop counter) rather than something that can be left unattended and mounted to a wall.
+
 #### Option A: 3D printed enclosure
 
 If you want to want to print your own enclosure, we recommend these settings:
 
 1. Print the Facia
-  - STL: [FOSSA ATM Facia](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Facia.stl)
-  - Material: PETG
-  - Infill: 10-100%
-  - Supports: No
-2. Print the backbox
-  - STL: [FOSSA ATM Back box](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
-  - Material: PETG  
-  - Infill: 10-100%  
-  - Supports: Yes (you "paint" out all but the door in Prusa slicer)  
-3. Once printed, use a soldering iron to melt the brass female embedded insert nuts into the 6 holes for the facia.
-4. OPTIONAL: If using the coin acceptor, replace the coach bolts with longer bolts (M4 x 30mm carriage/coach bolts) to account for the thickness of the facia.
+    - STL: [FOSSA ATM Facia](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Facia.stl)
+    - Material: PETG
+    - Infill: 10-100%
+    - Supports: No
+3. Print the backbox
+    - STL: [FOSSA ATM Back box](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
+    - Material: PETG  
+    - Infill: 10-100%  
+    - Supports: Yes (you "paint" out all but the door in Prusa slicer)  
+4. Use a soldering iron to melt the brass female embedded insert nuts into the 6 holes for the facia (see picture 1 below)
+5. OPTIONAL: If using the coin acceptor, replace the coach bolts with longer bolts (M4 x 30mm carriage/coach bolts) to account for the thickness of the facia.
+6. Mount the bill acceptor so it is "smiling" (see picture 2) with the supplied mounting bracket and screws as pictured (see picture 3). Note, you can remove the bill input feed from the main part of the unit and then re-attach.
+7. Mount the screen into the display.
+
+<img src="https://github.com/user-attachments/assets/39873ac8-1ef9-4c2b-bcc4-506820e62112" width="200"/>
+<img src="https://github.com/user-attachments/assets/61ee23e7-b92f-47cd-ab6f-13e64144af66" width="356"/>
+<img src="https://github.com/user-attachments/assets/92c031d8-09a2-44ad-b408-c5d6ed206a37" width="356"/>
 
 #### Option B: Mount in box
 
