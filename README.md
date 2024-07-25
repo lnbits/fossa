@@ -57,7 +57,7 @@ A video tutorial is available here on how to construct the FOSSA:
 
 > **STAY TUNED FOR A WIRING HARNESS TO MAKE THIS PLUG AND PLAY AND YOU CAN SKIP TO STEP 2.**
 
-This method requires no soldering. We do this by using GPIO jumpers and terminal blocks. Forst, split the terminal block into a block a 3 (our LIVE terminal), and a block of 4 (our GROUND terminal).
+This method requires no soldering. We do this by using GPIO jumpers and terminal blocks. First, split a terminal block into a block a 3 (our LIVE terminal), and a block of 4 (our GROUND terminal).
 
 The wiring reference is as follows:
 
@@ -65,7 +65,7 @@ The wiring reference is as follows:
 
 **To connect the bill acceptor**:
 
-1. Connect the Rx (pin 32) and Tx (pin 33) to 1 and 5 on the bill acceptor.
+1. Connect the Rx (pin 32) and Tx (pin 33) on the WT32-SC01 to pins 1 and 5 respectively on the bill acceptor.
 2. Using a GPIO jumper, connect the live wire (pin 15) to the first LIVE terminal block at an available terminal.
 3. Using a GPIO jumper, connect the ground wire (pin 16) to a second GROUND terminal block of block at an available terminal.
 4. Connect the positive wire (red) of the 12V to 5V power converter and connect it to the LIVE terminal block at an available terminal.
@@ -89,7 +89,7 @@ Page 42 of the <a href="NV10 operations manual.pdf">NV10 USB Operations Manual</
 
 > NB You can usually order the coin acceptor pre-programmed to your currencies, otherwise you will need to train the acceptor using <a href="https://www.youtube.com/watch?v=Dyun1xjKqc4">this guide</a>.
 
-1. Set the 3 dip switch to high (this sends integers to the WT32-SC01 rather than pulses).
+1. Set the 3rd dip switch to high (this sends integers to the WT32-SC01 rather than pulses).
 2. Using a GPIO jumper, connect the interrupt pin (pin 5) on the coin accepter, to the 5V pin (pin 2) on the WT32-SC01.
 3. Using a GPIO jumper, connect the serial out (pin 2) on the coin accepter, to pin 4 on the  WT32-SC01.
 4. Using a GPIO jumper, connect the live pin (pin 1) to the LIVE terminal block at an available terminal.
