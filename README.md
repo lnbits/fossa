@@ -61,11 +61,11 @@ This method requires no soldering. We do this by using GPIO jumpers and terminal
 
 The wiring reference is as follows:
 
-![image](https://github.com/user-attachments/assets/3d7f7c32-9b69-4405-b0c6-579e2ec194bd)
+![image](https://github.com/user-attachments/assets/3bea19e4-7fa1-449f-b15d-e87d2377bd6c)
 
 **To connect the bill acceptor**:
 
-1. Connect the Rx (pin 32) and Tx (pin 33) on the WT32-SC01 to pins 1 and 5 respectively on the bill acceptor.
+1. Connect the Rx (GPIO 32) and Tx (GPIO 33), which are pins 29 and 31 on the WT32-SC01 to pins 1 and 5 respectively on the bill acceptor.
 2. Using a GPIO jumper, connect the live wire (pin 15) to the first LIVE terminal block at an available terminal.
 3. Using a GPIO jumper, connect the ground wire (pin 16) to a second GROUND terminal block of block at an available terminal.
 4. Connect the positive wire (red) of the 12V to 5V power converter and connect it to the LIVE terminal block at an available terminal.
@@ -105,8 +105,8 @@ Page 42 of the <a href="NV10 operations manual.pdf">NV10 USB Operations Manual</
 
 **To connect the 12V power supply**:
 
-1. Connect a GPIO pin to the live connection (+) on the 12V power supply terminal block adapter, to the LIVE terminal block at an available terminal.
-2. Connect a GPIO pin to the ground connection (-) on the 12V power supply terminal block adapter, to the GROUND terminal block at an available terminal.
+1. Connect a GPIO jumper to the live connection (+) on the 12V power supply terminal block adapter, to the LIVE terminal block at an available terminal.
+2. Connect a GPIO jumper to the ground connection (-) on the 12V power supply terminal block adapter, to the GROUND terminal block at an available terminal.
 
 **To complete the terminal blocks**:
 
@@ -126,8 +126,8 @@ To configure your LNBits instance to pull funds from:
 
 1. Login to your instance of LNBits.
 2. Create a wallet.
-3. Go to manage extensions and find LNURLDevice and enable.
-4. Open the LNURLDevice extension, click "New LNURLDevice Instance" and give it a title of ATM and choose the respect wallet for the ATM. Select the correct currency (e.g. GBP), "ATM" and a percentage for the commission.
+3. Go to `Manage Extensions` and find `LNURLDevice` and install/enable it.
+4. Open the `LNURLDevice` extension, click `New LNURLDevice Instance` and give it a title of `ATM` and choose the respect wallet for the ATM. Select the correct currency (e.g. `GBP`), `ATM` mode, and a percentage for the commission.
 5. Copy the link it gives you.
 
 ### Step 3: Programming the WT32-SC01
@@ -151,8 +151,8 @@ To configure the ATM:
 2. Open the access portal.
 2. Enter a new password.
 3. Enter the coin denomitions (if you are using a coin acceptor, separated by a comma)
-4. Enter the max. withdrawl in fiat (e.g. "30" for 30 GBP).
-5. Enter a percentage charge for the service (e.g. "10" for 10%).
+4. Enter the max. withdrawl in fiat (e.g. `30` for 30 GBP).
+5. Enter a percentage charge for the service (e.g. `10` for 10%, which should be the same value you entered into LNBits).
 6. Click `Save`.
 7. Once it has saved, unplug and plug the WT32-SC01 back in again. You should see the `Fiat for Sats` screen.
 
@@ -190,7 +190,7 @@ If you want to want to print your own enclosure, we recommend these settings:
 
 #### Option B: Mount in box
 
-Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
+Use the templates provided <a href="cuttingTemplate.pdf">here</a>, and print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
 
 * For the `Aluminim Storage Box` solution, holes can be cut with a sharp knife (clearly not secure, but fine for somewhere you can keep an eye on the ATM or for demoes).
 
@@ -198,8 +198,8 @@ Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 
 
 > We use CT1 sealent/adhesive (or similar) for mounting screen, although the screen has screw points, which should prob be used for added security.
 
-And there you have it, have fun, tag us on Twitter / Nostr with all your cool setups!
-
 ## Get in touch
+
+And there you have it, have fun, tag us on Twitter / Nostr with all your cool setups!
 
 > <i>Join our <a href="https://t.me/makerbits">telegram support/chat</a>.</i>
