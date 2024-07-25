@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e9effe58-8963-4e5c-996e-52682ba15627)
+![image](https://github.com/user-attachments/assets/8951a3f7-2d72-4021-ae7d-1c8fa2553051)
 
 Welcome to the FOSSA project! FOSSA is an innovative, open-source Bitcoin Lightning ATM designed to be both cost-effective and easy to build. Utilizing common components such as an ESP32 microcontroller, a multi-coin acceptor, a bill acceptor, FOSSA allows anyone to convert loose fiat change into Bitcoin efficiently. The project includes comprehensive instructions and resources, making it accessible for hobbyists and developers alike to create a fully functional Bitcoin ATM. Dive in and get started building your own FOSSA!
 
