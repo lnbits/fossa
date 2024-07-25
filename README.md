@@ -21,7 +21,7 @@ You can run the FOSSA as either coin machine and bill acceptor, or either on the
 | Option: DG600F(S) Multi Coin Acceptor | The coin acceptor option. The "S" denotes the front panel (stainless steel sheet version, where we can 3D print a black panel for it). | [AliExpress](https://www.aliexpress.com/w/wholesale-DG600F(S)-Multi-Coin-Acceptor.html?spm=a2g0o.home.search.0) or Ebay (second-hand) | **£30** |
 | Screw terminal block | Easily connect the wires without soldering. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B08LNWMMHQ) | **£1** |
 | 12v power supply | Best to get one with terminal block adapter (12v battery also works well, for unplugged version). | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MTBTXDJ/) | **£8** |
-| 12v to 5v step down converter with USB | 12V TO 5V:The USB charger adapter converter module can convert unstable voltage DC 12V to stable DC 5V / 15W 3A output. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B07QQ587K3) | **£5**
+| 12v to 5v step down converter with USB | 12V to 5V: The adapter converter module can convert unstable voltage DC 12V to stable DC 5V / 15W 3A output. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B07QQ587K3) | **£5**
 | Male-to-female GPIO jumpers | Plug and play GPIO connectors | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MJZDXBB) | **£5**
 | Option: Aluminum "medicine box" | Cheap medicine box for the cash machine | Amazon (UK) | **£30** |
 | Option: Amazon Basic Home Safe | More secure box | Amazon (UK) | **£70** |
