@@ -2,8 +2,6 @@
 
 ## OFFLINE, FOSS, CHEAP, BILLS/COINS, EASY CONFIG WEB PORTAL 
 
-> <i>Join our <a href="https://t.me/makerbits">telegram support/chat</a>.</i>
-
 ## Demo
 
 https://twitter.com/arcbtc/status/1567639231333277697
@@ -48,32 +46,37 @@ For the 3D printed version, you will need:
 | Optional: M5 nylon nuts | To screw the rubber feet into the backbox. | [Amazon (UK)](https://www.amazon.co.uk/Bolt-Base-Stainless-Insert-Nylock) |
 | Optional: Adhesive security plate and locking cable | Secure the ATM when desk mounted. | [Amazon (UK)](https://www.amazon.co.uk/I3C-Security-Anti-Theft-Hardware-Smartphone/dp/B07FM93JL6) |
 
-## Construction
+## Build
 
 A video tutorial is available here on how to construct the FOSSA:
 
 [https://www.youtube.com/watch?v=vbyYb9Yiu_k](https://www.youtube.com/watch?v=vbyYb9Yiu_k)
 
-### WT32-SC01 Pinmap
+### Step 1: Hardware Setup
 
-<img src="https://user-images.githubusercontent.com/33088785/188833972-1665fb20-39be-456e-93a1-276c0e2a9237.png" style="width:400px">
+> **STAY TUNED FOR A WIRING HARNESS TO MAKE THIS PLUG AND PLAY AND YOU CAN SKIP TO STEP 2.**
 
-### Coin acceptor wiring
+This method requires no soldering. We do this by using GPIO jumpers and terminal blocks. Forst, split the terminal block into a block a 3 (our LIVE terminal), and a block of 4 (our GROUND terminal).
 
-![169517488-65bfba37-0c9c-4dc4-9533-c6c4517cc1ff](https://user-images.githubusercontent.com/33088785/188748943-960a15fd-f0c8-48e9-870a-af6cde1a3b31.png)
+The wiring reference is as follows:
 
-> You can usually order the coin acceptor pre-programmed to your currencies, otherwise you will need to train the acceptor using <a href="https://www.youtube.com/watch?v=Dyun1xjKqc4">this guide</a>.
+![image](https://github.com/user-attachments/assets/3d7f7c32-9b69-4405-b0c6-579e2ec194bd)
 
-### Bill acceptor wiring
+**To connect the bill acceptor**:
+
+1. Connect the Rx (pin 32) and Tx (pin 33) to 1 and 5 on the bill acceptor.
+2. Using a GPIO jumper, connect the live wire (pin 15) to the first LIVE terminal block at an available terminal.
+3. Using a GPIO jumper, connect the ground wire (pin 16) to a second GROUND terminal block of block at an available terminal.
+4. Connect the positive wire (red) of the 12V to 5V power converter and connect it to the LIVE terminal block at an available terminal.
+5. Connect the negative wire (black) of the 12V to 5V power converter and connect it to the GROUND terminal block at an available terminal.
+6. Connect the ground pin (e.g. pin 5) of the WT32-SC01 and connect it to the 2nd terminal of the GROUND terminal block at an available terminal.
 
 | NV10USB+ Pin | WT32-SC01 Pin No. (Not GPIO No.) | Power Supply   |
 |----------|-----------|----------------|
-| 1 (Tx)  | 31         | Do not connect |
-| 5 (Rx)  | 29         | Do not connect |
-| 15 (12V DC+) | Do not connect | 12V DC+ |
+| 1 (Tx)  | 31         | N/A |
+| 5 (Rx)  | 29         | N/A |
+| 15 (12V DC+) | N/A | 12V DC+ |
 | 16 (GND) | 5         | GND            |
-
-![Bill acceptor - WT32-SC01 - pwer supply wiring](img/nv10-wiring.png)
 
 > The bill acceptor needs to be programmed to your currency and set to `SIO` mode, usually you can buy them preconfigured. If you have to program, buy <a href="https://www.innovative-technology.com/shop/cables/nv9-nv10-usb-host-cable-detail">this wire</a> and download the Validator Manager software <a href="https://www.dropbox.com/sh/2mle0czl2j2w7yq/AABie6AJQTq-tXmBv1TUhBUGa?dl=0">here</a> or <a href="http://www.innovative-technology.com/support/secure-download">here</a> (sadly only runs on windows, so use a friends machine). Details on programming can be found <a href="https://github.com/arcbtc/fossa/blob/main/NV10Manual_2.PDF.pdf">here</a>. Its relatively straight forward to program, plug in USB host cable, turn on holding config button for 2 secs, open the Validator Manager software.
 
@@ -81,24 +84,61 @@ Page 42 of the <a href="NV10 operations manual.pdf">NV10 USB Operations Manual</
 
 > (Ignore all the hardware requirements for programming in the guide, you just need the host cable! Don't try using the programming cards in the guide, thats an old system these machines no longer support "Many Bothans died to bring us this information,")
 
-### OPTIONAL: 3D printed enclosure
+**To connect the coin acceptor**:
 
-#### Facia
+> NB You can usually order the coin acceptor pre-programmed to your currencies, otherwise you will need to train the acceptor using <a href="https://www.youtube.com/watch?v=Dyun1xjKqc4">this guide</a>.
+
+1. Set the 3 dip switch to high (this sends integers to the WT32-SC01 rather than pulses).
+2. Using a GPIO jumper, connect the interrupt pin (pin 5) on the coin accepter, to the 5V pin (pin 2) on the WT32-SC01.
+3. Using a GPIO jumper, connect the serial out (pin 2) on the coin accepter, to pin 4 on the  WT32-SC01.
+4. Using a GPIO jumper, connect the live pin (pin 1) to the LIVE terminal block at an available terminal.
+5. Using a GPIO jumper, connect the GND pin (pin 3) on the coin accepter, to the GROUND terminal block at an available terminal.
+
+| DG600F(S) Pin | WT32-SC01 Pin No. (Not GPIO No.) | Power Supply
+| ------------- | ------------- | ------------- | 
+| 5 | 2 | N/A |
+| 4 | N/A | N/A |
+| 3 (GND) | N/A | GROUND
+| 2 (serial out) | 4 | N/A
+| 1 (12V) | N/A | LIVE
+
+**To connect the 12V power supply**:
+
+1. Connect a GPIO pin to the live connection (+) on the 12V power supply terminal block adapter, to the LIVE terminal block at an available terminal.
+2. Connect a GPIO pin to the ground connection (-) on the 12V power supply terminal block adapter, to the GROUND terminal block at an available terminal.
+
+**To complete the terminal blocks**:
+
+1. Connect each of the terminals in the LIVE terminal block to each other so they all receive power by looping over wire from terminals 1 to 2 and 1 to 3.
+2. Connect each of the terminals in the GROUND terminal block to each other so they all receive power by looping over wire from terminals 1 to 2 and 1 to 3 and 1 to 4.
+
+**To connect to power**:
+
+1. Plug in the WT32-SC01 to the USB connector of the 12V to 5V power converter.
+2. Plug in the connection terminal of the 12V power supply and connect to mains power.
+
+You should hear the bill acceptor and coin acceptors turn on.
+
+### Step 2: Enclosure
+
+#### Option A: 3D printed enclosure
+
+If you want to want to print your own enclosure, we recommend these settings:
 
 1. Print the Facia
   - STL: [FOSSA ATM Facia](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Facia.stl)
   - Material: PETG
-  - Infill: 0-100%
+  - Infill: 10-100%
   - Supports: No
 2. Print the backbox
   - STL: [FOSSA ATM Back box](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
   - Material: PETG  
-  - Infill: 0-100%  
+  - Infill: 10-100%  
   - Supports: Yes (you "paint" out all but the door in Prusa slicer)  
 3. Once printed, use a soldering iron to melt the brass female embedded insert nuts into the 6 holes for the facia.
 4. OPTIONAL: If using the coin acceptor, replace the coach bolts with longer bolts (M4 x 30mm carriage/coach bolts) to account for the thickness of the facia.
 
-### OPTIONAL: Mounting in box
+#### Option B: Mount in box
 
 Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
 
@@ -108,14 +148,44 @@ Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 
 
 We use CT1 sealent/adhesive (or similar) for mounting screen, although the screen has screw points, which should prob be used for added security.
 
-## Installing arduino + libraries
+### Step 3: Configure LNBits
 
-Install the Arduino IDE,<br>
-https://www.arduino.cc/en/Main/Software
+To configure your LNBits instance to pull funds from:
 
-Install the ESP32 hardware,<br>
-https://github.com/espressif/arduino-esp32#installation-instructions
+1. Login to your instance of LNBits.
+2. Create a wallet.
+3. Go to manage extensions and find LNURLDevice and enable.
+4. Open the LNURLDevice extension, click "New LNURLDevice Instance" and give it a title of ATM and choose the respect wallet for the ATM. Select the correct currency (e.g. GBP), "ATM" and a percentage for the commission.
+5. Copy the link it gives you.
 
-Copy the libraries from this projects <a href="/libraries">libraries</a> folder, to your `"/Arduino/libraries"` folder (usually in OS `"Home"` directory)
+### Step 3: Programming the WT32-SC01
 
-![BITCOIN](https://i.imgur.com/mCfnhZN.png)
+The ATM is configured in two parts, the ATM itself, and LNBits running on a separate node.
+
+To setup your Arduino IDE:
+
+1. If you have not already done so, install the Arduino IDE from [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software).
+2. Install the ESP32 libraries. You can do this by copying the stable release version link, currently `https://espressif.github.io/arduino-esp32/package_esp32_index.json` and putting in the `File` > `Preferences...` > `Additional Board Manager URLs` (see: [https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html))
+3. Install the boards by going to `Tools` > `Board` > `Board Manager...` and searching for ESP32 and clicking Install.
+4. Copy the libraries from this projects <a href="/libraries">libraries</a> folder, to your `"/Arduino/libraries"` folder (usually in OS `"Home"` directory)
+5. Clone the repo, and open accessPointFOSSA.
+6. Select the relevant port and ESP32 dev module.
+7. Go to `Sketch` > `Upload`.
+8. Once uploaded, if you press the screen on the WT32-SC01 device it will launch the access portal.
+
+To configure the ATM:
+
+1. Connect the access portal wi-fi (`Device-fa7ce5a4` for example).
+2. Open the access portal.
+2. Enter a new password.
+3. Enter the coin denomitions (if you are using a coin acceptor, separated by a comma)
+4. Enter the max. withdrawl in fiat (e.g. "30" for 30 GBP).
+5. Enter a percentage charge for the service (e.g. "10" for 10%).
+6. Click `Save`.
+7. Once it has saved, unplug and plug the WT32-SC01 back in again. You should see the `Fiat for Sats` screen.
+
+And there you have it, have fun, tag us on Twitter / Nostr with all your cool setups!
+
+## Get in touch
+
+> <i>Join our <a href="https://t.me/makerbits">telegram support/chat</a>.</i>
