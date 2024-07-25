@@ -184,9 +184,9 @@ If you want to want to print your own enclosure, we recommend these settings:
 11. Using the Tamper-proof torx wrench (T20), use the screw in the M4 x 16mm pan head security torx tamper resistant bolts to secure the facia to the backbox.
 12. Plugin the power supply.
 
-<img src="https://github.com/user-attachments/assets/39873ac8-1ef9-4c2b-bcc4-506820e62112" width="200"/>
-<img src="https://github.com/user-attachments/assets/61ee23e7-b92f-47cd-ab6f-13e64144af66" width="356"/>
-<img src="https://github.com/user-attachments/assets/92c031d8-09a2-44ad-b408-c5d6ed206a37" width="356"/>
+<img src="https://github.com/user-attachments/assets/39873ac8-1ef9-4c2b-bcc4-506820e62112" width="150"/>
+<img src="https://github.com/user-attachments/assets/61ee23e7-b92f-47cd-ab6f-13e64144af66" width="267"/>
+<img src="https://github.com/user-attachments/assets/92c031d8-09a2-44ad-b408-c5d6ed206a37" width="267"/>
 
 #### Option B: Mount in box
 
