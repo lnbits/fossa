@@ -1,6 +1,4 @@
-![image](https://user-images.githubusercontent.com/33088785/189915358-b8d75cf5-9b10-43b8-a874-3cf08b0b95c5.png)
-
-## OFFLINE, FOSS, CHEAP, BILLS/COINS, EASY CONFIG WEB PORTAL 
+![image](https://github.com/user-attachments/assets/e9effe58-8963-4e5c-996e-52682ba15627)
 
 ## Demo
 
@@ -37,9 +35,10 @@ For the 3D printed version, you will need:
 |-------------|-------------|-------------|
 | M4 x 16mm pan head security torx tamper resistant bolts | These hold the front facia to the back box. Anything longer than 14mm - 55mm is fine. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0BTTRPBQV/) |
 | Tamper-proof torx wrench (T20) | To tighten the front facia Torx bolts. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0D53LNNRW) |
-| Female threaded heat set knurled embedded insert nuts, M4 x 6mm L x 6mm OD | Using a soldering iron, these are heated up and pushed into the back box for better attachment of the facia. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MCVW4GQ/) |
+| Brass insert nuts, M4 x 6mm L x 6mm OD | Female threaded heat set knurled embedded insert nuts for 3D printing. These are string than trying to create threads in the 3D print. Using a soldering iron, these are heated up and pushed into the backbox for better attachment of the facia. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MCVW4GQ/) |
 | M4 x 30mm carriage/coach bolts | These are to replace the bolts supplied with the coin acceptor to accommodate the thickness of the facia. | [Amazon (UK)](https://www.ebay.co.uk/itm/386550912089?var=653926055961) |
 | 5.5mm x 2.1mm DC Power Jack Socket Female Panel Mount Connector | This allows the 12V adaptor to plug into the ATM's outside. The box assumes a diameter of 7.7mm (like these). | [Amazon (UK)](https://www.amazon.co.uk/dp/B01N3679B8) |
+| 2.2mm Quick Disconnect Female Spade Connector | This allows us to crimp a cable and connect to the 5.5mm x 2.1mm DC Power Jack Socket | |
 | Cabinet draw tubular 16mm lock | This will be mounted on the door. | [Amazon (UK)](https://www.amazon.co.uk/Litensh-Tubular-Cylinder-Cupboard-Letterbox/dp/B09SHWXWXC/) |
 | Optional: Rubber feet (D30x22xH15) | If you want to have this one on the table, some rubber feet will go at the bottom of the backbox with an M5 bolt. You can also use adhesive versions. Grooves in the bottom of the box will support up to 30mm in diameter. | [Amazon (UK)](https://www.amazon.co.uk/dp/B0CQ23M5Z5) |
 | Optional: M5 x 16mm hex socket bolts | To screw the rubber feet into the back box. | [Amazon (UK)](https://www.amazon.co.uk/16mm-Socket-Button-Head-Screws/dp/B09BG8XNM7) |
@@ -119,44 +118,7 @@ Page 42 of the <a href="NV10 operations manual.pdf">NV10 USB Operations Manual</
 
 You should hear the bill acceptor and coin acceptors turn on.
 
-### Step 2: Enclosure
-
-> Please note, that this ATM is designed to be attended (such as on a shop counter) rather than something that can be left unattended and mounted to a wall.
-
-#### Option A: 3D printed enclosure
-
-If you want to want to print your own enclosure, we recommend these settings:
-
-1. Print the Facia
-    - STL: [FOSSA ATM Facia](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Facia.stl)
-    - Material: PETG
-    - Infill: 10-100%
-    - Supports: No
-3. Print the backbox
-    - STL: [FOSSA ATM Back box](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
-    - Material: PETG  
-    - Infill: 10-100%  
-    - Supports: Yes (you "paint" out all but the door in Prusa slicer)  
-4. Use a soldering iron to melt the brass female embedded insert nuts into the 6 holes for the facia (see picture 1 below)
-5. OPTIONAL: If using the coin acceptor, replace the coach bolts with longer bolts (M4 x 30mm carriage/coach bolts) to account for the thickness of the facia.
-6. Mount the bill acceptor so it is "smiling" (see picture 2) with the supplied mounting bracket and screws as pictured (see picture 3). Note, you can remove the bill input feed from the main part of the unit and then re-attach.
-7. Mount the screen into the display.
-
-<img src="https://github.com/user-attachments/assets/39873ac8-1ef9-4c2b-bcc4-506820e62112" width="200"/>
-<img src="https://github.com/user-attachments/assets/61ee23e7-b92f-47cd-ab6f-13e64144af66" width="356"/>
-<img src="https://github.com/user-attachments/assets/92c031d8-09a2-44ad-b408-c5d6ed206a37" width="356"/>
-
-#### Option B: Mount in box
-
-Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
-
-* For the `Aluminim Storage Box` solution, holes can be cut with a sharp knife (clearly not secure, but fine for somewhere you can keep an eye on the ATM or for demoes).
-
-* For the `Home Safe` solution, holes can be cut with angle grinder and a very thin cutter. (If you have not used an angle grinder before, don't be scared, they're cheap, easy enought to use, and very useful. Just take your time and wear safetly equipment.)
-
-We use CT1 sealent/adhesive (or similar) for mounting screen, although the screen has screw points, which should prob be used for added security.
-
-### Step 3: Configure LNBits
+### Step 2: Configure LNBits
 
 To configure your LNBits instance to pull funds from:
 
@@ -191,6 +153,48 @@ To configure the ATM:
 5. Enter a percentage charge for the service (e.g. "10" for 10%).
 6. Click `Save`.
 7. Once it has saved, unplug and plug the WT32-SC01 back in again. You should see the `Fiat for Sats` screen.
+
+### Step 4: Enclosure
+
+> Please note, that this ATM is designed to be attended (such as on a shop counter) rather than something that can be left unattended and mounted to a wall.
+
+#### Option A: 3D printed enclosure
+
+If you want to want to print your own enclosure, we recommend these settings:
+
+1. Print the Facia
+    - STL: [FOSSA ATM Facia](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Facia.stl)
+    - Material: PETG
+    - Infill: 10-100%
+    - Supports: No
+3. Print the backbox
+    - STL: [FOSSA ATM Backbox](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
+    - Material: PETG  
+    - Infill: 10-100%  
+    - Supports: Yes (you "paint" out all but the door in Prusa slicer)  
+4. Use a soldering iron to melt the brass female embedded insert nuts into the 6 holes for the facia (see picture 1 below)
+5. OPTIONAL: If using the coin acceptor, replace the coach bolts with longer bolts (M4 x 30mm carriage/coach bolts) to account for the thickness of the facia.
+6. Mount the bill acceptor so it is "smiling" (see picture 2) with the supplied mounting bracket and screws as pictured (see picture 3). Note, you can remove the bill input feed from the main part of the unit and then re-attach.
+7. Mount the screen into the display.
+8. Mount the 5.5mm x 2.1mm DC Power Jack Socket Female Panel Mount Connector in the hole in the back left of the backbox.
+9. Connect wires from the connection terminal to the 2.2mm Quick Disconnect Female Spade Connector and plug to the inside of the 5.5mm x 2.1mm DC Power Jack Socket Female Panel Mount Connector.
+10. OPTIONAL: Mount the Rubber feet (D30x22xH15) using the M5 x 16mm hex socket bolts and M5 nylon nuts (be careful not to over-tighten).
+11. Using the Tamper-proof torx wrench (T20), use the screw in the M4 x 16mm pan head security torx tamper resistant bolts to secure the facia to the backbox.
+12. Plugin the power supply.
+
+<img src="https://github.com/user-attachments/assets/39873ac8-1ef9-4c2b-bcc4-506820e62112" width="200"/>
+<img src="https://github.com/user-attachments/assets/61ee23e7-b92f-47cd-ab6f-13e64144af66" width="356"/>
+<img src="https://github.com/user-attachments/assets/92c031d8-09a2-44ad-b408-c5d6ed206a37" width="356"/>
+
+#### Option B: Mount in box
+
+Use the templates provided <a href="cuttingTemplate.pdf">here</a>. print out at 100% on standard UK A4, and check the dimensions are correct after printing. Its useful if the pins on the bill acceptor and coin mech are accessible.
+
+* For the `Aluminim Storage Box` solution, holes can be cut with a sharp knife (clearly not secure, but fine for somewhere you can keep an eye on the ATM or for demoes).
+
+* For the `Home Safe` solution, holes can be cut with angle grinder and a very thin cutter. (If you have not used an angle grinder before, don't be scared, they're cheap, easy enought to use, and very useful. Just take your time and wear safetly equipment.)
+
+> We use CT1 sealent/adhesive (or similar) for mounting screen, although the screen has screw points, which should prob be used for added security.
 
 And there you have it, have fun, tag us on Twitter / Nostr with all your cool setups!
 
