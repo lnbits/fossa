@@ -171,7 +171,7 @@ If you want to want to print your own enclosure, we recommend these settings:
     - Material: PETG
     - Layer: 0.2mm 
     - Infill: 10-100%  
-    - Supports: Yes (you can "paint" out all but the door in Prusa slicer)
+    - Supports: Yes (In PrusaSlicer you can set `Print Settings` > `Support material` > `First layer expansion` to `1 mm`, `XY separation between an object and its support` to `80%` and `Overhang threshold` to `1 mm`, or, you can "paint" out all but the door as the model has been designed for minimal supports)
 4. Print the accessories
     - STL: [FOSSA ATM WT-32-SC01 Backplate](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20WT-32-SC01%20Backplate.stl), [FOSSA ATM Coin Slot Cover](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Coin%20Slot%20Cover.stl), [FOSSA ATM 4mm Lock Lever Shim](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%204mm%20Lock%20Lever%20Shim.stl), [FOSSA ATM Door](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%204mm%20Door.stl), [FOSSA ATM Backbox Note Holder](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Backbox%20Note%20Holder.stl)
     - Material: PETG
