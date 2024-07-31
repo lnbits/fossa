@@ -38,7 +38,7 @@ For the 3D-printed version, you will need:
 | M4 x 16mm pan head security torx tamper-resistant bolts | These hold the front facia to the back box. Anything longer than 14mm - 55mm is fine. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0BTTRPBQV/) |
 | Tamper-proof torx wrench (T20) | To tighten the front facia Torx bolts. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0D53LNNRW) |
 | Brass insert nuts, M4 x 6mm L x 6mm OD | Female threaded heat set knurled embedded insert nuts for 3D printing. These are stronger than trying to create threads in the 3D print. Using a soldering iron, these are heated up and pushed into the backbox for better attachment of the facia. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MCVW4GQ/) |
-| M4 x 30mm carriage/coach bolts | These are to replace the bolts supplied with the coin acceptor to accommodate the thickness of the facia. | [Amazon (UK)](https://www.ebay.co.uk/itm/386550912089?var=653926055961) |
+| M4 x 30mm carriage/coach bolts | These are to replace the bolts supplied with the coin acceptor to accommodate the thickness of the facia. | [eBay (UK)](https://www.ebay.co.uk/itm/386550912089?var=653926055961) |
 | 5.5mm x 2.1mm DC Power Jack Socket Female Panel Mount Connector | This allows the 12V adaptor to plug into the ATM's outside. The box assumes a diameter of 7.7mm (like these). | [Amazon (UK)](https://www.amazon.co.uk/dp/B01N3679B8) |
 | 2.2mm Quick Disconnect Female Spade Connector | This allows us to crimp a cable and connect to the 5.5mm x 2.1mm DC Power Jack Socket | |
 | Cabinet draw tubular 16mm lock | This will be mounted on the door. | [Amazon (UK)](https://www.amazon.co.uk/Litensh-Tubular-Cylinder-Cupboard-Letterbox/dp/B09SHWXWXC/) |
