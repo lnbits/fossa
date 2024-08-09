@@ -1,82 +1,149 @@
-
 // FOSSA NO ACCESS POINT, SIMPLE
 
-//============================//
-//============EDIT============//
-//============================//
+//====================================//
+//==EDIT IF USING DIFFERENT HARDWARE==//
+//====================================//
 
-#define BTN1 39 //Screen tap button
+#define BTN1 39 // Screen tap button
+#define RX1 32 // Bill acceptor
+#define TX1 33 // Bill acceptor
+#define TX2 4 // Coin machine
+#define INHIBITMECH 2 // Coin machine
 
-#define RX1 32 //Bill acceptor
-#define TX1 33 //Bill acceptor
+#define BillAcceptor Serial1
+#define CoinAcceptor Serial2
 
-#define TX2 4 //Coinmech
-#define INHIBITMECH 2 //Coinmech
+// Setup the WT32-SC01 screen correctly.
+#define USER_SETUP_LOADED // Prevents loading the default User_Setup.h
+#define ST7796_DRIVER // This is the driver for the WT32-SC01
+#define TFT_WIDTH  320
+#define TFT_HEIGHT 480
+#define TFT_BACKLIGHT_ON HIGH
+#define USE_HSPI_PORT
+#define TFT_MISO 12
+#define TFT_MOSI 13
+#define TFT_SCLK 14
+#define TFT_CS   15
+#define TFT_DC   21
+#define TFT_RST  22
+#define TFT_BL   23
+#define LOAD_GLCD
+#define LOAD_FONT2
+#define LOAD_FONT4
+#define LOAD_FONT6
+#define LOAD_FONT7
+#define LOAD_FONT8
+#define LOAD_GFXFF
+#define SMOOTH_FONT
+#define SPI_FREQUENCY  27000000
+#define SPI_READ_FREQUENCY  20000000
+#define SPI_TOUCH_FREQUENCY  2500000
 
-
-// LNURLDevices ATM details
-String baseURLATM = "https://legend.lnbits.com/lnurldevice/api/v1/lnurl/M8wiiij8oLEgK6RNXLvoFs";
-String secretATM = "3czaYALeuAp4H36tH3nasH";
-String currencyATM = "USD";
-
-// Coin and Bill Acceptor amounts
-int billAmountInt[3] = {5,10,20};
-float coinAmountFloat[6] = {0.02, 0.05, 0.1, 0.2, 0.5, 1};
-int charge = 10; // % you will charge people for service, set in LNbits extension
-int maxamount = 30; // max amount per withdraw
-
-//============================//
-//============================//
-//============================//
+//========================================================//
+//========================================================//
+//========================================================//
 
 #include <Hash.h>
 #include "qrcoded.h"
 #include "Bitcoin.h"
+#include <Wire.h>
+#include <TFT_eSPI.h>
+#include <HardwareSerial.h>
+#include <JC_Button.h>
+
+//============================//
+//============================//
+//============================//
+
+// LNURLDevices ATM details
+String baseURLATM = "https://demo.lnbits.com/lnurldevice/api/v1/lnurl/irqKs,fhHkEYrzPgvDRdSjLgYvNk,GBP";
+String secretATM = "	fhHkEYrzPgvDRdSjLgYvNk";
+String currencyATM = "GBP";
 
 String qrData;
 
 int bills;
 float coins;
 float total;
+int charge = 5; // % you will charge people for service, set in LNbits extension
+int maxamount = 30; // max amount per withdraw
 
+// Coin and Bill Acceptor amounts
+int billAmountInt[3] = {5,10,20};
+float coinAmountFloat[6] = {0.02, 0.05, 0.1, 0.2, 0.5, 1};
 int billAmountSize = sizeof(billAmountInt) / sizeof(int);
 float coinAmountSize = sizeof(coinAmountFloat) / sizeof(float);
 
 int moneyTimer = 0;
-    
-#include <Wire.h>
-#include <TFT_eSPI.h>
-#include <HardwareSerial.h>
-#include <JC_Button.h>
-
-HardwareSerial SerialPort1(1);
-HardwareSerial SerialPort2(2);
 
 TFT_eSPI tft = TFT_eSPI();
 Button BTNA(BTN1);
 
 void setup()  
 {  
+  Serial.begin(115200);
+
+  BillAcceptor.begin(300, SERIAL_8N2); //, TX1, RX1); // Initialize the bill acceptor, listen at a baud rate of 300.
+  delay(5000); // Wait for the device to initialize
+
+  pinMode(RX1, INPUT_PULLUP); // Pullup serial RX pin.
+
+  // If the device is in SIO (start-up disabled mode, see "8.3 Program check procedure" in "NV10Manual_2.PDF.pdf")
+  uint8_t enableCommand = 0x02; // Enable command for NV10 USB+
+  BillAcceptor.write(enableCommand);
+
+  BillAcceptor.write(170); // Enable serial escrow mode (see ""Recognised Receive Codes to BV100" in "NV10Manual_2.PDF.pdf"")
+  BillAcceptor.write(184); // Enable all (see "Recognised Receive Codes to BV100" in "NV10Manual_2.PDF.pdf")
+  Serial.println("Bill acceptor serial port initialized.");
+
+  CoinAcceptor.begin(4800, SERIAL_8N1, TX2);
+  //digitalWrite(INHIBITMECH, HIGH); // Enable coin acceptor
+  pinMode(INHIBITMECH, OUTPUT);
+  digitalWrite(INHIBITMECH, HIGH);
+
   BTNA.begin();
   
   tft.init();
   tft.setRotation(1);
   tft.invertDisplay(false);
+  tft.fillScreen(TFT_BLACK);
+  logo();
   
-  SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
-  SerialPort2.begin(4800, SERIAL_8N1, TX2);
+  // Wait a bit
+  delay(2000);
 
-  pinMode(INHIBITMECH, OUTPUT); 
+  // Debugging serial ports initialization
+  Serial.println("Serial Ports Initialized");
+  Serial.print("SerialPort1: RX=");
+  Serial.print(RX1);
+  Serial.print(", TX=");
+  Serial.println(TX1);
+  Serial.print("SerialPort2: TX=");
+  Serial.println(TX2);
+
+  Serial.println("Machines Turned On");
+
+  delay(5000); // Wait for devices to initialize
+
+  // Test if devices are responding
+  Serial.println("Testing Bill Acceptor...");
+  while (BillAcceptor.available()) {
+    int x = BillAcceptor.read();
+    Serial.print("Bill Acceptor Data: ");
+    Serial.println(x);
+  }
+  
+  Serial.println("Testing Coin Acceptor...");
+  while (CoinAcceptor.available()) {
+    int x = CoinAcceptor.read();
+    Serial.print("Coin Acceptor Data: ");
+    Serial.println(x);
+  }
 }
 
 void loop()
 {
-  // Turn on machines
-  SerialPort1.write(184);
-  digitalWrite(INHIBITMECH, HIGH);
-  
   tft.fillScreen(TFT_BLACK);
-  printMessage("Feed me FIAT", String(charge) + "% charge", "", TFT_WHITE, TFT_BLACK);
   moneyTimerFun();
   makeLNURL();
   qrShowCodeLNURL("SCAN ME. TAP SCREEN WHEN FINISHED");
@@ -94,6 +161,64 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
   tft.setCursor(30, 200);
   tft.setTextSize(3);
   tft.println(text3);
+}
+
+void logo()
+{
+  tft.fillScreen(TFT_BLACK);
+  tft.setCursor(130, 100);
+  tft.setTextSize(10);
+  tft.setTextColor(TFT_PURPLE);
+  tft.println("FOSSA");
+  tft.setTextColor(TFT_WHITE);
+  tft.setCursor(40, 170);
+  tft.setTextSize(3);
+  tft.println("Bitcoin Lightning ATM");
+  tft.setCursor(300, 290);
+  tft.setTextSize(2);
+  tft.println("(GRIFF Edition)");
+}
+
+void feedmefiat()
+{
+  tft.setTextColor(TFT_WHITE);
+  tft.setCursor(60, 40);
+  tft.setTextSize(3);
+  tft.println("Bitcoin Lightning ATM");
+  tft.setCursor(10, 280);
+  tft.println("(feed me fiat. " + String(charge) + "% charge)");
+  tft.setTextSize(10);
+  tft.setCursor(160, 80);
+  tft.println("SATS");
+  tft.setCursor(180, 140);
+  tft.println("FOR");
+  tft.setCursor(160, 200);
+  tft.println("FIAT!");
+  delay(100);
+  tft.setTextColor(TFT_GREEN);
+  tft.setCursor(160, 80);
+  tft.println("SATS");
+  tft.setCursor(180, 140);
+  tft.println("FOR");
+  tft.setCursor(160, 200);
+  tft.println("FIAT!");
+  delay(100);
+  tft.setTextColor(TFT_BLUE);
+  tft.setCursor(160, 80);
+  tft.println("SATS");
+  tft.setCursor(180, 140);
+  tft.println("FOR");
+  tft.setCursor(160, 200);
+  tft.println("FIAT!");
+  delay(100);
+  tft.setTextColor(TFT_ORANGE);
+  tft.setCursor(160, 80);
+  tft.println("SATS");
+  tft.setCursor(180, 140);
+  tft.println("FOR");
+  tft.setCursor(160, 200);
+  tft.println("FIAT!");
+  delay(100);
 }
 
 void qrShowCodeLNURL(String message)
@@ -134,26 +259,47 @@ void qrShowCodeLNURL(String message)
   }
 }
 
+// This function processes money input from two serial ports, updates the total amount of money collected, and displays messages to the user 
+// until the user indicates they are finished or a maximum amount is reached.
 void moneyTimerFun()
 {
+  Serial.println("Starting moneyTimerFun ...");
+
   bool waitForTap = true;
   coins = 0;
   bills = 0;
   total = 0;
-  printMessage("Feed me fiat", String(charge) + "% charge", "", TFT_WHITE, TFT_BLACK);
-  while( waitForTap || total == 0){
-    if (SerialPort1.available()) {
-      int x = SerialPort1.read();
-       for (int i = 0; i < billAmountSize; i++){
-         if((i+1) == x){
-           bills = bills + billAmountInt[i];
-           total = (coins + bills);
-           printMessage(billAmountInt[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
-         }
-       }
+  while (waitForTap || total == 0){
+    uint8_t enableCommand = 0x0A; // Command to enable the validator
+    BillAcceptor.write(enableCommand); // Send the enable command
+
+    // Enable on machines
+    BillAcceptor.write(184);
+    digitalWrite(INHIBITMECH, HIGH);
+    Serial.println("Machines turned on ... ");
+
+    if (total == 0){
+      feedmefiat();
     }
-    if (SerialPort2.available()) {
-      int x = SerialPort2.read();
+    if (BillAcceptor.available()) {
+      Serial.println("Bill Acceptor available");
+      int x = BillAcceptor.read();
+      Serial.println("Bill Acceptor Data: ");
+      Serial.println(x); // Debugging line to print bill acceptor data
+      for (int i = 0; i < billAmountSize; i++){
+        if((i+1) == x){
+          bills = bills + billAmountInt[i];
+          total = (coins + bills);
+          printMessage(billAmountInt[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+        }
+      }
+    } else {
+      Serial.println("Bill acceptor unavailable");
+    }
+    if (CoinAcceptor.available()) {
+      int x = CoinAcceptor.read();
+      Serial.print("Coin Acceptor Data: ");
+      Serial.println(x); // Debugging line to print coin acceptor data
       for (int i = 0; i < coinAmountSize; i++){
          if((i+1) == x){
            coins = coins + coinAmountFloat[i];
@@ -161,6 +307,8 @@ void moneyTimerFun()
            printMessage(coinAmountFloat[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
          }
        }
+    } else {
+      Serial.println("Coin acceptor unavailable");
     }
     BTNA.read();
     if (BTNA.wasReleased() || total > maxamount) {
@@ -170,8 +318,9 @@ void moneyTimerFun()
   total = (coins + bills) * 100;
 
   // Turn off machines
-  SerialPort1.write(185);
+  BillAcceptor.write(185);
   digitalWrite(INHIBITMECH, LOW);
+  Serial.println("Machines turned off ...");
 }
 
 void to_upper(char *arr)
@@ -219,6 +368,7 @@ void makeLNURL()
   qrData = charLnurl;
 }
 
+// This function is performing a custom encryption operation, combining XOR-based encryption with HMAC for authentication
 int xor_encrypt(uint8_t *output, size_t outlen, uint8_t *key, size_t keylen, uint8_t *nonce, size_t nonce_len, uint64_t pin, uint64_t amount_in_cents)
 {
   // check we have space for all the data:
