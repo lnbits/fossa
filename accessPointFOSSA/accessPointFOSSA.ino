@@ -15,6 +15,10 @@ bool format = false; // true for formatting FOSSA memory, use once, then make fa
 #define TX2 4 //Coinmech
 #define INHIBITMECH 2 //Coinmech
 
+//THERMAL PRINTER SETTINGS
+#define RXP 22  //define the GPIO connected TO the TX of the thermal printer
+#define TXP 23   //define the GPIO connected TO the RX of the thermal printer
+
 //========================================================//
 //========================================================//
 //========================================================//
@@ -23,6 +27,7 @@ bool format = false; // true for formatting FOSSA memory, use once, then make fa
 #include <WebServer.h>
 #include <FS.h>
 #include <SPIFFS.h>
+#include <SoftwareSerial.h>
 using WebServerClass = WebServer;
 fs::SPIFFSFS &FlashFS = SPIFFS;
 #define FORMAT_ON_FAIL true
@@ -35,9 +40,13 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 #include <ArduinoJson.h>
 #include <JC_Button.h>
 
+#include <Adafruit_Thermal.h>
+#include <HardwareSerial.h>
+
 #include <Hash.h>
 #include "qrcoded.h"
 #include "Bitcoin.h"
+#include "quotes.h"
 
 #define PARAM_FILE "/elements.json"
 
@@ -47,6 +56,9 @@ String apPassword = "ToTheMoon1"; //default WiFi AP password
 String baseURLATM;
 String secretATM;
 String currencyATM = "";
+
+SoftwareSerial printerSerial(RXP, TXP);
+Adafruit_Thermal printer(&printerSerial);
 
 int bills;
 float coins;
@@ -201,12 +213,14 @@ AutoConnectAux saveAux;
 
 void setup()  
 {  
+  Serial.begin(115200);
   BTNA.begin();
   
   tft.init();
   tft.setRotation(1);
   tft.invertDisplay(false);
   tft.fillScreen(TFT_BLACK);
+
   logo();
 
   int timer = 0;
@@ -328,8 +342,8 @@ void setup()
     }
     return String();
   });
-  config.auth = AC_AUTH_BASIC;
-  config.authScope = AC_AUTHSCOPE_AUX;
+  config.auth = AC_AUTH_NONE;
+//  config.authScope = AC_AUTHSCOPE_AUX;
   config.ticker = true;
   config.autoReconnect = true;
   config.apid = "Device-" + String((uint32_t)ESP.getEfuseMac(), HEX);
@@ -357,17 +371,88 @@ void setup()
     printMessage("Restart", "launch portal!", "", TFT_WHITE, TFT_BLACK);
     delay(99999999);
   }
+
+  Serial.println("Initialising printer");
+  printerSerial.begin(9600);
+  printer.begin();
+  Serial.println("Printer initialized successfully");
+}
+
+void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
+  // Using a smaller size or adjusting based on isMainQR
+  byte adjustedSize = isMainQR ? size : max(1, size - 10); // Ensure minimum size of 1
+
+  // Adjust error correction: L (0x31), M (0x32), Q (0x33), H (0x34)
+  byte eccLevel = 0x31; // Start with low and increase if errors persist
+
+  // Commands setup
+  const byte modelCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x43, adjustedSize };
+  const byte eccCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x45, eccLevel };
+  const byte printCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x51, 0x30 };
+
+  printerSerial.write(modelCommand, sizeof(modelCommand));
+  printerSerial.write(eccCommand, sizeof(eccCommand));
+
+  int len = qrData.length() + 3;
+  if (len > 255) {
+    // Simple error handling for data that is too large
+    Serial.println("Data too long for a single QR code!");
+    return;
+  }
+  byte dataCommand[] = { 0x1D, 0x28, 0x6B, (byte)len, 0x00, 0x31, 0x50, 0x30 };
+  printerSerial.write(dataCommand, sizeof(dataCommand));
+  printerSerial.print(qrData);
+
+  printerSerial.write(printCommand, sizeof(printCommand));
+}
+
+void printReceipt() {
+  printer.wake();
+
+  printer.setDefault();
+
+  
+  printer.justify('C');  // Center align text
+  printer.feed(3);
+  
+  printer.boldOn();
+  printer.setSize('L');
+  printer.println("Thank you");
+  printer.feed(1);
+  printer.setSize('S');
+  printer.println("This voucher can be redeemed for " + String(float(total / 100)) + " " + currencyATM + " of Bitcoin");
+  printer.feed(1);
+  printer.underlineOn();
+  printer.println("Scan me with a Lightning wallet to get your Bitcoin");
+  printer.underlineOff();
+  printer.feed(1);
+
+  printQRcode(qrData);
+  printer.boldOff();
+  printer.feed(1);
+  printer.justify('L');
+  printer.println(getRandomQuote());
+  printer.feed(3);
+
+  printer.sleep();
+
 }
 
 void loop()
 {
+  Serial.println("Starting ATM");
   // Turn on machines
   SerialPort1.write(184);
+  Serial.println("Bill acceptor on");
   digitalWrite(INHIBITMECH, HIGH);
+  Serial.println("Coin mech on");
   tft.fillScreen(TFT_BLACK);
   moneyTimerFun();
+  Serial.println("Money timer done");
   makeLNURL();
-  qrShowCodeLNURL("SCAN ME. TAP SCREEN WHEN FINISHED");
+  Serial.println("LNURL done");
+  qrShowCodeLNURL();
+  Serial.println("QR done");
 }
 
 void printMessage(String text1, String text2, String text3, int ftcolor, int bgcolor)
@@ -396,8 +481,8 @@ void logo()
   tft.setTextSize(3);
   tft.println("Bitcoin Lightning ATM");
   tft.setCursor(300, 290);
-  tft.setTextSize(2);
-  tft.println("(GRIFF Edition)");
+  // tft.setTextSize(2);
+  // tft.println("(GRIFF Edition)");
 }
 
 void feedmefiat()
@@ -407,7 +492,7 @@ void feedmefiat()
   tft.setTextSize(3);
   tft.println("Bitcoin Lightning ATM");
   tft.setCursor(10, 280);
-  tft.println("(feed me fiat. " + String(charge) + "% charge)");
+  tft.println("(Feed me fiat. " + String(charge) + "% charge)");
   tft.setTextSize(10);
   tft.setCursor(160, 80);
   tft.println("SATS");
@@ -442,8 +527,17 @@ void feedmefiat()
   delay(100);
 }
 
-void qrShowCodeLNURL(String message)
+void qrShowCodeLNURL()
 {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(3);
+  tft.setTextDatum(MC_DATUM);
+  tft.drawString("Please wait while your", tft.width() / 2, tft.height() / 2 - 20);
+  tft.drawString("voucher is printed", tft.width() / 2, tft.height() / 2 + 20);
+  
+  printReceipt();
+
   tft.fillScreen(TFT_WHITE);
   qrData.toUpperCase();
   const char *qrDataChar = qrData.c_str();
@@ -451,25 +545,28 @@ void qrShowCodeLNURL(String message)
   uint8_t qrcodeData[qrcode_getBufferSize(20)];
   qrcode_initText(&qrcoded, qrcodeData, 11, 0, qrDataChar);
 
+  // calculate start position on screen to get center, use tft.width() and qrcoded.size
+  int startX = (tft.width() - qrcoded.size * 3) / 2;
   for (uint8_t y = 0; y < qrcoded.size; y++)
   {
     for (uint8_t x = 0; x < qrcoded.size; x++)
     {
       if (qrcode_getModule(&qrcoded, x, y))
       {
-        tft.fillRect(120 + 4 * x, 20 + 4 * y, 4, 4, TFT_BLACK);
+        tft.fillRect(startX + 3 * x, 30 + 3 * y, 4, 4, TFT_BLACK);
       }
       else
       {
-        tft.fillRect(120 + 4 * x, 20 + 4 * y, 4, 4, TFT_WHITE);
+        tft.fillRect(startX + 3 * x, 30 + 3 * y, 4, 4, TFT_WHITE);
       }
     }
   }
 
-  tft.setCursor(40, 290);
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
-  tft.println(message);
+  tft.drawString("Scan me or your printed voucher", tft.width() / 2, 235);
+  tft.drawString("with a Bitcoin Lightning wallet", tft.width() / 2, 260);
+  tft.drawString("Tap the screen when finished", tft.width() / 2, 295);
   
   bool waitForTap = true;
   while(waitForTap){
@@ -488,38 +585,45 @@ void moneyTimerFun()
   total = 0;
   while( waitForTap || total == 0){
     if(total == 0){
+      Serial.println("Feed me fiat");
       feedmefiat();
     }
     if (SerialPort1.available()) {
+      Serial.println("Reading from bill acceptor");
       int x = SerialPort1.read();
        for (int i = 0; i < billAmountSize; i++){
          if((i+1) == x){
            bills = bills + billAmountInt[i];
            total = (coins + bills);
-           printMessage(billAmountInt[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+           printMessage(billAmountInt[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN TO GET BITCOIN", TFT_WHITE, TFT_BLACK);
          }
        }
     }
     if (SerialPort2.available()) {
+      Serial.println("Reading from coin mech");
       int x = SerialPort2.read();
       for (int i = 0; i < coinAmountSize; i++){
          if((i+1) == x){
            coins = coins + coinAmountFloat[i];
            total = (coins + bills);
-           printMessage(coinAmountFloat[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+           printMessage(coinAmountFloat[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN TO GET BITCOIN", TFT_WHITE, TFT_BLACK);
          }
        }
     }
+    Serial.println("Waiting for tap");
     BTNA.read();
-    if (BTNA.wasReleased() || total > maxamount) {
+    if (BTNA.wasReleased() || total >= maxamount) {
       waitForTap = false;
     }
   }
   total = (coins + bills) * 100;
+  Serial.println("Total: " + String(total));
 
   // Turn off machines
   SerialPort1.write(185);
+  Serial.println("Bill acceptor off");
   digitalWrite(INHIBITMECH, LOW);
+  Serial.println("Coin mech off");
 }
 
 /////////////////////////////////////
