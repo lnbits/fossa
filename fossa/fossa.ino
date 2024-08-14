@@ -17,12 +17,13 @@
 //////CHANGE MANUALLY OR USE FOSSA.lnbits.com//////
 ///////////////////////////////////////////////////
 
-bool hardcoded = false;
+bool hardcoded = true;
 String LNURLsettings = "https://demo.lnbits.com/lnurldevice/api/v1/lnurl/KVJyh,5UhHkwGhGxasXm2G3LS7RT,USD";
 int billAmountInt[3] = { 5, 10, 20 };
 float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
 int charge = 10;     // % you will charge people for service, set in LNbits extension
 int maxamount = 30;  // max amount per withdraw
+bool printerBool = true;
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////

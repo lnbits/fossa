@@ -14,9 +14,10 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
 }
 
 void qrShowCodeLNURL(String message) {
-  tft.drawString("Please wait while your", tft.width() / 2, tft.height() / 2 - 20);
-  tft.drawString("voucher is printed", tft.width() / 2, tft.height() / 2 + 20);
-
+  if(printerBool){
+    printMessage("Printing", "please wait", "", TFT_WHITE, TFT_BLACK);
+    delay(3000);
+  }
   printReceipt();
   tft.fillScreen(TFT_WHITE);
   qrData.toUpperCase();
