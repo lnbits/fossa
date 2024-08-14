@@ -1,3 +1,5 @@
+#ifdef UBTC_TEST // only compile with test flag
+
 #include "minunit.h"
 #include "Hash.h"  // all single-line hashing algorithms
 #include "Conversion.h" // to print byte arrays in hex format
@@ -51,6 +53,13 @@ MU_TEST(test_doublesha256) {
   mu_assert(strcmp(hexresult.c_str(), "7982970534e089b839957b7e174725ce1878731ed6d700766e59cb16f1c25e27") == 0, "double sha256 is wrong");
 }
 
+MU_TEST(test_taggedhash) {
+  uint8_t hash[32];
+  int hashLen = tagged_hash("some tag", message, hash);
+  string hexresult = toHex(hash, hashLen);
+  mu_assert(strcmp(hexresult.c_str(), "5f03803bda8dc3b9ddc0e954d6dbb51543a3517bd84970e64a8825bcaddedbae") == 0, "tagged hash is wrong");
+}
+
 MU_TEST(test_sha512) {
   uint8_t hash[64];
   int hashLen = sha512(message, hash);
@@ -71,3 +80,5 @@ int main(int argc, char *argv[]) {
   MU_REPORT();
   return MU_EXIT_CODE;
 }
+
+#endif // UBTC_TEST
