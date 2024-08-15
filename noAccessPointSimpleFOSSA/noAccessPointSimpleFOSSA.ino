@@ -5,9 +5,9 @@
 //====================================//
 
 #define BTN1 39 // Screen tap button
-#define RX1 32 // Bill acceptor
-#define TX1 33 // Bill acceptor
-#define TX2 4 // Coin machine
+#define BILL_ACCEPTOR_RX 32 // Bill acceptor
+#define BILL_ACCEPTOR_TX 33 // Bill acceptor
+#define COIN_MACHINE_TX 4 // Coin machine
 #define INHIBITMECH 2 // Coin machine
 
 #define BillAcceptor Serial1
@@ -83,10 +83,11 @@ void setup()
 {  
   Serial.begin(115200);
 
-  BillAcceptor.begin(300, SERIAL_8N2); //, TX1, RX1); // Initialize the bill acceptor, listen at a baud rate of 300.
+  // See if the device is in SIO fast mode or not (300 vs 9600), see "8.3 Program check procedure" in "NV10Manual_2.PDF.pdf")
+  BillAcceptor.begin(9600, SERIAL_8N2, BILL_ACCEPTOR_TX, BILL_ACCEPTOR_RX); // Initialize the bill acceptor, listen at a baud rate of 300.
   delay(5000); // Wait for the device to initialize
 
-  pinMode(RX1, INPUT_PULLUP); // Pullup serial RX pin.
+  pinMode(BILL_ACCEPTOR_RX, INPUT_PULLUP); // Pullup serial RX pin.
 
   // If the device is in SIO (start-up disabled mode, see "8.3 Program check procedure" in "NV10Manual_2.PDF.pdf")
   uint8_t enableCommand = 0x02; // Enable command for NV10 USB+
@@ -96,7 +97,7 @@ void setup()
   BillAcceptor.write(184); // Enable all (see "Recognised Receive Codes to BV100" in "NV10Manual_2.PDF.pdf")
   Serial.println("Bill acceptor serial port initialized.");
 
-  CoinAcceptor.begin(4800, SERIAL_8N1, TX2);
+  CoinAcceptor.begin(4800, SERIAL_8N1, COIN_MACHINE_TX);
   //digitalWrite(INHIBITMECH, HIGH); // Enable coin acceptor
   pinMode(INHIBITMECH, OUTPUT);
   digitalWrite(INHIBITMECH, HIGH);
@@ -108,45 +109,24 @@ void setup()
   tft.invertDisplay(false);
   tft.fillScreen(TFT_BLACK);
   logo();
-  
-  // Wait a bit
-  delay(2000);
-
-  // Debugging serial ports initialization
-  Serial.println("Serial Ports Initialized");
-  Serial.print("SerialPort1: RX=");
-  Serial.print(RX1);
-  Serial.print(", TX=");
-  Serial.println(TX1);
-  Serial.print("SerialPort2: TX=");
-  Serial.println(TX2);
-
-  Serial.println("Machines Turned On");
-
-  delay(5000); // Wait for devices to initialize
-
-  // Test if devices are responding
-  Serial.println("Testing Bill Acceptor...");
-  while (BillAcceptor.available()) {
-    int x = BillAcceptor.read();
-    Serial.print("Bill Acceptor Data: ");
-    Serial.println(x);
-  }
-  
-  Serial.println("Testing Coin Acceptor...");
-  while (CoinAcceptor.available()) {
-    int x = CoinAcceptor.read();
-    Serial.print("Coin Acceptor Data: ");
-    Serial.println(x);
-  }
 }
 
 void loop()
 {
+  Serial.println("Starting ATM ...");
+  // Turn on machines
+  Serial.println("Turning on machines ...");
+  BillAcceptor.write(184);
+  digitalWrite(INHIBITMECH, HIGH);
+  
   tft.fillScreen(TFT_BLACK);
+  //printMessage("Feed me FIAT", String(charge) + "% charge", "", TFT_WHITE, TFT_BLACK);
   moneyTimerFun();
+  Serial.println("Money timer done");
   makeLNURL();
-  qrShowCodeLNURL("SCAN ME. TAP SCREEN WHEN FINISHED");
+  Serial.println("LNURL done");
+  qrShowCodeLNURL();
+  Serial.println("LNURL done");
 }
 
 void printMessage(String text1, String text2, String text3, int ftcolor, int bgcolor)
@@ -221,8 +201,17 @@ void feedmefiat()
   delay(100);
 }
 
-void qrShowCodeLNURL(String message)
+void qrShowCodeLNURL()
 {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(3);
+  tft.setTextDatum(MC_DATUM);
+  tft.drawString("Please wait while your", tft.width() / 2, tft.height() / 2 - 20);
+  tft.drawString("voucher is printed", tft.width() / 2, tft.height() / 2 + 20);
+  
+  //printReceipt();
+
   tft.fillScreen(TFT_WHITE);
   qrData.toUpperCase();
   const char *qrDataChar = qrData.c_str();
@@ -230,25 +219,28 @@ void qrShowCodeLNURL(String message)
   uint8_t qrcodeData[qrcode_getBufferSize(20)];
   qrcode_initText(&qrcoded, qrcodeData, 11, 0, qrDataChar);
 
+  // calculate start position on screen to get center, use tft.width() and qrcoded.size
+  int startX = (tft.width() - qrcoded.size * 3) / 2;
   for (uint8_t y = 0; y < qrcoded.size; y++)
   {
     for (uint8_t x = 0; x < qrcoded.size; x++)
     {
       if (qrcode_getModule(&qrcoded, x, y))
       {
-        tft.fillRect(120 + 4 * x, 20 + 4 * y, 4, 4, TFT_BLACK);
+        tft.fillRect(startX + 3 * x, 30 + 3 * y, 4, 4, TFT_BLACK);
       }
       else
       {
-        tft.fillRect(120 + 4 * x, 20 + 4 * y, 4, 4, TFT_WHITE);
+        tft.fillRect(startX + 3 * x, 30 + 3 * y, 4, 4, TFT_WHITE);
       }
     }
   }
 
-  tft.setCursor(40, 290);
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
-  tft.println(message);
+  tft.drawString("Scan me or your printed voucher", tft.width() / 2, 235);
+  tft.drawString("with a Bitcoin Lightning wallet", tft.width() / 2, 260);
+  tft.drawString("Tap the screen when finished", tft.width() / 2, 295);
   
   bool waitForTap = true;
   while(waitForTap){
@@ -269,16 +261,10 @@ void moneyTimerFun()
   coins = 0;
   bills = 0;
   total = 0;
+  
   while (waitForTap || total == 0){
-    uint8_t enableCommand = 0x0A; // Command to enable the validator
-    BillAcceptor.write(enableCommand); // Send the enable command
-
-    // Enable on machines
-    BillAcceptor.write(184);
-    digitalWrite(INHIBITMECH, HIGH);
-    Serial.println("Machines turned on ... ");
-
-    if (total == 0){
+    if (total == 0) {
+      Serial.println("Feed me fiat");
       feedmefiat();
     }
     if (BillAcceptor.available()) {
@@ -294,7 +280,7 @@ void moneyTimerFun()
         }
       }
     } else {
-      Serial.println("Bill acceptor unavailable");
+      //Serial.println("Bill acceptor unavailable");
     }
     if (CoinAcceptor.available()) {
       int x = CoinAcceptor.read();
@@ -308,19 +294,21 @@ void moneyTimerFun()
          }
        }
     } else {
-      Serial.println("Coin acceptor unavailable");
+      //Serial.println("Coin acceptor unavailable");
     }
+    Serial.println("Waiting for tap");
     BTNA.read();
     if (BTNA.wasReleased() || total > maxamount) {
       waitForTap = false;
     }
   }
   total = (coins + bills) * 100;
+  Serial.println("Total: " + String(total));
 
   // Turn off machines
+  Serial.println("Turning machines turned off ...");
   BillAcceptor.write(185);
   digitalWrite(INHIBITMECH, LOW);
-  Serial.println("Machines turned off ...");
 }
 
 void to_upper(char *arr)
