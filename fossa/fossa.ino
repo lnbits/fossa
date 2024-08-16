@@ -24,6 +24,7 @@ float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
 int charge = 10;     // % you will charge people for service, set in LNbits extension
 int maxamount = 30;  // max amount per withdraw
 bool printerBool = true;
+String language = "fr";
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -56,9 +57,12 @@ struct KeyValue {
   String key;
   String value;
 };
+String translate(String key);
 uint16_t homeScreenColors[] = { TFT_GREEN, TFT_BLUE, TFT_ORANGE };
 int homeScreenNumColors = sizeof(homeScreenColors) / sizeof(homeScreenColors[0]);
 int homeScreenNumColorCount = 0;
+
+String usbT, tapScreenT, scanMeT, totalT, fossaT, satsT, forT, fiatT, feedT, chargeT, printingT, waitT, workingT;
 
 HardwareSerial SerialPort1(1);
 HardwareSerial SerialPort2(2);
@@ -68,15 +72,16 @@ TFT_eSPI tft = TFT_eSPI(320, 480);
 Button BTNA(BTN1);
 
 void setup() {
+  translateAll(language);
   splitSettings(LNURLsettings);
   Serial.begin(115200);
-  Serial.println("Working...");
+  Serial.println(workingT);
   BTNA.begin();
 
   while (waitForTap && total < 100 && hardcoded == false) {
     BTNA.read();
     if (BTNA.wasReleased()) {
-      printMessage("USB config mode", "", "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+      printMessage(usbT, "", tapScreenT, TFT_WHITE, TFT_BLACK);
       executeConfig();
       waitForTap = false;
     }
@@ -99,7 +104,7 @@ void loop() {
   tft.fillScreen(TFT_BLACK);
   moneyTimerFun();
   makeLNURL();
-  qrShowCodeLNURL("SCAN ME. TAP SCREEN WHEN FINISHED");
+  qrShowCodeLNURL(scanMeT);
 }
 
 void moneyTimerFun() {
@@ -121,7 +126,7 @@ void moneyTimerFun() {
         if ((i + 1) == x) {
           bills = bills + billAmountInt[i];
           total = (coins + bills);
-          printMessage(billAmountInt[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+          printMessage(billAmountInt[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
         }
       }
     }
@@ -131,7 +136,7 @@ void moneyTimerFun() {
         if ((i + 1) == x) {
           coins = coins + coinAmountFloat[i];
           total = (coins + bills);
-          printMessage(coinAmountFloat[i] + currencyATM, "Total: " + String(total) + currencyATM, "TAP SCREEN WHEN FINISHED", TFT_WHITE, TFT_BLACK);
+          printMessage(coinAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
         }
       }
     }

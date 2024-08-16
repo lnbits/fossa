@@ -3,39 +3,41 @@
 void printMessage(String text1, String text2, String text3, int ftcolor, int bgcolor) {
   tft.fillScreen(bgcolor);
   tft.setTextColor(ftcolor, bgcolor);
-  tft.setTextSize(5);
-  tft.setCursor(30, 40);
+  tft.setTextSize(4);
+  tft.setCursor((480 - textWidth(text1, 4)) / 2, 40);
   tft.println(text1);
-  tft.setCursor(30, 120);
+  tft.setCursor((480 - textWidth(text2, 4)) / 2, 120);
   tft.println(text2);
-  tft.setCursor(30, 200);
+  tft.setCursor((480 - textWidth(text3, 4)) / 2, 200);
   tft.setTextSize(3);
   tft.println(text3);
 }
 void feedmefiat() {
   tft.setTextColor(TFT_WHITE);
-  tft.setCursor(80, 40);
-  tft.setTextSize(3);
-  tft.println("FOSSA! Bitcoin ATM");
-  tft.setCursor(10, 280);
-  tft.println("(feed me fiat. " + String(charge) + "% charge)");
+  tft.setCursor((480 - textWidth(fossaT, 2)) / 2, 40);
+  tft.setTextSize(2);
+  tft.println(fossaT);
+  tft.setCursor((480 - textWidth(feedT + String(charge) + chargeT, 2)) / 2, 280);
+  tft.setTextSize(2);
+  tft.println(feedT + String(charge) + chargeT);
 }
 void feedmefiatloop() {
   tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
-  tft.setTextSize(10);
-  tft.setCursor(155, 80);
-  tft.println("SATS");
-  tft.setCursor(175, 140);
-  tft.println("FOR");
-  tft.setCursor(145, 190);
-  tft.println("FIAT!");
+  tft.setTextSize(8);
+  tft.setCursor((480 - textWidth(satsT, 8)) / 2, 80);
+  tft.println(satsT);
+  tft.setCursor((480 - textWidth(forT, 8)) / 2, 140);
+  tft.println(forT);
+  tft.setCursor((480 - textWidth(fiatT, 8)) / 2, 190);
+  tft.println(fiatT);
   delay(100);
 }
 void qrShowCodeLNURL(String message) {
   if (printerBool) {
-    printMessage("Printing", "please wait", "", TFT_WHITE, TFT_BLACK);
+    printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
     delay(3000);
   }
+  Serial.println(qrData);
   printReceipt();
   tft.fillScreen(TFT_WHITE);
   const char *qrDataChar = qrData.c_str();
@@ -65,4 +67,8 @@ void qrShowCodeLNURL(String message) {
       waitForTap = false;
     }
   }
+}
+int textWidth(String text, int textSize) {
+  tft.setTextSize(textSize);
+  return tft.textWidth(text);
 }
