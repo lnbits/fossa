@@ -17,9 +17,9 @@ void feedmefiat() {
   tft.setCursor((480 - textWidth(fossaT, 2)) / 2, 40);
   tft.setTextSize(2);
   tft.println(fossaT);
-  tft.setCursor((480 - textWidth(feedT + String(charge) + chargeT, 2)) / 2, 280);
+  tft.setCursor((480 - textWidth(feedT + " " + String(charge) + chargeT, 2)) / 2, 280);
   tft.setTextSize(2);
-  tft.println(feedT + String(charge) + chargeT);
+  tft.println(feedT + " " + String(charge) + chargeT);
 }
 void feedmefiatloop() {
   tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
@@ -28,7 +28,7 @@ void feedmefiatloop() {
   tft.println(satsT);
   tft.setCursor((480 - textWidth(forT, 8)) / 2, 140);
   tft.println(forT);
-  tft.setCursor((480 - textWidth(fiatT, 8)) / 2, 190);
+  tft.setCursor((480 - textWidth(fiatT, 8)) / 2, 200);
   tft.println(fiatT);
   delay(100);
 }

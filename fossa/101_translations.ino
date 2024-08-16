@@ -1,6 +1,4 @@
-// Supports languages:
-// en (English), es (Spanish), zh (Chinese), hi (Hindi), ar (Arabic), pt (Portuguese), bn (Bengali), ru (Russian), ja (Japanese), pa (Punjabi),
-// de (German), ko (Korean), fr (French), tr (Turkish), it (Italian)
+// Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 String translate(String key, String language) {
   const char* translations = R"(
 [en]
@@ -19,14 +17,14 @@ wait = please wait
 working = Working...
 
 [es]
-usb = Modo de configuración USB
+usb = Modo de configuracion USB
 tapScreen = TOQUE LA PANTALLA CUANDO TERMINE
-scanMe = ESCÁNEME TOQUE LA PANTALLA CUANDO TERMINE
+scanMe = ESCANEME TOQUE LA PANTALLA CUANDO TERMINE
 total = Total: 
-fossa = ¡FOSSA! Cajero Bitcoin
+fossa = FOSSA! Cajero Bitcoin
 sats = SATS
 forT = PARA
-fiat = ¡FIAT!
+fiat = FIAT!
 feed = dame fiat.
 charge = % de carga
 printing = Imprimiendo
@@ -35,18 +33,153 @@ working = Trabajando...
 
 [fr]
 usb = Mode de configuration USB
-tapScreen = TOUCHEZ L'ÉCRAN QUAND TERMINÉ
-scanMe = SCANEZ MOI TOUCHEZ L'ÉCRAN QUAND TERMINÉ
+tapScreen = TOUCHEZ L ECRAN QUAND TERMINE
+scanMe = SCANEZ MOI TOUCHEZ L ECRAN QUAND TERMINE
 total = Total: 
 fossa = FOSSA! Distributeur Bitcoin
 sats = SATS
 forT = POUR
 fiat = FIAT!
-feed = nourrissez-moi de fiat
+feed = nourrissez moi de fiat
 charge = % charge
 printing = Impression
 wait = veuillez patienter
 working = En cours...
+
+[de]
+usb = USB-Konfigurationsmodus
+tapScreen = BERUEHREN SIE DEN BILDSCHIRM WENN FERTIG
+scanMe = SCANNEN SIE MICH BERUEHREN SIE DEN BILDSCHIRM WENN FERTIG
+total = Gesamt: 
+fossa = FOSSA! Bitcoin-Geldautomat
+sats = SATS
+forT = FUER
+fiat = FIAT!
+feed = fuettere mich mit Fiat
+charge = % Ladung
+printing = Drucken
+wait = bitte warten
+working = Arbeitet...
+
+[it]
+usb = Modalita di configurazione USB
+tapScreen = TOCCA LO SCHERMO QUANDO FINITO
+scanMe = SCAN SIONAMI TOCCA LO SCHERMO QUANDO FINITO
+total = Totale: 
+fossa = FOSSA! Bancomat Bitcoin
+sats = SATS
+forT = PER
+fiat = FIAT!
+feed = dammelo in fiat
+charge = % carica
+printing = Stampa in corso
+wait = attendere prego
+working = Funzionamento...
+
+[pt]
+usb = Modo de configuracao USB
+tapScreen = TOQUE NA TELA QUANDO TERMINAR
+scanMe = ESCANEIE ME TOQUE NA TELA QUANDO TERMINAR
+total = Total: 
+fossa = FOSSA! Caixa eletrônico Bitcoin
+sats = SATS
+forT = PARA
+fiat = FIAT!
+feed = me dê fiat
+charge = % de carga
+printing = Imprimindo
+wait = por favor aguarde
+working = Trabalhando...
+
+[pl]
+usb = Tryb konfiguracji USB
+tapScreen = DOTKNIJ EKRAN PO UKONCZENIU
+scanMe = SCANUJ MNIE DOTKNIJ EKRAN PO UKONCZENIU
+total = Razem: 
+fossa = FOSSA! Bankomat Bitcoin
+sats = SATS
+forT = DLA
+fiat = FIAT!
+feed = daj mi fiat
+charge = % ladunku
+printing = Drukowanie
+wait = proszę czekać
+working = Pracuje...
+
+[hu]
+usb = USB konfiguracios mod
+tapScreen = TAP IN EKRANRA HA VEGE
+scanMe = SZKENNELJ ENGEM TAP IN EKRANRA HA VEGE
+total = Osszesen: 
+fossa = FOSSA! Bitcoin ATM
+sats = SATS
+forT = SZAMARA
+fiat = FIAT!
+feed = etess meg fiatot
+charge = % toltes
+printing = Nyomtat
+wait = kerlek varj
+working = Dolgozik...
+
+[tr]
+usb = USB yapilandirma modu
+tapScreen = BITTIGINDE EKRANA DOKUNUN
+scanMe = BENI TARAYIN BITTIGINDE EKRANA DOKUNUN
+total = Toplam: 
+fossa = FOSSA! Bitcoin ATM
+sats = SATS
+forT = I CIN
+fiat = FIAT!
+feed = bana fiat ver
+charge = % sarj
+printing = Yazdiriliyor
+wait = lutfen bekleyin
+working = Calisiyor...
+
+[ro]
+usb = Modul de configurare USB
+tapScreen = ATINGETI ECRANUL CAND TERMINATI
+scanMe = SCANATI-MA ATINGETI ECRANUL CAND TERMINATI
+total = Total: 
+fossa = FOSSA! Bancomat Bitcoin
+sats = SATS
+forT = PENTRU
+fiat = FIAT!
+feed = da-mi fiat
+charge = % incarcare
+printing = Tiparire
+wait = va rog asteptati
+working = Lucreaza...
+
+[fi]
+usb = USB-konfigurointitila
+tapScreen = KOSKETA NÄYTTÖÄ VALMIINA
+scanMe = SKANNAA MINUT KOSKETA NÄYTTÖÄ VALMIINA
+total = Yhteensä: 
+fossa = FOSSA! Bitcoin-ATK
+sats = SATS
+forT = KÄYTETTÄVÄ
+fiat = FIAT!
+feed = anna minulle fiat
+charge = % lataus
+printing = Tulostus
+wait = ole hyvä ja odota
+working = Työskentelee...
+
+[sv]
+usb = USB-konfigurationsläge
+tapScreen = TRYCK PÅ SKÄRMEN NÄR KLAR
+scanMe = SKANNA MIG TRYCK PÅ SKÄRMEN NÄR KLAR
+total = Totalt: 
+fossa = FOSSA! Bitcoin-automat
+sats = SATS
+forT = FÖR
+fiat = FIAT!
+feed = mata mig fiat
+charge = % laddning
+printing = Utskrift
+wait = vänligen vänta
+working = Arbetar...
 )";
 
   String line;

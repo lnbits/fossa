@@ -24,7 +24,7 @@ float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
 int charge = 10;     // % you will charge people for service, set in LNbits extension
 int maxamount = 30;  // max amount per withdraw
 bool printerBool = true;
-String language = "fr";
+String language = "ro"; // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
