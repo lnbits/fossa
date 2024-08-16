@@ -56,6 +56,9 @@ struct KeyValue {
   String key;
   String value;
 };
+uint16_t homeScreenColors[] = { TFT_GREEN, TFT_BLUE, TFT_ORANGE };
+int homeScreenNumColors = sizeof(homeScreenColors) / sizeof(homeScreenColors[0]);
+int homeScreenNumColorCount = 0;
 
 HardwareSerial SerialPort1(1);
 HardwareSerial SerialPort2(2);
@@ -104,8 +107,14 @@ void moneyTimerFun() {
   coins = 0;
   bills = 0;
   total = 0;
-  printMessage("Feed me fiat", String(charge) + "% charge", "", TFT_WHITE, TFT_BLACK);
   while (waitForTap || total == 0) {
+    if (homeScreenNumColorCount == homeScreenNumColors) {
+      homeScreenNumColorCount = 0;
+    }
+    if (total == 0) {
+      feedmefiat();
+      feedmefiatloop();
+    }
     if (SerialPort1.available()) {
       int x = SerialPort1.read();
       for (int i = 0; i < billAmountSize; i++) {
@@ -130,6 +139,7 @@ void moneyTimerFun() {
     if (BTNA.wasReleased() || total > maxamount) {
       waitForTap = false;
     }
+    homeScreenNumColorCount++;
   }
   total = (coins + bills) * 100;
 

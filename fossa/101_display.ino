@@ -12,9 +12,27 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
   tft.setTextSize(3);
   tft.println(text3);
 }
-
+void feedmefiat() {
+  tft.setTextColor(TFT_WHITE);
+  tft.setCursor(80, 40);
+  tft.setTextSize(3);
+  tft.println("FOSSA! Bitcoin ATM");
+  tft.setCursor(10, 280);
+  tft.println("(feed me fiat. " + String(charge) + "% charge)");
+}
+void feedmefiatloop() {
+  tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
+  tft.setTextSize(10);
+  tft.setCursor(155, 80);
+  tft.println("SATS");
+  tft.setCursor(175, 140);
+  tft.println("FOR");
+  tft.setCursor(145, 190);
+  tft.println("FIAT!");
+  delay(100);
+}
 void qrShowCodeLNURL(String message) {
-  if(printerBool){
+  if (printerBool) {
     printMessage("Printing", "please wait", "", TFT_WHITE, TFT_BLACK);
     delay(3000);
   }
