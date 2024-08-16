@@ -27,7 +27,7 @@ void makeLNURL() {
   char *charLnurl = (char *)calloc(strlen(url) * 2, sizeof(byte));
   bech32_encode(charLnurl, "lnurl", data, len);
   to_upper(charLnurl);
-  qrData = baseURLATM + "?lightning=" + charLnurl;
+  qrData = baseURLATM.substring(0, baseURLATM.length() - 18) + "atm" + "?lightning=" + charLnurl;
 }
 
 int xor_encrypt(uint8_t *output, size_t outlen, uint8_t *key, size_t keylen, uint8_t *nonce, size_t nonce_len, uint64_t pin, uint64_t amount_in_cents) {

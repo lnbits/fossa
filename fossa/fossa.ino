@@ -18,7 +18,7 @@
 ///////////////////////////////////////////////////
 
 bool hardcoded = true;
-String LNURLsettings = "https://demo.lnbits.com/lnurldevice/api/v1/lnurl/KVJyh,5UhHkwGhGxasXm2G3LS7RT,USD";
+String LNURLsettings = "https://a57a71fcc81f03aa86f943acbc9eb476.serveo.net/lnurldevice/api/v1/lnurl/n3Zrf,Phko2N2qzeXcT9fbW96TwS,USD";
 int billAmountInt[3] = { 5, 10, 20 };
 float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
 int charge = 10;     // % you will charge people for service, set in LNbits extension

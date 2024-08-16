@@ -38,7 +38,6 @@ void qrShowCodeLNURL(String message) {
   }
   printReceipt();
   tft.fillScreen(TFT_WHITE);
-  qrData.toUpperCase();
   const char *qrDataChar = qrData.c_str();
   QRCode qrcoded;
   uint8_t qrcodeData[qrcode_getBufferSize(20)];
