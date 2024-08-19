@@ -8,8 +8,8 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
   tft.println(text1);
   tft.setCursor((480 - textWidth(text2, 4)) / 2, 120);
   tft.println(text2);
-  tft.setCursor((480 - textWidth(text3, 4)) / 2, 200);
   tft.setTextSize(3);
+  tft.setCursor((480 - textWidth(text3, 3)) / 2, 200);
   tft.println(text3);
 }
 void feedmefiat() {
@@ -59,7 +59,7 @@ void qrShowCodeLNURL(String message) {
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
   tft.println(message);
-
+  delay(2000);
   waitForTap = true;
   while (waitForTap) {
     BTNA.read();

@@ -10,6 +10,7 @@
 #include "qrcoded.h"
 #include "Bitcoin.h"
 #include <Adafruit_Thermal.h>
+#include <cstdlib>
 
 #define PARAM_FILE "/elements.json"
 
@@ -18,13 +19,14 @@
 ///////////////////////////////////////////////////
 
 bool hardcoded = true;
-String LNURLsettings = "https://a57a71fcc81f03aa86f943acbc9eb476.serveo.net/lnurldevice/api/v1/lnurl/n3Zrf,Phko2N2qzeXcT9fbW96TwS,USD";
+String LNURLsettings = "https://lnbits.serveo.net/lnurldevice/api/v1/lnurl/DGB8h,iiPo9beZuTSaFY5smcLhgi,USD";
 int billAmountInt[3] = { 5, 10, 20 };
 float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
-int charge = 10;     // % you will charge people for service, set in LNbits extension
-int maxamount = 30;  // max amount per withdraw
-bool printerBool = true;
-String language = "ro"; // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+int charge = 10;          // % you will charge people for service, set in LNbits extension
+int maxamount = 30;       // max amount per withdraw
+int maxBeforeReset = 300;  // max amount you want to sell in the atm before having to reset power
+bool printerBool = false;
+String language = "en";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -46,6 +48,7 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 
 String qrData;
 
+int maxBeforeResetTally;
 int bills;
 float coins;
 float total;
@@ -62,7 +65,7 @@ uint16_t homeScreenColors[] = { TFT_GREEN, TFT_BLUE, TFT_ORANGE };
 int homeScreenNumColors = sizeof(homeScreenColors) / sizeof(homeScreenColors[0]);
 int homeScreenNumColorCount = 0;
 
-String usbT, tapScreenT, scanMeT, totalT, fossaT, satsT, forT, fiatT, feedT, chargeT, printingT, waitT, workingT;
+String usbT, tapScreenT, scanMeT, totalT, fossaT, satsT, forT, fiatT, feedT, chargeT, printingT, waitT, workingT, thisVoucherT, ofBitcoinT, thankYouT, scanMeClaimT, tooMuchFiatT, contactOwnerT;
 
 HardwareSerial SerialPort1(1);
 HardwareSerial SerialPort2(2);
@@ -99,12 +102,21 @@ void setup() {
 }
 
 void loop() {
-  SerialPort1.write(184);
-  digitalWrite(INHIBITMECH, HIGH);
-  tft.fillScreen(TFT_BLACK);
-  moneyTimerFun();
-  makeLNURL();
-  qrShowCodeLNURL(scanMeT);
+  if (maxBeforeResetTally >= maxBeforeReset) {
+    printMessage("", tooMuchFiatT, contactOwnerT, TFT_WHITE, TFT_BLACK);
+    delay(100000000);
+  } else {
+    SerialPort1.write(184);
+    digitalWrite(INHIBITMECH, HIGH);
+    tft.fillScreen(TFT_BLACK);
+    moneyTimerFun();
+    Serial.println(total);
+    Serial.println(maxBeforeResetTally);
+    maxBeforeResetTally = maxBeforeResetTally + (total / 100);
+    Serial.println(maxBeforeResetTally);
+    makeLNURL();
+    qrShowCodeLNURL(scanMeT);
+  }
 }
 
 void moneyTimerFun() {

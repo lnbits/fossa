@@ -1,4 +1,4 @@
-#include <cstdlib>  // Add this line to include the appropriate header file
+
 
 // define a list of quote Strings that can be used to print on the receipt
 const char* quotes[13] = {
@@ -49,6 +49,7 @@ void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
   printerSerial.write(printCommand, sizeof(printCommand));
 }
 
+
 void printReceipt() {
   printer.wake();
   printer.setDefault();
@@ -56,13 +57,13 @@ void printReceipt() {
   printer.feed(3);
   printer.boldOn();
   printer.setSize('L');
-  printer.println("Thank you");
+  printer.println(thankYouT);
   printer.feed(1);
   printer.setSize('S');
-  printer.println("This voucher can be redeemed for " + String(float(total / 100)) + " " + currencyATM + " of Bitcoin");
+  printer.println(thisVoucherT + " " + String(float(total / 100)) + " " + currencyATM + " " + ofBitcoinT);
   printer.feed(1);
   printer.underlineOn();
-  printer.println("Scan me with a Lightning wallet to get your Bitcoin");
+  printer.println(scanMeClaimT);
   printer.underlineOff();
   printer.feed(1);
   printQRcode(qrData);
