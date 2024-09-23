@@ -8,6 +8,7 @@
 #include "BaseClasses.h"
 #include "BitcoinCurve.h"
 #include "Conversion.h"
+#include "Networks.h"
 #include "utility/trezor/rand.h"
 #include <stdint.h>
 #include <string.h>
@@ -28,52 +29,6 @@
    - tests (egde cases!)
    - sidechannel for pubkey calculation - use rng
  */
-
-/** \brief Prefixes for particular network (Mainnet / Testnet ).<br>
- *  HD key prefixes are described here:<br>
- *  https://github.com/satoshilabs/slips/blob/master/slip-0132.md<br>
- *  useful tool: in https://iancoleman.io/bip39/
- */
-typedef struct {
-    /** \brief Pay-To-Pubkey-Hash addresses */
-    uint8_t p2pkh;   
-    /** \brief Pay-To-Script-Hash addresses */
-    uint8_t p2sh;    
-    /** \brief Prefix for segwit addreses ...for regtest it is larger */
-    char bech32[5];  
-    /** \brief Wallet Import Format, used in PrivateKey */
-    uint8_t wif;     
-    /** \brief HD private key for legacy addresses (P2PKH) */
-    uint8_t xprv[4]; 
-    /** \brief HD private key for nested Segwit (P2SH-P2WPKH) */
-    uint8_t yprv[4]; 
-    /** \brief HD private key for native Segwit (P2WPKH) */
-    uint8_t zprv[4]; 
-    /** \brief HD private key for nested Segwit Multisig (P2SH-P2WSH) */
-    uint8_t Yprv[4]; 
-    /** \brief HD private key for native Segwit Multisig (P2WSH) */
-    uint8_t Zprv[4]; 
-    /** \brief HD public key for legacy addresses (P2PKH) */
-    uint8_t xpub[4]; 
-    /** \brief HD public key for nested Segwit (P2SH-P2WPKH) */
-    uint8_t ypub[4]; 
-    /** \brief HD public key for native Segwit (P2WPKH) */
-    uint8_t zpub[4]; 
-    /** \brief HD public key for nested Segwit Multisig (P2SH-P2WSH) */
-    uint8_t Ypub[4]; 
-    /** \brief HD public key for native Segwit Multisig (P2WSH) */
-    uint8_t Zpub[4]; 
-    /** \brief bip32 coin index */
-    uint32_t bip32;
-} Network;
-
-extern const Network Mainnet;
-extern const Network Testnet;
-extern const Network Regtest;
-extern const Network Signet;
-
-extern const Network * networks[];
-extern const uint8_t networks_len;
 
 extern int ubtc_errno;
 
@@ -105,6 +60,7 @@ enum SigHashType{
 
 /* forward declarations */
 class Signature;
+class SchnorrSignature;
 class PublicKey;
 class PrivateKey;
 class HDPublicKey;
@@ -150,12 +106,11 @@ size_t mnemonicToEntropy(char * mnemonic, uint8_t * output, size_t outputLen);
  */
 class PublicKey : public ECPoint{
 public:
-    PublicKey():ECPoint(){};
-    PublicKey(const uint8_t pubkeyArr[64], bool use_compressed) : ECPoint(pubkeyArr, use_compressed){};
-    PublicKey(const uint8_t * secArr) : ECPoint(secArr){};
-    explicit PublicKey(const char * secHex) : ECPoint(secHex){};
-    // do I need this?
-    PublicKey(ECPoint p):PublicKey(p.point, p.compressed){};
+    PublicKey(){ reset(); };
+    PublicKey(const uint8_t pubkeyArr[64], bool use_compressed){ reset(); memcpy(point, pubkeyArr, 64); compressed=use_compressed; };
+    PublicKey(const uint8_t * secArr){ reset(); parse(secArr, 33 + ((uint8_t)(secArr[0]==0x04))*32); };
+    explicit PublicKey(const char * secHex){ reset(); from_str(secHex, strlen(secHex)); };
+    PublicKey(const ECPoint p){ reset(); memcpy(point, p.point, 64); compressed=p.compressed; };
     /**
      *  \brief Fills `addr` with legacy Pay-To-Pubkey-Hash address (P2PKH, `1...` for mainnet)
      */
@@ -189,6 +144,10 @@ public:
      */
     bool verify(const Signature sig, const uint8_t hash[32]) const;
     /**
+     *  \brief verifies the Schnorr signature of the hash of the message
+     */
+    bool schnorr_verify(const SchnorrSignature sig, const uint8_t hash[32]) const;
+    /**
      *  \brief Returns a Script with the type: `P2PKH`, `P2WPKH` or `P2SH_P2WPKH`
      */
     Script script(ScriptType type = P2PKH) const;
@@ -209,6 +168,7 @@ protected:
 public:
     PrivateKey();
     PrivateKey(const uint8_t secret_arr[32], bool use_compressed = true, const Network * net = &DEFAULT_NETWORK);
+    PrivateKey(const ECScalar sc);
 #if USE_ARDUINO_STRING
     PrivateKey(const String wifString);
 #elif USE_STD_STRING
@@ -240,6 +200,8 @@ public:
     PublicKey publicKey() const;
     /** \brief Signs the hash and returns the Signature */
     Signature sign(const uint8_t hash[32]) const; // pass 32-byte hash of the message here
+    /** \brief Signs the hash using Schnorr algorithm and returns the SchnorrSignature */
+    SchnorrSignature schnorr_sign(const uint8_t hash[32]) const;
 
     /** \brief Alias for .publicKey().address(network) */
     int address(char * address, size_t len) const;
@@ -262,6 +224,12 @@ public:
     std::string nestedSegwitAddress() const;
 #endif
 //    PrivateKey &operator=(const PrivateKey &other);                   // assignment
+    /** \brief Performs ECDH key agreement using public key of another party.
+     *  32-byte shared secret will be written to `shared_secret` array.
+     *  Optional parameter hash (true by default) defines if you want sha256(<x><y>) or just <x>.
+     *  Having hash=true is recommended unless you have a very good reason not to use it.
+     */
+    int ecdh(const PublicKey pub, uint8_t shared_secret[32], bool hash=true);
 };
 
 /**
@@ -389,7 +357,7 @@ public:
         other.parentFingerprint, other.childNumber, other.network, other.type){};
 */
 #if USE_ARDUINO_STRING
-    HDPublicKey(String pub){ from_str(pub.c_str(), pub.length()); };
+    HDPublicKey(String pub){ reset(); from_str(pub.c_str(), pub.length()); };
 #endif
     ~HDPublicKey();
     /** \brief Length of the key (78). */
@@ -478,30 +446,54 @@ public:
 };
 
 /**
+ *  \brief SchnorrSignature class.
+ *         Reference: https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki
+ */
+class SchnorrSignature : public Streamable{
+protected:
+    uint8_t r[32];
+    uint8_t s[32];
+    virtual size_t from_stream(ParseStream *s);
+    virtual size_t to_stream(SerializeStream *s, size_t offset = 0) const;
+public:
+    SchnorrSignature();
+    SchnorrSignature(const uint8_t r_arr[32], const uint8_t s_arr[32]);
+    SchnorrSignature(const uint8_t rs_arr[64]);
+    explicit SchnorrSignature(const char * rs);
+    virtual size_t length() const{ return 64; };
+
+    bool isValid() const{ uint8_t arr[32] = { 0 }; return !((memcmp(r, arr, 32) == 0) && (memcmp(s, arr, 32)==0)); };
+    explicit operator bool() const{ return isValid(); };
+
+    bool operator==(const SchnorrSignature& other) const{ return (memcmp(r, other.r, 32) == 0) && (memcmp(s, other.s, 32) == 0); };
+    bool operator!=(const SchnorrSignature& other) const{ return !operator==(other); };
+};
+
+/**
  *  \brief Script class. Parsing requires the length of the script in the beginning.
  */
 class Script : public Streamable{
 protected:
-    uint8_t * scriptArray;
-    size_t scriptLen;
     virtual size_t from_stream(ParseStream *s);
     virtual size_t to_stream(SerializeStream *s, size_t offset = 0) const;
     uint8_t lenLen; // for parsing only, length of the varint
     void fromAddress(const char * address);
     void init();
 public:
+    uint8_t * scriptArray;
+    size_t scriptLen;
     void clear();
     Script();
     Script(const uint8_t * buffer, size_t len);
     /** \brief creates a script from address */
-    Script(const char * address){ fromAddress(address); };
+    Script(const char * address){ init(); fromAddress(address); };
 #if USE_ARDUINO_STRING
     /** \brief creates a script from address */
-    Script(const String address){ fromAddress(address.c_str()); };
+    Script(const String address){ init(); fromAddress(address.c_str()); };
 #endif
 #if USE_STD_STRING
     /** \brief creates a script from address */
-    Script(const std::string address){ fromAddress(address.c_str()); };
+    Script(const std::string address){ init(); fromAddress(address.c_str()); };
 #endif
     /** \brief creates one of standart scripts (P2PKH, P2WPKH) */
     Script(const PublicKey pubkey, ScriptType type = P2PKH);
@@ -544,6 +536,13 @@ public:
     bool operator==(const Script& other) const{ return (scriptLen == other.scriptLen) && (memcmp(scriptArray, other.scriptArray, scriptLen) == 0); };
     bool operator!=(const Script& other) const{ return !operator==(other); };
 };
+
+Script pkh(PublicKey pub);
+Script wpkh(PublicKey pub);
+Script multi(uint8_t threshold, const PublicKey * pubkeys, uint8_t pubkeys_len);
+Script sortedmulti(uint8_t threshold, const PublicKey * pubkeys, uint8_t pubkeys_len);
+Script wsh(Script witness_script);
+Script sh(Script script);
 
 /**
  *  \brief Witness class. Has a form of `<num><e0><e1><e2>...` 
@@ -622,6 +621,8 @@ public:
  *         Stores information the amount and ScriptPubkey,
  */
 class TxOut : public Streamable{
+private:
+    uint8_t tmp[8]; // for parsing amounts
 protected:
     virtual size_t from_stream(ParseStream *s);
     virtual size_t to_stream(SerializeStream *s, size_t offset = 0) const;
