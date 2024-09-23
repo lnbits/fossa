@@ -51,3 +51,7 @@ jobs:
         run: |
           gh release create "$tag" --generate-notes ./build/fossa.ino.bootloader.bin \
             ./build/fossa.ino.bin ./build/fossa.ino.partitions.bin
+
+  deploy:
+    needs: [ release ]
+    uses: ./.github/workflows/static.yml
