@@ -1,11 +1,11 @@
 export const addressesAndFiles = [
   {
     address: "0x1000",
-    fileName: "lnpos.ino.bootloader.bin",
+    fileName: "fossa.ino.bootloader.bin",
   },
   {
     address: "0x8000",
-    fileName: "lnpos.ino.partitions.bin",
+    fileName: "fossa.ino.partitions.bin",
   },
   {
     address: "0xE000",
@@ -13,7 +13,7 @@ export const addressesAndFiles = [
   },
   {
     address: "0x10000",
-    fileName: "lnpos.ino.bin",
+    fileName: "fossa.ino.bin",
   },
 ];
 

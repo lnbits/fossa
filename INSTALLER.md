@@ -1,6 +1,6 @@
-<h1>
-LNPoS
-</h1>
+Fossa
+
+## TODO right this description
 
 ## Free and open-source bitcoin point-of-sale
 

@@ -20,26 +20,15 @@ jobs:
             - name: esp32:esp32@2.0.17
               source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
           sketch-paths: |
-            - lnpos/lnpos.ino
+            - fossa/fossa.ino
           libraries: |
             - name: ArduinoJson
-            - name: Base64
-            - name: Keypad
             - name: uBitcoin
+            - name: JC_Button
+            - name: EspSoftwareSerial
+            - name: Adafruit Thermal Printer Library
             - source-path: ./libraries/TFT_eSPI
             - source-path: ./libraries/QRCode
-
-          cli-compile-flags: |
-            - --warnings="none"
-            - --build-property
-            - build.partitions=min_spiffs
-            - --build-property
-            - upload.maximum_size=1966080
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sketches-reports
-          path: sketches-reports
 
 
   report:

@@ -1,6 +1,6 @@
 #!/bin/sh
-PROJECT_NAME=lnpos
-REPO=https://github.com/lnbits/lnpos/releases/download
+PROJECT_NAME=fossa
+REPO=https://github.com/lnbits/fossa/releases/download
 INSTALLER_PATH=./hardware-installer/public/firmware
 
 git clone https://github.com/lnbits/hardware-installer
