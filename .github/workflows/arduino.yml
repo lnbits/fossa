@@ -34,7 +34,8 @@ jobs:
       - name: Upload sketches report to workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sketches-reports
+          name: sketches-reports-esp32
+          path: sketches-reports
 
 
   report:
@@ -46,7 +47,6 @@ jobs:
       - name: Download sketches reports artifact
         uses: actions/download-artifact@v4
         with:
-          name: sketches-reports
           path: sketches-reports
 
       - uses: arduino/report-size-deltas@v1
