@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: main
 
@@ -49,5 +49,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" --generate-notes ./build/lnpos.ino.bootloader.bin \
-            ./build/lnpos.ino.bin ./build/lnpos.ino.partitions.bin
+          gh release create "$tag" --generate-notes ./build/fossa.ino.bootloader.bin \
+            ./build/fossa.ino.bin ./build/fossa.ino.partitions.bin
