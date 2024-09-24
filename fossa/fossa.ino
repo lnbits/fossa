@@ -20,13 +20,13 @@
 
 bool hardcoded = false;
 String LNURLsettings = "https://lnbits.serveo.net/lnurldevice/api/v1/lnurl/DGB8h,iiPo9beZuTSaFY5smcLhgi,USD";
-int billAmountInt[6] = { 5, 10, 20, 50, 100, 200 };
-float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
+int billAmountInt[16];
+float coinAmountFloat[6];
 int charge = 10;          // % you will charge people for service, set in LNbits extension
 int maxamount = 30;       // max amount per withdraw
 int maxBeforeReset = 300;  // max amount you want to sell in the atm before having to reset power
 bool printerBool = false;
-String language = "en";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+String language = "de";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -76,7 +76,6 @@ Button BTNA(BTN1);
 
 void setup() {
   translateAll(language);
-  splitSettings(LNURLsettings);
   Serial.begin(115200);
   Serial.println(workingT);
   BTNA.begin();
@@ -100,7 +99,7 @@ void setup() {
   if(hardcoded == false){
     readFiles();
   }
-
+  splitSettings(LNURLsettings);
   SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
   SerialPort2.begin(4800, SERIAL_8N1, TX2);
 
@@ -140,6 +139,7 @@ void moneyTimerFun() {
     }
     if (SerialPort1.available()) {
       int x = SerialPort1.read();
+
       for (int i = 0; i < billAmountSize; i++) {
         if ((i + 1) == x) {
           bills = bills + billAmountInt[i];
@@ -150,6 +150,8 @@ void moneyTimerFun() {
     }
     if (SerialPort2.available()) {
       int x = SerialPort2.read();
+      printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
+      delay(3000);
       for (int i = 0; i < coinAmountSize; i++) {
         if ((i + 1) == x) {
           coins = coins + coinAmountFloat[i];

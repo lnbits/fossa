@@ -91,17 +91,18 @@ void readFiles() {
 
     String LNURLConfig = getJsonValue(doc, "config_lnurl");
     if (LNURLConfig != "") {
-      printMessage("", "FAILED", "", TFT_WHITE, TFT_BLACK);
-      while (true) {
-      }
+      LNURLsettings = LNURLConfig;
     }
     else{
-      LNURLsettings = LNURLConfig;
+      printMessage("", "FAILED", "", TFT_WHITE, TFT_BLACK);
+        while (true) {
+      } 
     }
 
     String maxAmountConfig = getJsonValue(doc, "config_max_amount");
     if (maxAmountConfig != "") {
       maxamount = maxAmountConfig.toInt();
+
     } else {
       printMessage("", "WARNING: max amount", "Will use default", TFT_WHITE, TFT_BLACK);
       delay(3000);
@@ -142,6 +143,15 @@ void readFiles() {
 
     String coinAmountString = getJsonValue(doc, "config_coin_floats");
     convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
+
+    String langConfig = getJsonValue(doc, "config_lang");
+    if (langConfig != "") {
+      language = langConfig;
+    }
+    else{
+      printMessage("", "WARNING: lang fail", "Will use default", TFT_WHITE, TFT_BLACK);
+      delay(3000);
+    }
   }
   paramFile.close();
 }
