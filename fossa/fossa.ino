@@ -11,16 +11,16 @@
 #include "Bitcoin.h"
 #include <Adafruit_Thermal.h>
 #include <cstdlib>
-
+#define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
 
 ///////////////////////////////////////////////////
 //////CHANGE MANUALLY OR USE FOSSA.lnbits.com//////
 ///////////////////////////////////////////////////
 
-bool hardcoded = true;
+bool hardcoded = false;
 String LNURLsettings = "https://lnbits.serveo.net/lnurldevice/api/v1/lnurl/DGB8h,iiPo9beZuTSaFY5smcLhgi,USD";
-int billAmountInt[3] = { 5, 10, 20 };
+int billAmountInt[6] = { 5, 10, 20, 50, 100, 200 };
 float coinAmountFloat[6] = { 0.02, 0.05, 0.1, 0.2, 0.5, 1 };
 int charge = 10;          // % you will charge people for service, set in LNbits extension
 int maxamount = 30;       // max amount per withdraw
@@ -80,6 +80,11 @@ void setup() {
   Serial.begin(115200);
   Serial.println(workingT);
   BTNA.begin();
+  FlashFS.begin(FORMAT_ON_FAIL);
+  tft.init();
+  tft.setRotation(1);
+  tft.invertDisplay(false);
+  printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
 
   while (waitForTap && total < 100 && hardcoded == false) {
     BTNA.read();
@@ -88,12 +93,13 @@ void setup() {
       executeConfig();
       waitForTap = false;
     }
+    delay(20);
     total++;
   }
-
-  tft.init();
-  tft.setRotation(1);
-  tft.invertDisplay(false);
+  
+  if(hardcoded == false){
+    readFiles();
+  }
 
   SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
   SerialPort2.begin(4800, SERIAL_8N1, TX2);

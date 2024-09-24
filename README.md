@@ -134,7 +134,7 @@ To set up your Arduino IDE:
 
 1. If you have not already done so, install the Arduino IDE from [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software).
 2. Install the ESP32 libraries. You can do this by copying the stable release version link, currently `https://espressif.github.io/arduino-esp32/package_esp32_index.json` and putting in the `File` > `Preferences...` > `Additional Board Manager URLs` (see: [https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html))
-3. Install the boards by going to `Tools` > `Board` > `Board Manager...`, searching for ESP32, and clicking Install.
+3. Install the boards by going to `Tools` > `Board` > `Board Manager...`, searching for ESP32, choose 2.0.17, and click Install.
 4. Copy the libraries from this project <a href="/libraries">libraries</a> folder to your `"/Arduino/libraries"` folder (usually in OS `"Home"` directory)
 5. Clone the repo and open accessPointFOSSA.
 6. Select the relevant port and ESP32 dev module.
