@@ -89,21 +89,22 @@ void readFiles() {
     StaticJsonDocument<1000> doc;
     DeserializationError error = deserializeJson(doc, paramFile.readString());
 
-    String lnurlATM = getJsonValue(doc, "config_lnurlatm");
-    baseURLATM = getValue(lnurlATM, ',', 0);
-    secretATM = getValue(lnurlATM, ',', 1);
-    currencyATM = getValue(lnurlATM, ',', 2);
-    if (secretATM != "") {
-      printMessage("Failed to load details", "Use web-config or hardcode", "", TFT_WHITE, TFT_BLACK);
-      while (true) {
-      }
+    String LNURLConfig = getJsonValue(doc, "config_lnurl");
+    if (LNURLConfig != "") {
+      LNURLsettings = LNURLConfig;
+    }
+    else{
+      printMessage("", "FAILED", "", TFT_WHITE, TFT_BLACK);
+        while (true) {
+      } 
     }
 
-    String maxAmountConfig = getJsonValue(doc, "config_maxamount");
+    String maxAmountConfig = getJsonValue(doc, "config_max_amount");
     if (maxAmountConfig != "") {
       maxamount = maxAmountConfig.toInt();
+
     } else {
-      printMessage("Failed to load max amount", "Will use default", "", TFT_WHITE, TFT_BLACK);
+      printMessage("", "WARNING: max amount", "Will use default", TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
 
@@ -111,7 +112,44 @@ void readFiles() {
     if (chargeConfig != "") {
       charge = chargeConfig.toInt();
     } else {
-      printMessage("Failed to load charge", "Will use default", "", TFT_WHITE, TFT_BLACK);
+      printMessage("", "WARNING: load charge", "Will use default", TFT_WHITE, TFT_BLACK);
+      delay(3000);
+    }
+
+    String maxBeforeResetConfig = getJsonValue(doc, "config_max_amount_reset");
+    if (maxBeforeResetConfig != "") {
+      maxBeforeReset = maxBeforeResetConfig.toInt();
+    } else {
+      printMessage("", "WARNING: max reset", "Will use default", TFT_WHITE, TFT_BLACK);
+      delay(3000);
+    }
+
+    String printerBoolConfig = getJsonValue(doc, "config_printer");
+    if (printerBoolConfig != "") {
+      if (printerBoolConfig == "true") {
+        printerBool = true;
+      } 
+      else if (printerBoolConfig == "false") {
+        printerBool = false;
+      }
+    }
+    else {
+      printMessage("", "WARNING: print bool", "Will use default", TFT_WHITE, TFT_BLACK);
+      delay(3000);
+    }
+
+    String billAmountString = getJsonValue(doc, "config_bill_ints");
+    convertStringToIntArray(billAmountString.c_str(), billAmountInt);
+
+    String coinAmountString = getJsonValue(doc, "config_coin_floats");
+    convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
+
+    String langConfig = getJsonValue(doc, "config_lang");
+    if (langConfig != "") {
+      language = langConfig;
+    }
+    else{
+      printMessage("", "WARNING: lang fail", "Will use default", TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
   }

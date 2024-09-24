@@ -39,3 +39,45 @@ void splitSettings(String str) {
   secretATM = str.substring(firstComma + 1, secondComma);
   currencyATM = str.substring(secondComma + 1);
 }
+
+void convertStringToFloatArray(const char* str, float* floatArray) {
+  char buffer[20];  // Temporary buffer to hold each substring
+  int index = 0;  // Index for the float array
+  int bufferIndex = 0;  // Index for the buffer
+
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (str[i] == ',') {  // When a comma is found
+      buffer[bufferIndex] = '\0';  // Null-terminate the buffer string
+      floatArray[index] = atof(buffer);  // Convert buffer to float and store in array
+      index++;  // Move to the next position in float array
+      bufferIndex = 0;  // Reset buffer index
+    } else {
+      buffer[bufferIndex++] = str[i];  // Copy characters to buffer
+    }
+  }
+  
+  // Don't forget to convert the last number in the string
+  buffer[bufferIndex] = '\0';  // Null-terminate the buffer
+  floatArray[index] = atof(buffer);  // Convert buffer to float
+}
+
+void convertStringToIntArray(const char* str, int* intArray) {
+  char buffer[20];  // Temporary buffer to hold each substring
+  int index = 0;    // Index for the integer array
+  int bufferIndex = 0;  // Index for the buffer
+
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (str[i] == ',') {  // When a comma is found
+      buffer[bufferIndex] = '\0';  // Null-terminate the buffer string
+      intArray[index] = atoi(buffer);  // Convert buffer to int and store in array
+      index++;  // Move to the next position in integer array
+      bufferIndex = 0;  // Reset buffer index
+    } else {
+      buffer[bufferIndex++] = str[i];  // Copy characters to buffer
+    }
+  }
+
+  // Don't forget to convert the last number in the string
+  buffer[bufferIndex] = '\0';  // Null-terminate the buffer
+  intArray[index] = atoi(buffer);  // Convert buffer to int
+}

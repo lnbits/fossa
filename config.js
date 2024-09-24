@@ -34,32 +34,32 @@ export const elements = [
   {
     name: "config_coin_floats",
     value: "",
-    label: "Coin floats seperated by comma ie: 0.01,0.02,0.05,0.1,0.5,1",
+    label: "Coin floats seperated by comma ie: 0.01,0.02,0.05,0.1,0.5,1 - no more than 6",
     type: "text",
   },
   {
     name: "config_charge",
     value: "20",
     label: "Percentage you will charge for the service ie 10 for 10 percent",
-    type: "integer",
+    type: "text",
   },
   {
     name: "config_max_amount",
     value: "40",
     label: "Max amount allowed to be withdrawn in one transaction",
-    type: "integer",
+    type: "text",
   },
   {
     name: "config_max_amount_reset",
     value: "500",
     label: "Max amout before the atm stops withdrawals and wait to be emtied",
-    type: "integer",
+    type: "text",
   },
   {
     name: "config_printer",
-    value: "true",
+    value: "false",
     label: "Set true if you have a thermal printer connected",
-    type: "boolean",
+    type: "text",
   },
   {
     name: "config_lang",
