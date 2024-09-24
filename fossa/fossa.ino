@@ -150,13 +150,15 @@ void moneyTimerFun() {
     }
     if (SerialPort2.available()) {
       int x = SerialPort2.read();
-      printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      for (int i = 0; i < coinAmountSize; i++) {
-        if ((i + 1) == x) {
-          coins = coins + coinAmountFloat[i];
-          total = (coins + bills);
-          printMessage(coinAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
+      if (x > 1){
+        printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
+        delay(3000);
+        for (int i = 0; i < coinAmountSize; i++) {
+          if ((i + 1) == x) {
+            coins = coins + coinAmountFloat[i];
+            total = (coins + bills);
+            printMessage(coinAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
+          }
         }
       }
     }
