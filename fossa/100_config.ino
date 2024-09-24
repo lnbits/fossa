@@ -94,7 +94,7 @@ void readFiles() {
       LNURLsettings = LNURLConfig;
     }
     else{
-      printMessage("", "FAILED", "", TFT_WHITE, TFT_BLACK);
+      printMessage("", "FAILED", "unable to read lnurl", TFT_WHITE, TFT_BLACK);
         while (true) {
       } 
     }
