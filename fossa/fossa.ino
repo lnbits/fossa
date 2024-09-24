@@ -150,7 +150,6 @@ void moneyTimerFun() {
     }
     if (SerialPort2.available()) {
       int x = SerialPort2.read();
-      if (x > 1){
         printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
         delay(3000);
         for (int i = 0; i < coinAmountSize; i++) {
@@ -160,7 +159,6 @@ void moneyTimerFun() {
             printMessage(coinAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
           }
         }
-      }
     }
     BTNA.read();
     if (BTNA.wasReleased() || total > maxamount) {
