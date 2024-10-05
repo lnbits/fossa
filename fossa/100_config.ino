@@ -1,3 +1,5 @@
+String failedT, unableT, maxaT, willT, loadT, maxrT, printY, langT;
+
 void executeConfig() {
   while (true) {
     BTNA.read();
@@ -96,7 +98,7 @@ void readFiles() {
     else{
       printMessage("", failedT, unableT, TFT_WHITE, TFT_BLACK);
         while (true) {
-      } 
+      }
     }
 
     String maxAmountConfig = getJsonValue(doc, "config_max_amount");
@@ -128,7 +130,7 @@ void readFiles() {
     if (printerBoolConfig != "") {
       if (printerBoolConfig == "true") {
         printerBool = true;
-      } 
+      }
       else if (printerBoolConfig == "false") {
         printerBool = false;
       }
