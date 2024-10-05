@@ -52,7 +52,7 @@ export const elements = [
   {
     name: "config_max_amount_reset",
     value: "500",
-    label: "Max amout before the atm stops withdrawals and wait to be emtied",
+    label: "Max amout before the atm stops withdrawals and wait to be emptied",
     type: "text",
   },
   {
