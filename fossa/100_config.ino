@@ -138,6 +138,11 @@ void readFiles() {
         printerBool = false;
       }
     }
+    else {
+      printMessage("", printY, willT, TFT_WHITE, TFT_BLACK);
+      delay(3000);
+      tft.fillScreen(TFT_BLACK);
+    }
 
     String billAmountString = getJsonValue(doc, "config_bill_ints");
     convertStringToIntArray(billAmountString.c_str(), billAmountInt);
