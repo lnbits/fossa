@@ -1,4 +1,4 @@
-String failedT, unableT, maxaT, willT, loadT, maxrT, printY, langT
+String failedT, unableT, maxaT, willT, loadT, maxrT, printY, langT;
 
 void executeConfig() {
   while (true) {
