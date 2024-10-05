@@ -94,7 +94,7 @@ void readFiles() {
       LNURLsettings = LNURLConfig;
     }
     else{
-      printMessage("", "FAILED", "unable to read lnurl", TFT_WHITE, TFT_BLACK);
+      printMessage("", failedT, unableT, TFT_WHITE, TFT_BLACK);
         while (true) {
       } 
     }
@@ -104,7 +104,7 @@ void readFiles() {
       maxamount = maxAmountConfig.toInt();
 
     } else {
-      printMessage("", "WARNING: max amount", "Will use default", TFT_WHITE, TFT_BLACK);
+      printMessage("", maxaT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
 
@@ -112,7 +112,7 @@ void readFiles() {
     if (chargeConfig != "") {
       charge = chargeConfig.toInt();
     } else {
-      printMessage("", "WARNING: load charge", "Will use default", TFT_WHITE, TFT_BLACK);
+      printMessage("", loadT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
 
@@ -120,7 +120,7 @@ void readFiles() {
     if (maxBeforeResetConfig != "") {
       maxBeforeReset = maxBeforeResetConfig.toInt();
     } else {
-      printMessage("", "WARNING: max reset", "Will use default", TFT_WHITE, TFT_BLACK);
+      printMessage("", maxrT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
 
@@ -134,7 +134,7 @@ void readFiles() {
       }
     }
     else {
-      printMessage("", "WARNING: print bool", "Will use default", TFT_WHITE, TFT_BLACK);
+      printMessage("", printY, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
 
@@ -149,7 +149,7 @@ void readFiles() {
       language = langConfig;
     }
     else{
-      printMessage("", "WARNING: lang fail", "Will use default", TFT_WHITE, TFT_BLACK);
+      printMessage("", langT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
     }
   }

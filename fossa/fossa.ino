@@ -26,7 +26,7 @@ int charge = 10;          // % you will charge people for service, set in LNbits
 int maxamount = 30;       // max amount per withdraw
 int maxBeforeReset = 300;  // max amount you want to sell in the atm before having to reset power
 bool printerBool = false;
-String language = "de";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+String language = "en";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
