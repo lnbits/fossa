@@ -108,6 +108,7 @@ void readFiles() {
     } else {
       printMessage("", maxaT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
+      tft.fillScreen(TFT_BLACK);
     }
 
     String chargeConfig = getJsonValue(doc, "config_charge");
@@ -116,6 +117,7 @@ void readFiles() {
     } else {
       printMessage("", loadT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
+      tft.fillScreen(TFT_BLACK);
     }
 
     String maxBeforeResetConfig = getJsonValue(doc, "config_max_amount_reset");
@@ -124,6 +126,7 @@ void readFiles() {
     } else {
       printMessage("", maxrT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
+      tft.fillScreen(TFT_BLACK);
     }
 
     String printerBoolConfig = getJsonValue(doc, "config_printer");
@@ -138,6 +141,7 @@ void readFiles() {
     else {
       printMessage("", printY, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
+      tft.fillScreen(TFT_BLACK);
     }
 
     String billAmountString = getJsonValue(doc, "config_bill_ints");
@@ -153,6 +157,7 @@ void readFiles() {
     else{
       printMessage("", langT, willT, TFT_WHITE, TFT_BLACK);
       delay(3000);
+      tft.fillScreen(TFT_BLACK);
     }
   }
   paramFile.close();
