@@ -85,6 +85,7 @@ void setup() {
   tft.invertDisplay(false);
   printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
 
+  // wait few secods for tap to start config mode
   while (waitForTap && total < 100 && hardcoded == false) {
     BTNA.read();
     if (BTNA.wasReleased()) {
@@ -101,10 +102,17 @@ void setup() {
     translateAll(language);
   }
   splitSettings(LNURLsettings);
+
+  // initialize bill and coin acceptor
   SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
   SerialPort2.begin(4800, SERIAL_8N1, TX2);
-
   pinMode(INHIBITMECH, OUTPUT);
+
+  // initialize printer
+  if(printerBool == true){
+    printerSerial.begin(9600);
+    printer.begin();
+  }
 }
 
 void loop() {
