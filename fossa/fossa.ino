@@ -123,6 +123,7 @@ void loop() {
     SerialPort1.write(184);
     digitalWrite(INHIBITMECH, HIGH);
     tft.fillScreen(TFT_BLACK);
+    BTNA.read(); // needed to clear accidental taps
     moneyTimerFun();
     Serial.println(total);
     Serial.println(maxBeforeResetTally);
