@@ -41,7 +41,7 @@ void splitSettings(String str) {
 }
 
 void convertStringToFloatArray(const char* str, float* floatArray) {
-  char buffer[20];  // Temporary buffer to hold each substring
+  char buffer[30];  // Temporary buffer to hold each substring
   int index = 0;  // Index for the float array
   int bufferIndex = 0;  // Index for the buffer
 
@@ -55,7 +55,7 @@ void convertStringToFloatArray(const char* str, float* floatArray) {
       buffer[bufferIndex++] = str[i];  // Copy characters to buffer
     }
   }
-  
+
   // Don't forget to convert the last number in the string
   buffer[bufferIndex] = '\0';  // Null-terminate the buffer
   floatArray[index] = atof(buffer);  // Convert buffer to float
