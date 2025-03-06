@@ -2,7 +2,6 @@
 #include <FS.h>
 #include <SPIFFS.h>
 #include <SoftwareSerial.h>
-#include <TFT_eSPI.h>
 #include <HardwareSerial.h>
 #include <JC_Button.h>
 #include <Hash.h>
@@ -13,6 +12,10 @@
 #include <cstdlib>
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
+
+#define USER_SETUP_LOADED
+#include "user_config_tft.h"
+#include <TFT_eSPI.h>
 
 //#define PRINTER
 #define BILL_ACCEPTOR
