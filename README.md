@@ -92,7 +92,7 @@ The wiring reference is as follows:
 5. Using a GPIO jumper, connect the GND pin (pin 3) on the coin accepter to the GROUND terminal block at an available terminal.
 
 | DG600F(S) Pin | WT32-SC01 Pin No. (Not GPIO No.) | Power Supply
-| ------------- | ------------- | ------------- | 
+| ------------- | ------------- | ------------- |
 | 5 | 2 | N/A |
 | 4 | N/A | N/A |
 | 3 (GND) | N/A | GROUND
@@ -168,16 +168,16 @@ If you want to want to print your own enclosure, we recommend these settings:
     - Supports: Yes
     - Notes: To set the Bitcoin logo with a different color, set a color change at layer 114 (13.20mm). In PrucaSlicer, you can "paint" out all the screw holes as they do not need supports. I would also recommend setting a thicker layer parameter, in PrucaSlicer, you can do this by settings `Printer Settings` > `Layers and perimeters` > `Perimeters` to `4`)
 3. Print the backbox
-    - STL: [FOSSA ATM Backbox](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)  
+    - STL: [FOSSA ATM Backbox](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Back%20Box.stl)
     - Material: PETG
-    - Layer: 0.2mm 
+    - Layer: 0.2mm
     - Infill: 10-100% (recommend 20%+)
     - Supports: Yes
     - Notes: In PrusaSlicer you can set `Print Settings` > `Support material` > `First layer expansion` to `1 mm`, `XY separation between an object and its support` to `80%` and `Overhang threshold` to `1 mm`, or, you can "paint" out all but the door as the model has been designed for minimal supports
 4. Print the accessories
     - STL: [FOSSA ATM WT-32-SC01 Backplate](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20WT-32-SC01%20Backplate.stl), [FOSSA ATM Coin Slot Cover](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Coin%20Slot%20Cover.stl), [FOSSA ATM 4mm Lock Lever Shim](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%204mm%20Lock%20Lever%20Shim.stl), [FOSSA ATM Door](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%204mm%20Door.stl), [FOSSA ATM Backbox Note Holder](https://github.com/lnbits/fossa/blob/main/3DPrints/FOSSA%20ATM%20Backbox%20Note%20Holder.stl)
     - Material: PETG
-    - Layer: 0.2mm 
+    - Layer: 0.2mm
     - Infill: 10-100% (recommend 20%+)
     - Supports: No
 5. Use a soldering iron to melt the brass female embedded insert nuts into the six holes for the facia (see picture 1 below)
@@ -211,3 +211,15 @@ Use the templates provided <a href="cuttingTemplate.pdf">here</a>, print out at 
 And there you have it. Have fun, and tag us on Twitter / Nostr with all your cool setups!
 
 > <i>Join our <a href="https://t.me/makerbits">telegram support/chat</a>.</i>
+
+## Development
+
+### build from arduino-cli
+```bash
+sh build.sh
+```
+
+### build, upload and monitor from arduino-cli
+```bash
+sh debug.sh /dev/ttyUSB0
+```
