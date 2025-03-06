@@ -14,7 +14,7 @@
 #define PARAM_FILE "/elements.json"
 
 #define USER_SETUP_LOADED 1
-#include "100_config_tft.h"
+#include "tft_setup.h"
 #include <TFT_eSPI.h>
 
 //#define PRINTER
