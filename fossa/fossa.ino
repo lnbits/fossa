@@ -13,8 +13,8 @@
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
 
-#define USER_SETUP_LOADED
-#include "user_config_tft.h"
+#define USER_SETUP_LOADED 1
+#include "100_config_tft.h"
 #include <TFT_eSPI.h>
 
 //#define PRINTER
@@ -90,7 +90,6 @@ Button BTNA(BTN1);
 
 void setup() {
   Serial.begin(115200);
-
 # ifdef HARDCODED
   setDefaultValues();
   translateAll(language);
