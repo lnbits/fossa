@@ -1,5 +1,3 @@
-
-
 void printMessage(String text1, String text2, String text3, int ftcolor, int bgcolor) {
   tft.fillScreen(bgcolor);
   tft.setTextColor(ftcolor, bgcolor);
@@ -12,6 +10,7 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
   tft.setCursor((480 - textWidth(text3, 3)) / 2, 200);
   tft.println(text3);
 }
+
 void feedmefiat() {
   tft.setTextColor(TFT_WHITE);
   tft.setCursor((480 - textWidth(fossaT, 2)) / 2, 40);
@@ -21,6 +20,7 @@ void feedmefiat() {
   tft.setTextSize(2);
   tft.println(feedT + " " + String(charge) + chargeT);
 }
+
 void feedmefiatloop() {
   tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
   tft.setTextSize(8);
@@ -32,13 +32,14 @@ void feedmefiatloop() {
   tft.println(fiatT);
   delay(100);
 }
+
 void qrShowCodeLNURL(String message) {
-  if (printerBool) {
+  #ifdef PRINTER
     printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
     delay(3000);
-  }
+    printReceipt();
+  #endif
   Serial.println(qrData);
-  printReceipt();
   tft.fillScreen(TFT_WHITE);
   const char *qrDataChar = qrData.c_str();
   QRCode qrcoded;
@@ -68,6 +69,7 @@ void qrShowCodeLNURL(String message) {
     }
   }
 }
+
 int textWidth(String text, int textSize) {
   tft.setTextSize(textSize);
   return tft.textWidth(text);
