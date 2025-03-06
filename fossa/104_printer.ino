@@ -1,4 +1,4 @@
-
+#ifdef PRINTER
 
 // define a list of quote Strings that can be used to print on the receipt
 const char* quotes[13] = {
@@ -49,7 +49,6 @@ void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
   printerSerial.write(printCommand, sizeof(printCommand));
 }
 
-
 void printReceipt() {
   printer.wake();
   printer.setDefault();
@@ -74,3 +73,4 @@ void printReceipt() {
   printer.feed(3);
   printer.sleep();
 }
+#endif

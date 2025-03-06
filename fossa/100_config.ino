@@ -129,21 +129,6 @@ void readFiles() {
       tft.fillScreen(TFT_BLACK);
     }
 
-    String printerBoolConfig = getJsonValue(doc, "config_printer");
-    if (printerBoolConfig != "") {
-      if (printerBoolConfig == "true") {
-        printerBool = true;
-      }
-      else if (printerBoolConfig == "false") {
-        printerBool = false;
-      }
-    }
-    else {
-      printMessage("", printY, willT, TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      tft.fillScreen(TFT_BLACK);
-    }
-
     String billAmountString = getJsonValue(doc, "config_bill_ints");
     convertStringToIntArray(billAmountString.c_str(), billAmountInt);
 
