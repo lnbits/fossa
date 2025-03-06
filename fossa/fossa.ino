@@ -26,16 +26,15 @@
 #define PRINTER_RX 22  // RX of the thermal printer
 #define PRINTER_TX 23  // TX of the thermal printer
 
-///////////////////////////////////////////////////
-//////CHANGE MANUALLY OR USE FOSSA.lnbits.com//////
-///////////////////////////////////////////////////
+// uncomment to use always hardcoded default settings
+//#define HARDCODED
 
-#define HARDCODED
+// default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 #define CHARGE 10 // % you will charge people for service, set in LNbits extension
 #define MAX_AMOUNT 30 // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
-#define SETTINGS "https://lnbits.serveo.net/lnurldevice/api/v1/lnurl/DGB8h,iiPo9beZuTSaFY5smcLhgi,USD"
+#define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
 
 int billAmountInt[16];
 float coinAmountFloat[6];
@@ -43,7 +42,7 @@ int charge;
 int maxamount;
 int maxBeforeReset;
 String language;
-String LNURLsettings;
+String deviceString;
 
 String baseURLATM;
 String secretATM;
@@ -82,6 +81,7 @@ HardwareSerial SerialCoinAcceptor(2);
 SoftwareSerial SerialPrinter(PRINTER_RX, PRINTER_TX);
 Adafruit_Thermal printer(&SerialPrinter);
 #endif
+
 TFT_eSPI tft = TFT_eSPI(320, 480);
 Button BTNA(BTN1);
 
@@ -89,23 +89,14 @@ void setup() {
   Serial.begin(115200);
 
 # ifdef HARDCODED
-  language = LANGUAGE;
-  LNURLsettings = SETTINGS;
-  charge = CHARGE;
-  maxamount = MAX_AMOUNT;
-  maxBeforeReset = MAX_BEFORE_RESET;
-  Serial.println("Hardcoded settings:");
-  Serial.println("LNURL: " + LNURLsettings);
-  Serial.println("Language: " + language);
-  Serial.println("Charge: " + String(charge) + "%");
-  Serial.println("Max amount: " + String(maxamount));
-  Serial.println("Max before reset: " + String(maxBeforeReset));
+  setDefaultValues();
   translateAll(language);
 # else
-  // wait few secods for tap to start config mode
-  while (waitForTap && total < 100 && HARDCODED == false) {
+  Serial.println("Waiting for tap to start config mode..");
+  while (waitForTap && total < 100) {
     BTNA.read();
     if (BTNA.wasReleased()) {
+      Serial.println("Tap detected, starting config mode..");
       printMessage(usbT, "", tapScreenT, TFT_WHITE, TFT_BLACK);
       executeConfig();
       waitForTap = false;
@@ -113,6 +104,8 @@ void setup() {
     delay(20);
     total++;
   }
+  Serial.println("Config mode ended.");
+  Serial.println("Reading files..");
   readFiles();
   translateAll(language);
 # endif
@@ -122,8 +115,7 @@ void setup() {
   tft.setRotation(1);
   tft.invertDisplay(false);
   printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
-
-  splitSettings(LNURLsettings);
+  splitSettings(deviceString);
 
 #ifdef BILL_ACCEPTOR
   SerialBillAcceptor.begin(300, SERIAL_8N2, BILL_TX, BILL_RX);
@@ -172,6 +164,7 @@ void moneyTimerFun() {
       feedmefiat();
       feedmefiatloop();
     }
+#ifdef BILL_ACCEPTOR
     if (SerialBillAcceptor.available()) {
       int x = SerialBillAcceptor.read();
 
@@ -183,6 +176,10 @@ void moneyTimerFun() {
         }
       }
     }
+    // Turn off
+    SerialBillAcceptor.write(185);
+#endif
+#ifdef COIN_ACCEPTOR
     if (SerialCoinAcceptor.available()) {
       int x = SerialCoinAcceptor.read();
         printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
@@ -195,6 +192,9 @@ void moneyTimerFun() {
           }
         }
     }
+    // Turn off
+    digitalWrite(COIN_INHIBIT, LOW);
+#endif
     BTNA.read();
     if (BTNA.wasReleased() || total > maxamount) {
       waitForTap = false;
@@ -202,8 +202,4 @@ void moneyTimerFun() {
     homeScreenNumColorCount++;
   }
   total = (coins + bills) * 100;
-
-  // Turn off machines
-  SerialBillAcceptor.write(185);
-  digitalWrite(COIN_INHIBIT, LOW);
 }

@@ -85,65 +85,97 @@ KeyValue extractKeyValue(String s) {
   return { key, value };
 }
 
+void setDefaultValues() {
+  Serial.println("Hardcoded settings:");
+  deviceString = DEVICE_STRING;
+  Serial.println("Device string: " + deviceString);
+  language = LANGUAGE;
+  Serial.println("Language: " + language);
+  charge = CHARGE;
+  Serial.println("Charge: " + String(charge) + "%");
+  maxamount = MAX_AMOUNT;
+  Serial.println("Max amount: " + String(maxamount));
+  maxBeforeReset = MAX_BEFORE_RESET;
+  Serial.println("Max before reset: " + String(maxBeforeReset));
+}
+
 void readFiles() {
   File paramFile = FlashFS.open(PARAM_FILE, "r");
-  if (paramFile) {
-    StaticJsonDocument<1000> doc;
-    DeserializationError error = deserializeJson(doc, paramFile.readString());
-
-    String LNURLConfig = getJsonValue(doc, "config_lnurl");
-    if (LNURLConfig != "") {
-      LNURLsettings = LNURLConfig;
-    }
-    else{
+  if (!paramFile) {
+      Serial.println("unable to open file, using default values");
+      setDefaultValues();
       printMessage("", failedT, unableT, TFT_WHITE, TFT_BLACK);
-        while (true) {
-      }
-    }
+      return;
+  }
+  StaticJsonDocument<1000> doc;
+  DeserializationError error = deserializeJson(doc, paramFile.readString());
 
-    String maxAmountConfig = getJsonValue(doc, "config_max_amount");
-    if (maxAmountConfig != "") {
-      maxamount = maxAmountConfig.toInt();
-
-    } else {
-      printMessage("", maxaT, willT, TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      tft.fillScreen(TFT_BLACK);
-    }
-
-    String chargeConfig = getJsonValue(doc, "config_charge");
-    if (chargeConfig != "") {
-      charge = chargeConfig.toInt();
-    } else {
-      printMessage("", loadT, willT, TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      tft.fillScreen(TFT_BLACK);
-    }
-
-    String maxBeforeResetConfig = getJsonValue(doc, "config_max_amount_reset");
-    if (maxBeforeResetConfig != "") {
-      maxBeforeReset = maxBeforeResetConfig.toInt();
-    } else {
-      printMessage("", maxrT, willT, TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      tft.fillScreen(TFT_BLACK);
-    }
-
-    String billAmountString = getJsonValue(doc, "config_bill_ints");
-    convertStringToIntArray(billAmountString.c_str(), billAmountInt);
-
-    String coinAmountString = getJsonValue(doc, "config_coin_floats");
-    convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
-
-    String langConfig = getJsonValue(doc, "config_lang");
-    if (langConfig != "") {
-      language = langConfig;
-    }
-    else{
-      printMessage("", langT, willT, TFT_WHITE, TFT_BLACK);
-      delay(3000);
-      tft.fillScreen(TFT_BLACK);
+  String LNURLConfig = getJsonValue(doc, "config_lnurl");
+  if (LNURLConfig != "") {
+    deviceString = LNURLConfig;
+    Serial.println("Device string: " + deviceString);
+  }
+  else{
+    Serial.println("LNURLdevice config not found, endless loop");
+    printMessage("", failedT, unableT, TFT_WHITE, TFT_BLACK);
+      while (true) {
     }
   }
+
+  String maxAmountConfig = getJsonValue(doc, "config_max_amount, using default");
+  if (maxAmountConfig != "") {
+    maxamount = maxAmountConfig.toInt();
+    Serial.println("maxamount: " + maxAmountConfig);
+
+  } else {
+    maxamount = MAX_AMOUNT;
+    printMessage("", maxaT, willT, TFT_WHITE, TFT_BLACK);
+    delay(3000);
+    tft.fillScreen(TFT_BLACK);
+  }
+
+  String chargeConfig = getJsonValue(doc, "config_charge");
+  if (chargeConfig != "") {
+    charge = chargeConfig.toInt();
+    Serial.println("charge: " + chargeConfig);
+  } else {
+    charge = CHARGE;
+    Serial.println("charge config not found, using default");
+    printMessage("", loadT, willT, TFT_WHITE, TFT_BLACK);
+    delay(3000);
+    tft.fillScreen(TFT_BLACK);
+  }
+
+  String maxBeforeResetConfig = getJsonValue(doc, "config_max_amount_reset");
+  if (maxBeforeResetConfig != "") {
+    maxBeforeReset = maxBeforeResetConfig.toInt();
+    Serial.println("maxBeforeReset: " + maxBeforeResetConfig);
+  } else {
+    maxBeforeReset = MAX_BEFORE_RESET;
+    Serial.println("maxBeforeReset config not found, using default");
+    printMessage("", maxrT, willT, TFT_WHITE, TFT_BLACK);
+    delay(3000);
+    tft.fillScreen(TFT_BLACK);
+  }
+
+  String billAmountString = getJsonValue(doc, "config_bill_ints");
+  convertStringToIntArray(billAmountString.c_str(), billAmountInt);
+
+  String coinAmountString = getJsonValue(doc, "config_coin_floats");
+  convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
+
+  String langConfig = getJsonValue(doc, "config_lang");
+  if (langConfig != "") {
+    language = langConfig;
+    Serial.println("language: " + langConfig);
+  }
+  else{
+    language = LANGUAGE;
+    Serial.println("language config not found");
+    printMessage("", langT, willT, TFT_WHITE, TFT_BLACK);
+    delay(3000);
+    tft.fillScreen(TFT_BLACK);
+  }
+
   paramFile.close();
 }
