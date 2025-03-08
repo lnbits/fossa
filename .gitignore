@@ -2,3 +2,4 @@ PCB/Fossa PCB-backups
 PCB/Gerbers
 build
 .venv
+.cache
