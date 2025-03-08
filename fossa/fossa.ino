@@ -13,8 +13,6 @@
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
 
-#define USER_SETUP_LOADED 1
-#include "tft_setup.h"
 #include <TFT_eSPI.h>
 
 //#define PRINTER
@@ -30,7 +28,7 @@
 #define PRINTER_TX 23  // TX of the thermal printer
 
 // uncomment to use always hardcoded default settings
-//#define HARDCODED
+#define HARDCODED
 
 // default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
@@ -85,11 +83,18 @@ SoftwareSerial SerialPrinter(PRINTER_RX, PRINTER_TX);
 Adafruit_Thermal printer(&SerialPrinter);
 #endif
 
-TFT_eSPI tft = TFT_eSPI(320, 480);
+TFT_eSPI tft = TFT_eSPI(TFT_WIDTH, TFT_HEIGHT);
 Button BTNA(BTN1);
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("TFT: " + String(TFT_WIDTH) + "x" + String(TFT_HEIGHT));
+  Serial.println("TFT pin MISO: " + String(TFT_MISO));
+  Serial.println("TFT pin CS: " + String(TFT_CS));
+  Serial.println("TFT pin MOSI: " + String(TFT_MOSI));
+  Serial.println("TFT pin SCLK: " + String(TFT_SCLK));
+  Serial.println("TFT pin DC: " + String(TFT_DC));
+  Serial.println("TFT pin RST: " + String(TFT_RST));
 # ifdef HARDCODED
   setDefaultValues();
   translateAll(language);
