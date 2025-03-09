@@ -4,8 +4,8 @@ String translate(String key, String language) {
 [en]
 usbT = USB config mode
 tapScreenT = TAP SCREEN WHEN FINISHED
-scanMeT = SCAN ME
-totalT = Total:
+scanMeT = SCAN ME TAP SCREEN WHEN FINISHED
+totalT = Total: 
 fossaT = FOSSA! Bitcoin ATM
 satsT = SATS
 forT = FOR
