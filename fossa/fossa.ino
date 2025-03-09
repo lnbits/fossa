@@ -15,12 +15,6 @@
 
 #define VERSION "0.3.0"
 
-// LAYOUT_1 is horizontal 480x320
-//#define LAYOUT_1
-
-// LAYOUT_2 is vertical 240x320
-#define LAYOUT_2
-
 //#define BILL_ACCEPTOR
 #define BILL_RX 32      // RX Bill acceptor
 #define BILL_TX 33      // TX Bill acceptor
@@ -142,9 +136,7 @@ void setup() {
   FlashFS.begin(FORMAT_ON_FAIL);
 
   tft.init();
-#ifdef LAYOUT_1
   tft.setRotation(1);
-#endif
   tft.invertDisplay(false);
 
   char buf[100];
