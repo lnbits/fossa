@@ -33,7 +33,7 @@ void feedmefiatloop() {
   delay(100);
 }
 
-void qrShowCodeLNURL(String message) {
+void qrShowCodeLNURL() {
   #ifdef PRINTER
     printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
     delay(3000);
@@ -59,7 +59,7 @@ void qrShowCodeLNURL(String message) {
   tft.setCursor(40, 290);
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
-  tft.println(message);
+  tft.println(scanMeT);
   delay(2000);
   waitForTap = true;
   while (waitForTap) {
