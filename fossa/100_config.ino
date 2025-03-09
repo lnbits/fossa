@@ -97,6 +97,8 @@ void setDefaultValues() {
   Serial.println("Max amount: " + String(maxamount));
   maxBeforeReset = MAX_BEFORE_RESET;
   Serial.println("Max before reset: " + String(maxBeforeReset));
+  convertStringToFloatArray(COIN_AMOUNTS, coinAmountFloat);
+  Serial.println("Coin amounts: " + String(COIN_AMOUNTS));
 }
 
 void readFiles() {
