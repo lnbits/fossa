@@ -12,7 +12,6 @@ void encrypt(const char* key, unsigned char* iv, int length, const char* plainTe
 
 
 bool makeLNURL() {
-
   unsigned char iv_init[16];
   unsigned char iv[16];
   for (int i = 0; i < 16; i++) {
@@ -26,22 +25,9 @@ bool makeLNURL() {
   unsigned char encrypted[payload_len + padding] = {0};
   encrypt(secretATM.c_str(), iv, payload_len + padding, payload.c_str(), encrypted);
   String preparedURL = baseURLATM + "?p=";
-  String s;
-  for (int i = 0; i < sizeof(encrypted); i++) {
-      s = String(encrypted[i], HEX);
-      if (s.length() == 1) {
-          s = "0" + s;
-      }
-      preparedURL += s;
-  }
+  preparedURL += toBase64(encrypted, payload_len, BASE64_URLSAFE | BASE64_NOPADDING);
   preparedURL += "&iv=";
-  for (int i = 0; i < sizeof(iv_init); i++) {
-      s = String(iv_init[i], HEX);
-      if (s.length() == 1) {
-          s = "0" + s;
-      }
-      preparedURL += s;
-  }
+  preparedURL += toBase64(iv_init, iv_length, BASE64_URLSAFE | BASE64_NOPADDING);
   Serial.println(preparedURL);
   lnurl_encode(preparedURL);
   return true;
