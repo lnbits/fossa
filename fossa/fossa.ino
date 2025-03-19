@@ -43,7 +43,8 @@
 #define CHARGE 10      // % you will charge people for service, set in LNbits extension
 #define MAX_AMOUNT 30  // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
-#define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXX,EUR"
+//#define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXX,EUR"
+#define DEVICE_STRING "https://test.b1tco1n.org/fossa/api/v1/lnurl/atm/T7HxgedvRJCZVHTm,9rtVvLAsx22hk9W6,USD"
 #define COIN_AMOUNTS "0.05,1.0,0.25,0.5,0.1,2.0"
 //#define BILL_AMOUNTS "0.01,0.05,0.1,0.25,0.5,1"
 
@@ -56,6 +57,7 @@ String language;
 String deviceString;
 
 String baseURLATM;
+String baseUrlAtmPage;
 String secretATM;
 String currencyATM;
 
@@ -132,6 +134,8 @@ void setup() {
   translateAll(language);
 #endif
 
+  splitSettings(deviceString);
+
   BTNA.begin();
   FlashFS.begin(FORMAT_ON_FAIL);
 
@@ -144,7 +148,6 @@ void setup() {
   Serial.println(buf);
 
   printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
-  splitSettings(deviceString);
 
 #ifdef BILL_ACCEPTOR
   SerialBillAcceptor.begin(300, SERIAL_8N2, BILL_RX, BILL_TX);

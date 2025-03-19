@@ -57,6 +57,6 @@ void lnurl_encode(String preparedURL) {
   char *charLnurl = (char *)calloc(strlen(url) * 2, sizeof(byte));
   bech32_encode(charLnurl, "lnurl", data, len);
   to_upper(charLnurl);
-  qrData = charLnurl;
+  qrData = baseUrlAtmPage + charLnurl;
   Serial.println(qrData);
 }

@@ -36,8 +36,16 @@ void splitSettings(String str) {
   int firstComma = str.indexOf(',');
   int secondComma = str.indexOf(',', firstComma + 1);
   baseURLATM = str.substring(0, firstComma);
+  Serial.println("baseURLATM: " + baseURLATM);
+  // remove /api/v1.... and add /atm?lightning=
+  int apiPos = baseURLATM.indexOf("api");
+  baseUrlAtmPage = baseURLATM.substring(0, apiPos);
+  baseUrlAtmPage += "atm?lightning=";
+  Serial.println("baseUrlAtmPage: " + baseUrlAtmPage);
   secretATM = str.substring(firstComma + 1, secondComma);
+  Serial.println("secretATM: " + secretATM);
   currencyATM = str.substring(secondComma + 1);
+  Serial.println("currencyATM: " + currencyATM);
 }
 
 void convertStringToFloatArray(const char* str, float* floatArray) {
