@@ -12,9 +12,10 @@ void encrypt(const char* key, unsigned char* iv, int length, const char* plainTe
 
 
 bool makeLNURL() {
-  unsigned char iv_init[16];
-  unsigned char iv[16];
-  for (int i = 0; i < 16; i++) {
+  int iv_length = 16;
+  unsigned char iv_init[iv_length];
+  unsigned char iv[iv_length];
+  for (int i = 0; i < iv_length; i++) {
       iv[i] = random(0, 255);
       iv_init[i] = iv[i];
   }
