@@ -9,11 +9,12 @@
 #include "Bitcoin.h"
 #include <TFT_eSPI.h>
 #include "mbedtls/aes.h"
+#include "mbedtls/md5.h"
 
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
 
-#define VERSION "0.3.0"
+#define VERSION "1.0.0"
 
 //#define BILL_ACCEPTOR
 #define BILL_RX 32      // RX Bill acceptor
