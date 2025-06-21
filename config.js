@@ -64,7 +64,7 @@ export const elements = [
   {
     name: "config_lang",
     value: "en",
-    label: "2 letter language code. Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv",
+    label: "2 letter language code. Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv, nl",
     type: "text",
   }
 ];
