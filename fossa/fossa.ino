@@ -189,8 +189,6 @@ void moneyTimerFun() {
 #ifdef COIN_ACCEPTOR
     if (SerialCoinAcceptor.available()) {
       int x = SerialCoinAcceptor.read();
-        printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
-        delay(3000);
         for (int i = 0; i < coinAmountSize; i++) {
           if ((i + 1) == x) {
             coins = coins + coinAmountFloat[i];
