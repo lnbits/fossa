@@ -1,4 +1,4 @@
-// Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+// Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv, nl
 String translate(String key, String language) {
   const char* translations = R"(
 [en]
@@ -348,6 +348,35 @@ loadT = VARNING: laddningsavgift
 maxrT = VARNING: max aterstallning
 printY = VARNING: skriv ut bool
 langT = VARNING: sprakfel
+
+[nl]
+usbT = USB-configuratiemodus
+tapScreenT = TIK SCHERM INDIEN GEREED
+scanMeT = SCAN QR TIK SCHERM INDIEN GEREED
+totalT = Totaal:
+fossaT = FOSSA! Bitcoin ATM
+satsT = SATS
+forT = VOOR
+fiatT = FIAT!
+feedT = voer mij fiat.
+chargeT = % lading
+printingT = Afdrukken
+waitT = even geduld
+workingT = Bezig…
+thisVoucherT = Deze voucher inwisselen voor
+ofBitcoinT = in Bitcoin
+thankYouT = Dank u
+scanMeClaimT = Scan met een Lightning-wallet om Bitcoin te ontvangen
+tooMuchFiatT = Te veel FIAT!
+contactOwnerT = Neem contact op met eigenaar
+failedT = MISLUKT
+unableT = kan lnurl niet lezen
+maxaT = WAARSCHUWING: maximumbedrag
+willT = Standaard wordt gebruikt
+loadT = WAARSCHUWING: laadkosten
+maxrT = WAARSCHUWING: maximale reset
+printY = WAARSCHUWING: afdruk bool
+langT = WAARSCHUWING: taal fout
 )";
 
   String line;
