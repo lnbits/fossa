@@ -23,7 +23,7 @@
 #define BILL_RX 32     // RX Bill acceptor
 #define BILL_TX 33     // TX Bill acceptor
 #define COIN_TX 4      // TX Coinmech
-#define COIN_INHIBIT 2 // Coinmech
+#define COIN_INHIBIT 2 // Coinmech inhibit pin
 #define PRINTER_RX 22  // RX of the thermal printer
 #define PRINTER_TX 23  // TX of the thermal printer
 
@@ -32,8 +32,8 @@
 
 // default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
-#define CHARGE 10 // % you will charge people for service, set in LNbits extension
-#define MAX_AMOUNT 30 // max amount per withdraw
+#define CHARGE 10      // % you will charge people for service, set in LNbits extension
+#define MAX_AMOUNT 30  // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
 #define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
 
@@ -61,10 +61,12 @@ int billAmountSize = sizeof(billAmountInt) / sizeof(int);
 float coinAmountSize = sizeof(coinAmountFloat) / sizeof(float);
 int moneyTimer = 0;
 bool waitForTap = true;
+
 struct KeyValue {
   String key;
   String value;
 };
+
 String translate(String key);
 uint16_t homeScreenColors[] = { TFT_GREEN, TFT_BLUE, TFT_ORANGE };
 int homeScreenNumColors = sizeof(homeScreenColors) / sizeof(homeScreenColors[0]);
@@ -95,10 +97,11 @@ void setup() {
   Serial.println("TFT pin SCLK: " + String(TFT_SCLK));
   Serial.println("TFT pin DC: " + String(TFT_DC));
   Serial.println("TFT pin RST: " + String(TFT_RST));
-# ifdef HARDCODED
+
+#ifdef HARDCODED
   setDefaultValues();
   translateAll(language);
-# else
+#else
   Serial.println("Waiting for tap to start config mode..");
   while (waitForTap && total < 100) {
     BTNA.read();
@@ -115,7 +118,8 @@ void setup() {
   Serial.println("Reading files..");
   readFiles();
   translateAll(language);
-# endif
+#endif
+
   BTNA.begin();
   FlashFS.begin(FORMAT_ON_FAIL);
   tft.init();
@@ -134,7 +138,7 @@ void setup() {
   Serial.println("Coin Acceptor serial started.");
 #endif
 #ifdef PRINTER
-  printerSerial.begin(9600);
+  SerialPrinter.begin(9600);
   printer.begin();
 #endif
 }
@@ -147,64 +151,95 @@ void loop() {
     SerialBillAcceptor.write(184);
     digitalWrite(COIN_INHIBIT, HIGH);
     tft.fillScreen(TFT_BLACK);
-    BTNA.read(); // needed to clear accidental taps
+    BTNA.read(); // clear accidental taps
     moneyTimerFun();
     Serial.println(total);
     Serial.println(maxBeforeResetTally);
-    maxBeforeResetTally = maxBeforeResetTally + (total / 100);
+    maxBeforeResetTally += (total / 100);
     Serial.println(maxBeforeResetTally);
     makeLNURL();
     qrShowCodeLNURL(scanMeT);
   }
 }
 
+// FIXED: only honor tap *after* first money input
 void moneyTimerFun() {
   waitForTap = true;
   coins = 0;
   bills = 0;
   total = 0;
-  while (waitForTap || total == 0) {
-    if (homeScreenNumColorCount == homeScreenNumColors) {
-      homeScreenNumColorCount = 0;
-    }
-    if (total == 0) {
+
+  // 1) Flush any leftover presses/releases
+  BTNA.read();
+  while (BTNA.wasPressed() || BTNA.wasReleased()) {
+    BTNA.read();
+    delay(10);
+  }
+
+  bool firstInputDone = false;
+
+  // 2) Main loop: never break on tap until we see money
+  while (true) {
+    // show “insert money” prompt until first input
+    if (!firstInputDone) {
       feedmefiat();
       feedmefiatloop();
     }
+
+    // a) Bill acceptor
 #ifdef BILL_ACCEPTOR
     if (SerialBillAcceptor.available()) {
       int x = SerialBillAcceptor.read();
-
       for (int i = 0; i < billAmountSize; i++) {
         if ((i + 1) == x) {
-          bills = bills + billAmountInt[i];
-          total = (coins + bills);
-          printMessage(billAmountInt[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
+          bills += billAmountInt[i];
+          total = coins + bills;
+          printMessage(
+            billAmountInt[i] + currencyATM,
+            totalT + String(total) + currencyATM,
+            tapScreenT,
+            TFT_WHITE, TFT_BLACK
+          );
+          firstInputDone = true;
         }
       }
     }
-    // Turn off
-    SerialBillAcceptor.write(185);
+    SerialBillAcceptor.write(185);  // turn off
 #endif
+
+    // b) Coin acceptor
 #ifdef COIN_ACCEPTOR
     if (SerialCoinAcceptor.available()) {
       int x = SerialCoinAcceptor.read();
-        for (int i = 0; i < coinAmountSize; i++) {
-          if ((i + 1) == x) {
-            coins = coins + coinAmountFloat[i];
-            total = (coins + bills);
-            printMessage(coinAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
-          }
+      for (int i = 0; i < coinAmountSize; i++) {
+        if ((i + 1) == x) {
+          coins += coinAmountFloat[i];
+          total = coins + bills;
+          printMessage(
+            coinAmountFloat[i] + currencyATM,
+            totalT + String(total) + currencyATM,
+            tapScreenT,
+            TFT_WHITE, TFT_BLACK
+          );
+          firstInputDone = true;
         }
+      }
     }
-    // Turn off
-    digitalWrite(COIN_INHIBIT, LOW);
+    digitalWrite(COIN_INHIBIT, LOW);  // turn off
 #endif
+
+    // c) Only now check for a tap to finish
     BTNA.read();
-    if (BTNA.wasReleased() || total > maxamount) {
-      waitForTap = false;
+    if (firstInputDone && BTNA.wasReleased()) {
+      break;
     }
-    homeScreenNumColorCount++;
+
+    // d) Optional: cap on maxamount
+    if (firstInputDone && total > maxamount) {
+      break;
+    }
   }
+
+  // finalize total (in cents)
   total = (coins + bills) * 100;
 }
