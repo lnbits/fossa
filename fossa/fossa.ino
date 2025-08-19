@@ -28,7 +28,7 @@
 #define PRINTER_RX 22   // RX of the thermal printer
 #define PRINTER_TX 23   // TX of the thermal printer
 
-#define BTN1 21         // Screen tap button
+#define BTN1 39         // Screen tap button
 #define BILL_RX 32     // RX Bill acceptor
 #define BILL_TX 33     // TX Bill acceptor
 #define COIN_TX 4      // TX Coinmech
