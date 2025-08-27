@@ -133,7 +133,13 @@ void loop() {
     SerialPort1.write(184);
     digitalWrite(COIN_INHIBIT, HIGH);
     tft.fillScreen(TFT_BLACK);
-    BTNA.read(); // needed to clear accidental taps
+    BTNA.read();
+    if (SerialPort1.available()) {
+      Serial.println("Bill acceptor connected")
+    }
+    if (SerialPort1.available()) {
+      Serial.println("Coin acceptor connected")
+    }
     moneyTimerFun();
     Serial.println(total);
     Serial.println(maxBeforeResetTally);
