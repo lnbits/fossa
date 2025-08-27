@@ -1,4 +1,3 @@
-#ifdef PRINTER
 
 // define a list of quote Strings that can be used to print on the receipt
 const char* quotes[13] = {
@@ -34,8 +33,8 @@ void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
   const byte eccCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x45, eccLevel };
   const byte printCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x51, 0x30 };
 
-  printerSerial.write(modelCommand, sizeof(modelCommand));
-  printerSerial.write(eccCommand, sizeof(eccCommand));
+  SerialPrinter.write(modelCommand, sizeof(modelCommand));
+  SerialPrinter.write(eccCommand, sizeof(eccCommand));
 
   int len = qrData.length() + 3;
   if (len > 255) {
@@ -44,9 +43,9 @@ void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
     return;
   }
   byte dataCommand[] = { 0x1D, 0x28, 0x6B, (byte)len, 0x00, 0x31, 0x50, 0x30 };
-  printerSerial.write(dataCommand, sizeof(dataCommand));
-  printerSerial.print(qrData);
-  printerSerial.write(printCommand, sizeof(printCommand));
+  SerialPrinter.write(dataCommand, sizeof(dataCommand));
+  SerialPrinter.print(qrData);
+  SerialPrinter.write(printCommand, sizeof(printCommand));
 }
 
 void printReceipt() {
@@ -73,4 +72,3 @@ void printReceipt() {
   printer.feed(3);
   printer.sleep();
 }
-#endif

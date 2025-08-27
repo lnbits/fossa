@@ -12,6 +12,7 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
 }
 
 void feedmefiat() {
+  tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE);
   tft.setCursor((480 - textWidth(fossaT, 2)) / 2, 40);
   tft.setTextSize(2);
@@ -34,7 +35,7 @@ void feedmefiatloop() {
 }
 
 void qrShowCodeLNURL() {
-  #ifdef PRINTER
+  #ifdef RECEIPT_PRINTER
     printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
     delay(3000);
     printReceipt();

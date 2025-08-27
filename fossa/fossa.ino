@@ -3,6 +3,7 @@
 #include <SPIFFS.h>
 #include <SoftwareSerial.h>
 #include <HardwareSerial.h>
+#include <Adafruit_Thermal.h>
 #include <JC_Button.h>
 #include <ArduinoJson.h>
 #include "qrcoded.h"
@@ -16,15 +17,19 @@
 
 #define VERSION "1.0.0"
 
-//#define BILL_ACCEPTOR
+// Comment out to disable
+#define BILL_ACCEPTOR
+#define COIN_ACCEPTOR
+#define RECEIPT_PRINTER
+
 #define BILL_RX 32      // RX Bill acceptor
 #define BILL_TX 33      // TX Bill acceptor
 
-#define COIN_ACCEPTOR
+
 #define COIN_TX 34      // TX Coinmech
 #define COIN_INHIBIT 35 // Coinmech interrupt
 
-//#define PRINTER
+
 #define PRINTER_RX 22   // RX of the thermal printer
 #define PRINTER_TX 23   // TX of the thermal printer
 
@@ -37,7 +42,7 @@
 #define PRINTER_TX 23  // TX of the thermal printer
 
 // uncomment to use always hardcoded default settings
-#define HARDCODED
+// #define HARDCODED
 
 // default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
@@ -93,7 +98,7 @@ HardwareSerial SerialBillAcceptor(1);
 #ifdef COIN_ACCEPTOR
 HardwareSerial SerialCoinAcceptor(2);
 #endif
-#ifdef PRINTER
+#ifdef RECEIPT_PRINTER
 SoftwareSerial SerialPrinter(PRINTER_RX, PRINTER_TX);
 Adafruit_Thermal printer(&SerialPrinter);
 #endif
@@ -160,7 +165,7 @@ void setup() {
   SerialCoinAcceptor.begin(4800, SERIAL_8N1, COIN_TX);
   Serial.println("Coin Acceptor serial started.");
 #endif
-#ifdef PRINTER
+#ifdef RECEIPT_PRINTER
   SerialPrinter.begin(9600);
   printer.begin();
 #endif
