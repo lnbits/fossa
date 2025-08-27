@@ -23,6 +23,9 @@ void feedmefiat() {
 }
 
 void feedmefiatloop() {
+  if (homeScreenNumColorCount == homeScreenNumColors) {
+    homeScreenNumColorCount = 0;
+  }
   tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
   tft.setTextSize(8);
   tft.setCursor((480 - textWidth(satsT, 8)) / 2, 80);
@@ -31,6 +34,7 @@ void feedmefiatloop() {
   tft.println(forT);
   tft.setCursor((480 - textWidth(fiatT, 8)) / 2, 200);
   tft.println(fiatT);
+  homeScreenNumColorCount++;
   delay(100);
 }
 
