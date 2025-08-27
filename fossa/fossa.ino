@@ -10,6 +10,7 @@
 #include "Bitcoin.h"
 #include <Adafruit_Thermal.h>
 #include <cstdlib>
+#include <TFT_eSPI.h>
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
 
@@ -25,15 +26,14 @@
 #define PRINTER_RX 22  // RX of the thermal printer
 #define PRINTER_TX 23  // TX of the thermal printer
 
-// uncomment to use always hardcoded default settings
-//#define HARDCODED
-
 // default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 #define CHARGE 10 // % you will charge people for service, set in LNbits extension
 #define MAX_AMOUNT 30 // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
 #define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
+
+bool hardcoded = false; // set to true if you want to use the above hardcoded settings
 
 int billAmountInt[16];
 float coinAmountFloat[6];
