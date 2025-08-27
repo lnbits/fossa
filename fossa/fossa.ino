@@ -32,6 +32,8 @@
 #define MAX_AMOUNT 30 // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
 #define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
+#define COIN_AMOUNTS "0.05,1.0,0.25,0.5,0.1,2.0"
+#define BILL_AMOUNTS "0.01,0.05,0.1,0.25,0.5,1"
 
 bool hardcoded = false; // set to true if you want to use the above hardcoded settings
 
@@ -50,6 +52,7 @@ String language = "en";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi,
 String baseURLATM;
 String secretATM;
 String currencyATM;
+String deviceString;
 
 #define BTN1 39        // Screen tap button
 #define RX1 32         // Bill acceptor
@@ -116,7 +119,7 @@ void setup() {
     readFiles();
     translateAll(language);
   }
-  splitSettings(LNURLsettings);
+  splitSettings(deviceString);
 
   // initialize bill and coin acceptor
   SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
