@@ -43,7 +43,7 @@ int charge = 10;          // % you will charge people for service, set in LNbits
 int maxamount = 30;       // max amount per withdraw
 int maxBeforeReset = 300;  // max amount you want to sell in the atm before having to reset power
 bool printerBool = false;
-String language = "en";  // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+String language;
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -55,12 +55,12 @@ String currencyATM;
 String deviceString;
 
 #define BTN1 39        // Screen tap button
-#define RX1 32         // Bill acceptor
-#define TX1 33         // Bill acceptor
-#define TX2 4          // Coinmech
-#define INHIBITMECH 2  // Coinmech
-#define RXP 22         // TX of the thermal printer
-#define TXP 23         // RX of the thermal printer
+#define BILL_RX 32         // Bill acceptor
+#define BILL_TX 33         // Bill acceptor
+#define COIN_TX 4          // Coinmech
+#define COIN_INHIBIT 2  // Coinmech
+#define PRINTER_RX 22         // TX of the thermal printer
+#define PRINTER_TX 23         // RX of the thermal printer
 
 fs::SPIFFSFS &FlashFS = SPIFFS;
 
@@ -87,7 +87,7 @@ String usbT, tapScreenT, scanMeT, totalT, fossaT, satsT, forT, fiatT, feedT, cha
 
 HardwareSerial SerialPort1(1);
 HardwareSerial SerialPort2(2);
-SoftwareSerial printerSerial(RXP, TXP);
+SoftwareSerial printerSerial(PRINTER_RX, PRINTER_TX);
 Adafruit_Thermal printer(&printerSerial);
 TFT_eSPI tft = TFT_eSPI(320, 480);
 Button BTNA(BTN1);
@@ -122,9 +122,9 @@ void setup() {
   splitSettings(deviceString);
 
   // initialize bill and coin acceptor
-  SerialPort1.begin(300, SERIAL_8N2, TX1, RX1);
-  SerialPort2.begin(4800, SERIAL_8N1, TX2);
-  pinMode(INHIBITMECH, OUTPUT);
+  SerialPort1.begin(300, SERIAL_8N2, BILL_TX, BILL_RX);
+  SerialPort2.begin(4800, SERIAL_8N1, COIN_TX);
+  pinMode(COIN_INHIBIT, OUTPUT);
 
   // initialize printer
   if(printerBool == true){
@@ -139,7 +139,7 @@ void loop() {
     delay(100000000);
   } else {
     SerialPort1.write(184);
-    digitalWrite(INHIBITMECH, HIGH);
+    digitalWrite(COIN_INHIBIT, HIGH);
     tft.fillScreen(TFT_BLACK);
     BTNA.read(); // needed to clear accidental taps
     moneyTimerFun();
@@ -198,5 +198,5 @@ void moneyTimerFun() {
 
   // Turn off machines
   SerialPort1.write(185);
-  digitalWrite(INHIBITMECH, LOW);
+  digitalWrite(COIN_INHIBIT, LOW);
 }
