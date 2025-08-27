@@ -54,14 +54,6 @@ String secretATM;
 String currencyATM;
 String deviceString;
 
-#define BTN1 39        // Screen tap button
-#define BILL_RX 32         // Bill acceptor
-#define BILL_TX 33         // Bill acceptor
-#define COIN_TX 4          // Coinmech
-#define COIN_INHIBIT 2  // Coinmech
-#define PRINTER_RX 22         // TX of the thermal printer
-#define PRINTER_TX 23         // RX of the thermal printer
-
 fs::SPIFFSFS &FlashFS = SPIFFS;
 
 String qrData;
