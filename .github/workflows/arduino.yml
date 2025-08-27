@@ -27,7 +27,7 @@ jobs:
             - name: JC_Button
             - name: EspSoftwareSerial
             - name: Adafruit Thermal Printer Library
-            - source-path: ./libraries/TFT_eSPI
+            - name: TFT_eSPI
             - source-path: ./libraries/QRCode
 
       # This step is needed to pass the size data to the report job.

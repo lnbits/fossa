@@ -2,7 +2,6 @@
 #include <FS.h>
 #include <SPIFFS.h>
 #include <SoftwareSerial.h>
-#include <TFT_eSPI.h>
 #include <HardwareSerial.h>
 #include <JC_Button.h>
 #include <Hash.h>
@@ -18,8 +17,24 @@
 //////CHANGE MANUALLY OR USE FOSSA.lnbits.com//////
 ///////////////////////////////////////////////////
 
-bool hardcoded = false;
-String LNURLsettings = "https://lnbits.serveo.net/lnurldevice/api/v1/lnurl/DGB8h,iiPo9beZuTSaFY5smcLhgi,USD";
+#define BTN1 39        // Screen tap button
+#define BILL_RX 32     // RX Bill acceptor
+#define BILL_TX 33     // TX Bill acceptor
+#define COIN_TX 4      // TX Coinmech
+#define COIN_INHIBIT 2 // Coinmech
+#define PRINTER_RX 22  // RX of the thermal printer
+#define PRINTER_TX 23  // TX of the thermal printer
+
+// uncomment to use always hardcoded default settings
+//#define HARDCODED
+
+// default settings
+#define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
+#define CHARGE 10 // % you will charge people for service, set in LNbits extension
+#define MAX_AMOUNT 30 // max amount per withdraw
+#define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
+#define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
+
 int billAmountInt[16];
 float coinAmountFloat[6];
 int charge = 10;          // % you will charge people for service, set in LNbits extension
