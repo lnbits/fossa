@@ -12,6 +12,7 @@ void printMessage(String text1, String text2, String text3, int ftcolor, int bgc
 }
 
 void feedmefiat() {
+  tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE);
   tft.setCursor((480 - textWidth(fossaT, 2)) / 2, 40);
   tft.setTextSize(2);
@@ -22,6 +23,9 @@ void feedmefiat() {
 }
 
 void feedmefiatloop() {
+  if (homeScreenNumColorCount == homeScreenNumColors) {
+    homeScreenNumColorCount = 0;
+  }
   tft.setTextColor(homeScreenColors[homeScreenNumColorCount]);
   tft.setTextSize(8);
   tft.setCursor((480 - textWidth(satsT, 8)) / 2, 80);
@@ -30,11 +34,12 @@ void feedmefiatloop() {
   tft.println(forT);
   tft.setCursor((480 - textWidth(fiatT, 8)) / 2, 200);
   tft.println(fiatT);
+  homeScreenNumColorCount++;
   delay(100);
 }
 
-void qrShowCodeLNURL(String message) {
-  #ifdef PRINTER
+void qrShowCodeLNURL() {
+  #ifdef RECEIPT_PRINTER
     printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
     delay(3000);
     printReceipt();
@@ -59,7 +64,7 @@ void qrShowCodeLNURL(String message) {
   tft.setCursor(40, 290);
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
-  tft.println(message);
+  tft.println(scanMeT);
   delay(2000);
   waitForTap = true;
   while (waitForTap) {

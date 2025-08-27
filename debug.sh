@@ -6,7 +6,6 @@ echo "User TFT Config: "
 cat tft_config.txt
 tft_config=$(sh ./tft_config_build_flags.sh)
 arduino-cli compile \
-    --library ./libraries/QRCode \
     --build-property "build.partitions=min_spiffs" \
     --build-property "upload.maximum_size=1966080" \
     --build-property "build.extra_flags.esp32=${tft_config}" \
