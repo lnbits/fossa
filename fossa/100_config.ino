@@ -131,7 +131,7 @@ void readFiles() {
 
   } else {
     maxamount = MAX_AMOUNT;
-    printMessage("", maxaT, willT, TFT_WHITE, TFT_BLACK);
+    printMessage("", maxaT + " " + String(maxamount), willT, TFT_WHITE, TFT_BLACK);
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }
@@ -143,7 +143,7 @@ void readFiles() {
   } else {
     charge = CHARGE;
     Serial.println("charge config not found, using default");
-    printMessage("", loadT, willT, TFT_WHITE, TFT_BLACK);
+    printMessage("", loadT, willT + " " + String(charge), TFT_WHITE, TFT_BLACK);
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }
@@ -155,7 +155,7 @@ void readFiles() {
   } else {
     maxBeforeReset = MAX_BEFORE_RESET;
     Serial.println("maxBeforeReset config not found, using default");
-    printMessage("", maxrT, willT, TFT_WHITE, TFT_BLACK);
+    printMessage("", maxrT, willT + " " + String(maxBeforeReset), TFT_WHITE, TFT_BLACK);
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }
@@ -174,7 +174,7 @@ void readFiles() {
   else{
     language = LANGUAGE;
     Serial.println("language config not found");
-    printMessage("", langT, willT, TFT_WHITE, TFT_BLACK);
+    printMessage("", langT, willT + " " + language, TFT_WHITE, TFT_BLACK);
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }

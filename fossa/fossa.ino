@@ -28,31 +28,31 @@
 
 // default settings
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
-#define CHARGE 10 // % you will charge people for service, set in LNbits extension
+#define CHARGE 5 // % you will charge people for service, set in LNbits extension
 #define MAX_AMOUNT 30 // max amount per withdraw
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
 #define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
 #define COIN_AMOUNTS "0.05,1.0,0.25,0.5,0.1,2.0"
 #define BILL_AMOUNTS "0.01,0.05,0.1,0.25,0.5,1"
 
-bool hardcoded = false; // set to true if you want to use the above hardcoded settings
-
+bool hardcoded = true; // set to true if you want to use the above hardcoded settings
+bool printerBool = false;
 int billAmountInt[16];
 float coinAmountFloat[6];
-int charge = 10;          // % you will charge people for service, set in LNbits extension
-int maxamount = 30;       // max amount per withdraw
-int maxBeforeReset = 300;  // max amount you want to sell in the atm before having to reset power
-bool printerBool = false;
-String language;
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
+
+String deviceString = DEVICE_STRING;
+String language = LANGUAGE;
+int charge = CHARGE;
+int maxamount = MAX_AMOUNT;
+int maxBeforeReset = MAX_BEFORE_RESET;
 
 String baseURLATM;
 String secretATM;
 String currencyATM;
-String deviceString;
 
 fs::SPIFFSFS &FlashFS = SPIFFS;
 
@@ -159,7 +159,6 @@ void moneyTimerFun() {
     }
     if (SerialPort1.available()) {
       int x = SerialPort1.read();
-
       for (int i = 0; i < billAmountSize; i++) {
         if ((i + 1) == x) {
           bills = bills + billAmountInt[i];
@@ -170,8 +169,6 @@ void moneyTimerFun() {
     }
     if (SerialPort2.available()) {
       int x = SerialPort2.read();
-        printMessage("", "WARNING: print bool", String(x), TFT_WHITE, TFT_BLACK);
-        delay(3000);
         for (int i = 0; i < coinAmountSize; i++) {
           if ((i + 1) == x) {
             coins = coins + coinAmountFloat[i];
