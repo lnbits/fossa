@@ -50,30 +50,15 @@ For the 3D-printed version, you will need:
 ### Using the web-installer
 
 With Chromium based browser visit https://fossa.lnbits.com
-* Connect to device
-* Push latest release to device
-* Push your config
 
 ### Running locally
 
-Make build script executable:
+Fetch and install everything needed (build), then push binary to esp32 (debug):
 
 ```bash
 sh chmod +x build.sh
-```
-Run the script (this will fetch and build all the libraries you need):
-
-```bash
 sh ./build.sh
-```
-Make the debug script executable:
-
-```bash
 sh chmod +x debug.sh
-```
-Run the script (this will push the binary to the device and let you monitor over serial):
-
-```bash
 sh ./debug.sh /dev/ttyUSB0
 ```
 
