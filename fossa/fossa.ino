@@ -9,7 +9,8 @@
 #include "qrcoded.h"
 #include "Bitcoin.h"
 #include <Adafruit_Thermal.h>
-#include <cstdlib>
+#include "mbedtls/aes.h"
+#include "mbedtls/md5.h"
 #include <TFT_eSPI.h>
 #define FORMAT_ON_FAIL true
 #define PARAM_FILE "/elements.json"
