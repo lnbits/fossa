@@ -53,12 +53,12 @@ With Chromium based browser visit https://fossa.lnbits.com
 
 ### Running locally
 
-Fetch and install everything needed (build), then push binary to esp32 (debug):
-
 ```bash
 cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h
 ```
 > If using hardcoded values and not configuring over the web-installer chnage values in `fossa/hardcoded_user_config.h`
+
+Fetch and install everything needed (build), then push binary to esp32 (debug):
 
 ```bash
 sh chmod +x build.sh
