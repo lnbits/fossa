@@ -1,4 +1,5 @@
-// Change these if using hardcoded options
+// If using hardcoded options 'cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h',
+// then change the values on fossa/hardcoded_user_config.h
 
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 #define CHARGE 5 // % You will charge people for service, set in LNbits extension
