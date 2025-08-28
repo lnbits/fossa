@@ -22,7 +22,7 @@ export const elements = [
   {
     name: "config_lnurl",
     value: "",
-    label: "Whole LNURLATM string from LNURLDevices extension",
+    label: "ATM string from LNURLDevices extension",
     type: "text",
   },
   {
@@ -34,7 +34,7 @@ export const elements = [
   {
     name: "config_coin_floats",
     value: "",
-    label: "Coin floats seperated by comma ie: 0.01,0.02,0.05,0.1,0.5,1 - no more than 6",
+    label: "Coin floats seperated by comma ie: 0.05,0.1,0.2,0.5,1,2 - no more than 6",
     type: "text",
   },
   {
@@ -64,7 +64,7 @@ export const elements = [
   {
     name: "config_lang",
     value: "en",
-    label: "2 letter language code. Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv",
+    label: "2 letter language code. Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv, nl",
     type: "text",
   }
 ];

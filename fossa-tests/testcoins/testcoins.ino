@@ -1,15 +1,15 @@
 #include <HardwareSerial.h>
 #include <Wire.h>
-#define TX2 4 // Coinmech serial out
-#define INHIBITMECH 2
+#define COIN_TX 4 // Coinmech serial out
+#define COIN_INHIBIT 2
 HardwareSerial SerialPort2(2);
 void setup() {
   Serial.begin(115200);
-  SerialPort2.begin(4800, SERIAL_8N1, TX2);
-   pinMode(INHIBITMECH, OUTPUT);
-   digitalWrite(INHIBITMECH, LOW);
+  SerialPort2.begin(4800, SERIAL_8N1, COIN_TX);
+   pinMode(COIN_INHIBIT, OUTPUT);
+   digitalWrite(COIN_INHIBIT, LOW);
    delay(10000);
-   digitalWrite(INHIBITMECH, HIGH);
+   digitalWrite(COIN_INHIBIT, HIGH);
 }
 
 void loop() {

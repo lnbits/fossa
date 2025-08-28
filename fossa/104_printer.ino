@@ -49,7 +49,6 @@ void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
   printerSerial.write(printCommand, sizeof(printCommand));
 }
 
-
 void printReceipt() {
   printer.wake();
   printer.setDefault();

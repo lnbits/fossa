@@ -1,9 +1,9 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_Thermal.h>
 #include <Wire.h>
-#define RXP 22         // TX of the thermal printer
-#define TXP 23         // RX of the thermal printer
-SoftwareSerial printerSerial(RXP, TXP);
+#define PRINTER_RX 22         // TX of the thermal printer
+#define PRINTER_TX 23         // RX of the thermal printer
+SoftwareSerial printerSerial(PRINTER_RX, PRINTER_TX);
 Adafruit_Thermal printer(&printerSerial);
 
 void setup() {
