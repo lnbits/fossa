@@ -1,31 +1,28 @@
-![image](https://github.com/user-attachments/assets/a38bac69-6a07-4f44-831e-a95966f420ba)
+<img src="img/main.jpg">
 
-Welcome to the FOSSA project! FOSSA is an innovative, open-source Bitcoin Lightning ATM designed to be cost-effective and easy to build. Utilizing standard components such as an ESP32 microcontroller, a multi-coin acceptor, and a bill acceptor, FOSSA allows anyone to convert loose fiat change into Bitcoin efficiently. The project includes comprehensive instructions and resources, making it accessible for hobbyists and developers to create a fully functional Bitcoin ATM. Dive in and get started building your own FOSSA!
+The low-cost Bitcoin Lightning ATM built with simple parts like an ESP32 and coin/bill acceptors. It lets anyone turn fiat into Bitcoin and comes with clear instructions so hobbyists and developers can easily build their own.
 
-## Demo
-
-https://twitter.com/arcbtc/status/1567639231333277697
+Bitcoin withdrawals are now possible via LNURL, Bolt11, onchain, Liquid and lightning addresses 🔥
 
 ## Bill of Materials
 
-The parts for this ATM should be approximately £200-£250!
+Roughly available for £200-£250!
 
 You can run the FOSSA as a coin machine, a bill acceptor, or both.
 
 ### Primary FOSSA components
-
 | Part    | Description    | Buy (UK)    | Estimated cost |
 |-------------|-------------|-------------|-------------|
-| ESP32 WT32-SC01 | This is the ESP32 touchscreen. You don't need any Wi-Fi. It should be supplied with a USB-C to USB cable. Note that the ESP32 WT32-SC01 is different from the ESP32 WT32-SC01 PLUS! | Ebay or [AliExpress](https://www.aliexpress.com/item/1005003191471709.html) | **£45** |
-| Option: NV10USB+ bill acceptor | The bill acceptor option to accept cash notes. To accept GBP, you should request that it be set to GBP and SIO mode when purchasing. | [Ebay (second hand)](https://www.ebay.co.uk/itm/263398460026) | **£70-£150** |
-| Option: DG600F(S) Multi Coin Acceptor | The coin acceptor option. The "S" denotes the front panel (stainless steel sheet version, where we can 3D print a black panel for it). | [AliExpress](https://www.aliexpress.com/w/wholesale-DG600F(S)-Multi-Coin-Acceptor.html?spm=a2g0o.home.search.0) or eBay | **£30** |
-| Screw terminal block | Easily connect the wires without soldering. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B08LNWMMHQ) | **£1** |
-| 12v power supply | Best to get one with terminal block adapter (12v battery also works well, for unplugged version). | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MTBTXDJ/) | **£8** |
-| 12v to 5v step down converter with USB | 12V to 5V: The adapter converter module can convert unstable voltage DC 12V to stable DC 5V / 15W 3A output. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B07QQ587K3) | **£5**
-| Male-to-female GPIO jumpers | Plug and play GPIO connectors | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MJZDXBB) | **£5**
-| Option: Aluminum "medicine box" | Cheap medicine box for the cash machine | Amazon (UK) | **£30** |
-| Option: Amazon Basic Home Safe | More secure box | Amazon (UK) | **£70** |
-| Option: 58mm 701 USB Thermal Receipt Printer | Print receipts for users. **NB The 3D printed enclosure does not currently fit this**. | [Ebay (UK)](https://www.ebay.co.uk/itm/293668439213) | **£25** |
+| ESP32 WT32-SC01 | ESP32 touchscreen (not the PLUS). Comes with USB-C cable. | Ebay or [AliExpress](https://www.aliexpress.com/item/1005003191471709.html) | **£45** |
+| NV10USB+ bill acceptor | Optional: accepts banknotes (set to GBP + SIO). | [Ebay (second hand)](https://www.ebay.co.uk/itm/263398460026) | **£70-£150** |
+| DG600F(S) Multi Coin Acceptor | Optional: accepts coins (S = stainless steel front). | [AliExpress](https://www.aliexpress.com/w/wholesale-DG600F(S)-Multi-Coin-Acceptor.html?spm=a2g0o.home.search.0) or eBay | **£30** |
+| Screw terminal block | Connect wires, no soldering. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B08LNWMMHQ) | **£1** |
+| 12v power supply | 12V supply (battery also works). | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MTBTXDJ/) | **£8** |
+| 12v to 5v step down converter with USB | Converts 12V to stable 5V/3A. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B07QQ587K3) | **£5** |
+| Male-to-female GPIO jumpers | Plug-and-play wires. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MJZDXBB) | **£5** |
+| Aluminum "medicine box" | Optional: cheap case option. | Amazon (UK) | **£30** |
+| Amazon Basic Home Safe | Optional: stronger case option. | Amazon (UK) | **£70** |
+| 58mm 701 USB Thermal Receipt Printer | Optional: prints receipts (doesn’t fit enclosure yet). | [Ebay (UK)](https://www.ebay.co.uk/itm/293668439213) | **£25** |
 
 ![image](https://github.com/user-attachments/assets/35098b91-8d00-4885-bc16-ace9bb804597)
 
@@ -35,17 +32,18 @@ For the 3D-printed version, you will need:
 
 | Part    | Description    | Buy (UK)    |
 |-------------|-------------|-------------|
-| M4 x 16mm pan head security torx tamper-resistant bolts | These hold the front facia to the back box. Anything longer than 14mm - 55mm is fine. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0BTTRPBQV/) |
-| Tamper-proof torx wrench (T20) | To tighten the front facia Torx bolts. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0D53LNNRW) |
-| Brass insert nuts, M4 x 6mm L x 6mm OD | Female threaded heat set knurled embedded insert nuts for 3D printing. These are stronger than trying to create threads in the 3D print. Using a soldering iron, these are heated up and pushed into the backbox for better attachment of the facia. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MCVW4GQ/) |
-| M4 x 30mm carriage/coach bolts | These are to replace the bolts supplied with the coin acceptor to accommodate the thickness of the facia. | [eBay (UK)](https://www.ebay.co.uk/itm/386550912089?var=653926055961) |
-| 5.5mm x 2.1mm DC Power Jack Socket Female Panel Mount Connector | This allows the 12V adaptor to plug into the ATM's outside. The box assumes a diameter of 7.7mm (like these). | [Amazon (UK)](https://www.amazon.co.uk/dp/B01N3679B8) |
-| 2.2mm Quick Disconnect Female Spade Connector | This allows us to crimp a cable and connect to the 5.5mm x 2.1mm DC Power Jack Socket | |
-| Cabinet draw tubular 16mm lock | This will be mounted on the door. | [Amazon (UK)](https://www.amazon.co.uk/Litensh-Tubular-Cylinder-Cupboard-Letterbox/dp/B09SHWXWXC/) |
-| Optional: Rubber feet (D30x22xH15) | If you want to have this one on the table, some rubber feet will go at the bottom of the backbox with an M5 bolt. You can also use adhesive versions. Grooves in the bottom of the box will support up to 30mm in diameter. | [Amazon (UK)](https://www.amazon.co.uk/dp/B0CQ23M5Z5) |
-| Optional: M5 x 16mm hex socket bolts | To screw the rubber feet into the back box. | [Amazon (UK)](https://www.amazon.co.uk/16mm-Socket-Button-Head-Screws/dp/B09BG8XNM7) |
-| Optional: M5 nylon nuts | To screw the rubber feet into the backbox. | [Amazon (UK)](https://www.amazon.co.uk/Bolt-Base-Stainless-Insert-Nylock) |
-| Optional: Adhesive security plate and locking cable | Secure the ATM when desk mounted. | [Amazon (UK)](https://www.amazon.co.uk/I3C-Security-Anti-Theft-Hardware-Smartphone/dp/B07FM93JL6) |
+| M4 x 16mm pan head security torx bolts | Hold front facia to back box (14–55mm length works). | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0BTTRPBQV/) |
+| Tamper-proof torx wrench (T20) | Tighten facia Torx bolts. | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B0D53LNNRW) |
+| Brass insert nuts, M4 x 6mm | Heat-set nuts for 3D prints (use soldering iron). | [Amazon (UK)](https://www.amazon.co.uk/gp/product/B09MCVW4GQ/) |
+| M4 x 30mm carriage bolts | Replace coin acceptor bolts for facia thickness. | [eBay (UK)](https://www.ebay.co.uk/itm/386550912089?var=653926055961) |
+| 5.5mm x 2.1mm DC power jack socket | Mounts 12V adaptor plug on box exterior. | [Amazon (UK)](https://www.amazon.co.uk/dp/B01N3679B8) |
+| 2.2mm quick disconnect spade connector | Crimp cable to connect power jack socket. | |
+| 16mm cabinet tubular lock | Lock for the door. | [Amazon (UK)](https://www.amazon.co.uk/Litensh-Tubular-Cylinder-Cupboard-Letterbox/dp/B09SHWXWXC/) |
+| Rubber feet (D30x22xH15) | Optional: add feet for table mounting (M5 bolt or adhesive). | [Amazon (UK)](https://www.amazon.co.uk/dp/B0CQ23M5Z5) |
+| M5 x 16mm hex socket bolts | Optional: secure rubber feet. | [Amazon (UK)](https://www.amazon.co.uk/16mm-Socket-Button-Head-Screws/dp/B09BG8XNM7) |
+| M5 nylon nuts | Optional: secure rubber feet. | [Amazon (UK)](https://www.amazon.co.uk/Bolt-Base-Stainless-Insert-Nylock) |
+| Adhesive security plate + cable | Optional: secure ATM when desk mounted. | [Amazon (UK)](https://www.amazon.co.uk/I3C-Security-Anti-Theft-Hardware-Smartphone/dp/B07FM93JL6) |
+
 
 ## Software installation
 
@@ -53,8 +51,8 @@ For the 3D-printed version, you will need:
 
 With Chromium based browser visit https://fossa.lnbits.com
 * Connect to device
-* Push latest release
-* Use/push your config
+* Push latest release to device
+* Push your config
 
 ### Running locally
 
