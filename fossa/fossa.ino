@@ -28,13 +28,7 @@
 #define PRINTER_TX 23  // TX of the thermal printer
 
 // default settings
-#define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
-#define CHARGE 5 // % you will charge people for service, set in LNbits extension
-#define MAX_AMOUNT 30 // max amount per withdraw
-#define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
-#define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
-#define COIN_AMOUNTS "0.05,1.0,0.25,0.5,0.1,2.0"
-#define BILL_AMOUNTS "5,10,20,50,100"
+#include "hardcoded_user_config.h"
 
 bool hardcoded = true; // set to true if you want to use the above hardcoded settings
 bool printerBool = false;
