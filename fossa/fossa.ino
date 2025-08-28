@@ -145,7 +145,9 @@ void loop() {
     Serial.println(maxBeforeResetTally);
     maxBeforeResetTally = maxBeforeResetTally + (total / 100);
     Serial.println(maxBeforeResetTally);
+    Serial.println("poo");
     makeLNURL();
+    Serial.println("poo");
     qrShowCodeLNURL(scanMeT);
   }
 }
