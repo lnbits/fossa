@@ -33,11 +33,11 @@
 #define MAX_BEFORE_RESET 300 // max amount you want to sell in the atm before having to reset power
 #define DEVICE_STRING "https://XXXX.lnbits.com/fossa/api/v1/lnurl/XXXXX,XXXXXXXXXXXXXXXXXXXXXX,USD"
 #define COIN_AMOUNTS "0.05,1.0,0.25,0.5,0.1,2.0"
-#define BILL_AMOUNTS "0.01,0.05,0.1,0.25,0.5,1"
+#define BILL_AMOUNTS "5,10,20,50,100"
 
 bool hardcoded = true; // set to true if you want to use the above hardcoded settings
 bool printerBool = false;
-int billAmountInt[16];
+int billAmountInt[10];
 float coinAmountFloat[6];
 
 ///////////////////////////////////////////////////
@@ -46,6 +46,8 @@ float coinAmountFloat[6];
 
 String deviceString = DEVICE_STRING;
 String language = LANGUAGE;
+String coinAmountString = COIN_AMOUNTS;
+String billAmountString = BILL_AMOUNTS;
 int charge = CHARGE;
 int maxamount = MAX_AMOUNT;
 int maxBeforeReset = MAX_BEFORE_RESET;
@@ -96,7 +98,7 @@ void setup() {
   printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
 
   // wait few secods for tap to start config mode
-  while (waitForTap && total < 100 && hardcoded == false) {
+  while (waitForTap && total < 100) {
     BTNA.read();
     if (BTNA.wasReleased()) {
       printMessage(usbT, "", tapScreenT, TFT_WHITE, TFT_BLACK);
@@ -109,7 +111,9 @@ void setup() {
   
   if(hardcoded == false){
     readFiles();
-    translateAll(language);
+  }
+  else{
+    setDefaultValues();
   }
   splitSettings(deviceString);
 
@@ -135,10 +139,10 @@ void loop() {
     tft.fillScreen(TFT_BLACK);
     BTNA.read();
     if (SerialPort1.available()) {
-      Serial.println("Bill acceptor connected")
+      Serial.println("Bill acceptor connected");
     }
     if (SerialPort1.available()) {
-      Serial.println("Coin acceptor connected")
+      Serial.println("Coin acceptor connected");
     }
     moneyTimerFun();
     Serial.println(total);
@@ -161,6 +165,7 @@ void moneyTimerFun() {
     }
     if (total == 0) {
       feedmefiat();
+      Serial.print(".");
       feedmefiatloop();
     }
     if (SerialPort1.available()) {

@@ -97,8 +97,12 @@ void setDefaultValues() {
   Serial.println("Max amount: " + String(maxamount));
   maxBeforeReset = MAX_BEFORE_RESET;
   Serial.println("Max before reset: " + String(maxBeforeReset));
-  convertStringToFloatArray(COIN_AMOUNTS, coinAmountFloat);
-  Serial.println("Coin amounts: " + String(COIN_AMOUNTS));
+
+  convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
+  Serial.println("Coin amounts: " + String(coinAmountString));
+
+  convertStringToIntArray(billAmountString.c_str(), billAmountInt);
+  Serial.println("Bill amounts: " + String(billAmountString));
 }
 
 void readFiles() {
@@ -160,10 +164,10 @@ void readFiles() {
     tft.fillScreen(TFT_BLACK);
   }
 
-  String billAmountString = getJsonValue(doc, "config_bill_ints");
+  billAmountString = getJsonValue(doc, "config_bill_ints");
   convertStringToIntArray(billAmountString.c_str(), billAmountInt);
 
-  String coinAmountString = getJsonValue(doc, "config_coin_floats");
+  coinAmountString = getJsonValue(doc, "config_coin_floats");
   convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
 
   String langConfig = getJsonValue(doc, "config_lang");
