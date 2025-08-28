@@ -46,10 +46,12 @@ float coinAmountFloat[6];
 
 String deviceString = DEVICE_STRING;
 String language = LANGUAGE;
-String coinAmountString = COIN_AMOUNTS;
-String billAmountString = BILL_AMOUNTS;
+String coinAmounts = COIN_AMOUNTS;
+String billAmounts = BILL_AMOUNTS;
+convertStringToFloatArray(coinAmounts.c_str(), coinAmountFloat);
+convertStringToIntArray(billAmounts.c_str(), billAmountInt);
 int charge = CHARGE;
-int maxamount = MAX_AMOUNT;
+int maxAmount = MAX_AMOUNT;
 int maxBeforeReset = MAX_BEFORE_RESET;
 
 String baseURLATM;
@@ -113,7 +115,7 @@ void setup() {
     readFiles();
   }
   else{
-    setDefaultValues();
+    printDefaultValues();
   }
   splitSettings(deviceString);
 
@@ -166,7 +168,6 @@ void moneyTimerFun() {
     if (total == 0) {
       waitForTap = true;
       feedmefiat();
-      Serial.print(".");
       feedmefiatloop();
     }
     if (SerialPort1.available()) {
@@ -190,7 +191,7 @@ void moneyTimerFun() {
         }
     }
     BTNA.read();
-    if (BTNA.wasReleased() || total > maxamount) {
+    if (BTNA.wasReleased() || total > maxAmount) {
       waitForTap = false;
     }
     homeScreenNumColorCount++;

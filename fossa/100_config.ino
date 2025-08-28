@@ -85,31 +85,21 @@ KeyValue extractKeyValue(String s) {
   return { key, value };
 }
 
-void setDefaultValues() {
-  Serial.println("Hardcoded settings:");
-  deviceString = DEVICE_STRING;
+void printDefaultValues() {
   Serial.println("Device string: " + deviceString);
-  language = LANGUAGE;
   Serial.println("Language: " + language);
-  charge = CHARGE;
   Serial.println("Charge: " + String(charge) + "%");
-  maxamount = MAX_AMOUNT;
-  Serial.println("Max amount: " + String(maxamount));
-  maxBeforeReset = MAX_BEFORE_RESET;
+  Serial.println("Max amount: " + String(maxAmount));
   Serial.println("Max before reset: " + String(maxBeforeReset));
-
-  convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
-  Serial.println("Coin amounts: " + String(coinAmountString));
-
-  convertStringToIntArray(billAmountString.c_str(), billAmountInt);
-  Serial.println("Bill amounts: " + String(billAmountString));
+  Serial.println("Coin amounts: " + String(coinAmounts));
+  Serial.println("Bill amounts: " + String(billAmounts));
 }
 
 void readFiles() {
   File paramFile = FlashFS.open(PARAM_FILE, "r");
   if (!paramFile) {
-      Serial.println("unable to open file, using default values");
-      setDefaultValues();
+      Serial.println("unable to open spiffs.");
+      printDefaultValues();
       printMessage("", failedT, unableT, TFT_WHITE, TFT_BLACK);
       return;
   }
@@ -130,12 +120,12 @@ void readFiles() {
 
   String maxAmountConfig = getJsonValue(doc, "config_max_amount, using default");
   if (maxAmountConfig != "") {
-    maxamount = maxAmountConfig.toInt();
-    Serial.println("maxamount: " + maxAmountConfig);
+    maxAmount = maxAmountConfig.toInt();
+    Serial.println("maxAmount: " + maxAmountConfig);
 
   } else {
-    maxamount = MAX_AMOUNT;
-    printMessage("", maxaT + " " + String(maxamount), willT, TFT_WHITE, TFT_BLACK);
+    maxAmount = MAX_AMOUNT;
+    printMessage("", maxaT + " " + String(maxAmount), willT, TFT_WHITE, TFT_BLACK);
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }
@@ -164,11 +154,11 @@ void readFiles() {
     tft.fillScreen(TFT_BLACK);
   }
 
-  billAmountString = getJsonValue(doc, "config_bill_ints");
-  convertStringToIntArray(billAmountString.c_str(), billAmountInt);
+  billAmounts = getJsonValue(doc, "config_bill_ints");
+  convertStringToIntArray(billAmounts.c_str(), billAmountInt);
 
-  coinAmountString = getJsonValue(doc, "config_coin_floats");
-  convertStringToFloatArray(coinAmountString.c_str(), coinAmountFloat);
+  coinAmounts = getJsonValue(doc, "config_coin_floats");
+  convertStringToFloatArray(coinAmounts.c_str(), coinAmountFloat);
 
   String langConfig = getJsonValue(doc, "config_lang");
   if (langConfig != "") {
@@ -182,6 +172,5 @@ void readFiles() {
     delay(3000);
     tft.fillScreen(TFT_BLACK);
   }
-
   paramFile.close();
 }
