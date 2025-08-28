@@ -55,6 +55,7 @@ int maxAmount = MAX_AMOUNT;
 int maxBeforeReset = MAX_BEFORE_RESET;
 
 String baseURLATM;
+String baseUrlAtmPage;
 String secretATM;
 String currencyATM;
 
