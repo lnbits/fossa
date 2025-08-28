@@ -63,14 +63,9 @@ sh ./debug.sh /dev/ttyUSB0
 ```
 
 ## Hardware Build
-
-A video tutorial is available here on how to construct the FOSSA:
-
-[https://www.youtube.com/watch?v=vbyYb9Yiu_k](https://www.youtube.com/watch?v=vbyYb9Yiu_k)
-
 ### Step 1: Hardware Setup
 
-> **STAY TUNED FOR A WIRING HARNESS TO MAKE THIS PLUG-AND-PLAY, AND YOU CAN SKIP TO STEP 2.**
+[https://www.youtube.com/watch?v=vbyYb9Yiu_k](https://www.youtube.com/watch?v=vbyYb9Yiu_k)
 
 This method requires no soldering. We do this by using GPIO jumpers and terminal blocks. First, split a terminal block into a block of 3 (our LIVE terminal) and a block of 4 (our GROUND terminal).
 
