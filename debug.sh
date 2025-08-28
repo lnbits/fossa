@@ -5,6 +5,12 @@ fi
 echo "User TFT Config: "
 cat tft_config.txt
 tft_config=$(sh ./tft_config_build_flags.sh)
+
+if [ ! -f fossa/hardcoded_user_config.h ]; then
+    echo "No hardcoded_user_config.h found, creating from example..."
+    cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h
+fi
+
 echo "COMPILING..."
 arduino-cli compile \
     --library ./libraries/QRCode \
