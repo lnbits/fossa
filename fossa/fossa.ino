@@ -49,8 +49,6 @@ String deviceString = DEVICE_STRING;
 String language = LANGUAGE;
 String coinAmounts = COIN_AMOUNTS;
 String billAmounts = BILL_AMOUNTS;
-convertStringToFloatArray(coinAmounts.c_str(), coinAmountFloat);
-convertStringToIntArray(billAmounts.c_str(), billAmountInt);
 int charge = CHARGE;
 int maxAmount = MAX_AMOUNT;
 int maxBeforeReset = MAX_BEFORE_RESET;

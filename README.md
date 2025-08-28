@@ -47,7 +47,39 @@ For the 3D-printed version, you will need:
 | Optional: M5 nylon nuts | To screw the rubber feet into the backbox. | [Amazon (UK)](https://www.amazon.co.uk/Bolt-Base-Stainless-Insert-Nylock) |
 | Optional: Adhesive security plate and locking cable | Secure the ATM when desk mounted. | [Amazon (UK)](https://www.amazon.co.uk/I3C-Security-Anti-Theft-Hardware-Smartphone/dp/B07FM93JL6) |
 
-## Build
+## Software installation
+
+### Using the web-installer
+
+With Chromium based browser visit https://fossa.lnbits.com
+* Connect to device
+* Push latest release
+* Use/push your config
+
+### Running locally
+
+Make build script executable:
+
+```bash
+sh chmod +x build.sh
+```
+Run the script (this will fetch and build all the libraries you need):
+
+```bash
+sh ./build.sh
+```
+Make the debug script executable:
+
+```bash
+sh chmod +x debug.sh
+```
+Run the script (this will push the binary to the device and let you monitor over serial):
+
+```bash
+sh ./debug.sh /dev/ttyUSB0
+```
+
+## Hardware Build
 
 A video tutorial is available here on how to construct the FOSSA:
 
@@ -211,15 +243,3 @@ Use the templates provided <a href="cuttingTemplate.pdf">here</a>, print out at 
 And there you have it. Have fun, and tag us on Twitter / Nostr with all your cool setups!
 
 > <i>Join our <a href="https://t.me/makerbits">telegram support/chat</a>.</i>
-
-## Development
-
-### build from arduino-cli
-```bash
-sh build.sh
-```
-
-### build, upload and monitor from arduino-cli
-```bash
-sh debug.sh /dev/ttyUSB0
-```

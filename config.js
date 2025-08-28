@@ -22,7 +22,7 @@ export const elements = [
   {
     name: "config_lnurl",
     value: "",
-    label: "Whole LNURLATM string from LNURLDevices extension",
+    label: "ATM string from LNURLDevices extension",
     type: "text",
   },
   {
