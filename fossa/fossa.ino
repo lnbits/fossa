@@ -164,6 +164,7 @@ void moneyTimerFun() {
       homeScreenNumColorCount = 0;
     }
     if (total == 0) {
+      waitForTap = true;
       feedmefiat();
       Serial.print(".");
       feedmefiatloop();
