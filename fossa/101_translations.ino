@@ -1,6 +1,7 @@
-// Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
-String translate(String key, String language) {
-  const char* translations = R"(
+// Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv, nl
+String translate(String key, String language)
+{
+  const char *translations = R"(
 [en]
 usbT = USB config mode
 tapScreenT = TAP SCREEN WHEN FINISHED
@@ -23,8 +24,8 @@ tooMuchFiatT = Too much FIAT!
 contactOwnerT = Please contact owner
 failedT = FAILED
 unableT = unable to read lnurl
-maxaT = WARNING: max amount
-willT = Will use default
+maxaT = Max amount
+willT = Using default
 loadT = WARNING: load charge
 maxrT = WARNING: max reset
 printY = WARNING: print bool
@@ -33,42 +34,42 @@ langT = WARNING: lang fail
 [es]
 usbT = Modo de configuracion USB
 tapScreenT = TOQUE LA PANTALLA CUANDO TERMINE
-scanMeT = ESCANEME TOQUE LA PANTALLA CUANDO TERMINE
-totalT = Total:
+scanMeT = ESCANEME Y TOQUE LA PANTALLA CUANDO TERMINE
+totalT = Total: 
 fossaT = FOSSA! Cajero Bitcoin
 satsT = SATS
 forT = PARA
 fiatT = FIAT!
-feedT = dame fiat.
-chargeT = % de carga
+feedT = alimentame con fiat.
+chargeT = % carga
 printingT = Imprimiendo
-waitT = por favor espera
+waitT = por favor espere
 workingT = Trabajando...
 thisVoucherT = Este vale se puede canjear por
 ofBitcoinT = de Bitcoin
 thankYouT = Gracias
-scanMeClaimT = Escaneame con una billetera Lightning para recibir tu Bitcoin
+scanMeClaimT = Escaneame con una billetera Lightning para obtener tu Bitcoin
 tooMuchFiatT = Demasiado FIAT!
-contactOwnerT = Por favor contacta al propietario
+contactOwnerT = Por favor contacte al propietario
 failedT = FALLIDO
 unableT = no se puede leer lnurl
 maxaT = ADVERTENCIA: cantidad maxima
-willT = Usara el valor predeterminado
-loadT = ADVERTENCIA: carga de valor
+willT = Usando predeterminado
+loadT = ADVERTENCIA: carga
 maxrT = ADVERTENCIA: reinicio maximo
-printY = ADVERTENCIA: bool de impresion
-langT = ADVERTENCIA: error de idioma
+printY = ADVERTENCIA: impresion bool
+langT = ADVERTENCIA: fallo de idioma
 
 [fr]
-usbT = Mode de configuration USB
+usbT = Mode config USB
 tapScreenT = TOUCHEZ L ECRAN QUAND TERMINE
-scanMeT = SCANEZ MOI TOUCHEZ L ECRAN QUAND TERMINE
-totalT = Total:
+scanMeT = SCANNEZ MOI ET TOUCHEZ L ECRAN QUAND TERMINE
+totalT = Total: 
 fossaT = FOSSA! Distributeur Bitcoin
 satsT = SATS
 forT = POUR
 fiatT = FIAT!
-feedT = nourrissez moi de fiat
+feedT = nourrissez moi en fiat.
 chargeT = % charge
 printingT = Impression
 waitT = veuillez patienter
@@ -77,277 +78,306 @@ thisVoucherT = Ce bon peut etre echange contre
 ofBitcoinT = de Bitcoin
 thankYouT = Merci
 scanMeClaimT = Scannez moi avec un portefeuille Lightning pour obtenir votre Bitcoin
-tooMuchFiatT = Trop de FIAT !
-contactOwnerT = Veuillez contacter le proprietaire
+tooMuchFiatT = Trop de FIAT!
+contactOwnerT = Contactez le proprietaire
 failedT = ECHOUE
 unableT = impossible de lire lnurl
 maxaT = AVERTISSEMENT: montant maximal
-willT = Utilisera la valeur par defaut
-loadT = AVERTISSEMENT: charge de chargement
-maxrT = AVERTISSEMENT: reinitialisation maximale
-printY = AVERTISSEMENT: bool impression
-langT = AVERTISSEMENT: echec de langue
+willT = Utilise par defaut
+loadT = AVERTISSEMENT: charge
+maxrT = AVERTISSEMENT: reset max
+printY = AVERTISSEMENT: impression bool
+langT = AVERTISSEMENT: erreur langue
 
 [de]
-usbT = USB-Konfigurationsmodus
+usbT = USB Konfig Modus
 tapScreenT = BERUEHREN SIE DEN BILDSCHIRM WENN FERTIG
-scanMeT = SCANNEN SIE MICH BERUEHREN SIE DEN BILDSCHIRM WENN FERTIG
-totalT = Gesamt:
-fossaT = FOSSA! Bitcoin-Geldautomat
+scanMeT = SCANNEN SIE MICH UND BERUEHREN SIE DEN BILDSCHIRM WENN FERTIG
+totalT = Gesamt: 
+fossaT = FOSSA! Bitcoin Automat
 satsT = SATS
 forT = FUER
 fiatT = FIAT!
-feedT = fuettere mich mit Fiat
-chargeT = % Ladung
+feedT = fuettere mich mit fiat.
+chargeT = % ladung
 printingT = Drucken
 waitT = bitte warten
 workingT = Arbeitet...
-thisVoucherT = Dieser Gutschein kann eingeloest werden fuer
+thisVoucherT = Gutschein einloesbar fuer
 ofBitcoinT = von Bitcoin
 thankYouT = Danke
-scanMeClaimT = Scannen Sie mich mit einem Lightning Wallet um Ihr Bitcoin zu erhalten
+scanMeClaimT = Scannen Sie mich mit einem Lightning Wallet um Bitcoin zu erhalten
 tooMuchFiatT = Zu viel FIAT!
-contactOwnerT = Bitte kontaktieren Sie den Besitzer
+contactOwnerT = Bitte Besitzer kontaktieren
 failedT = FEHLGESCHLAGEN
 unableT = lnurl konnte nicht gelesen werden
-maxaT = WARNUNG: Maximalbetrag
-willT = Standard wird verwendet
-loadT = WARNUNG: Ladefracht
-maxrT = WARNUNG: Maximales Zuruecksetzen
-printY = WARNUNG: Druck bool
-langT = WARNUNG: Sprachfehler
+maxaT = WARNUNG: Max betrag
+willT = Standard wird benutzt
+loadT = WARNUNG: ladung
+maxrT = WARNUNG: reset max
+printY = WARNUNG: druck bool
+langT = WARNUNG: sprachfehler
 
 [it]
-usbT = Modalita di configurazione USB
-tapScreenT = TOCCA LO SCHERMO QUANDO FINITO
-scanMeT = SCANSIONAMI TOCCA LO SCHERMO QUANDO FINITO
-totalT = Totale:
+usbT = Modalita config USB
+tapScreenT = TOCCA SCHERMO QUANDO FINITO
+scanMeT = SCANSIONAMI E TOCCA SCHERMO QUANDO FINITO
+totalT = Totale: 
 fossaT = FOSSA! Bancomat Bitcoin
 satsT = SATS
 forT = PER
 fiatT = FIAT!
-feedT = dammelo in fiat
+feedT = dammi fiat.
 chargeT = % carica
-printingT = Stampa in corso
-waitT = attendere prego
-workingT = Funzionamento...
-thisVoucherT = Questo voucher puo essere riscattato per
+printingT = Stampa
+waitT = attendere
+workingT = Lavorando...
+thisVoucherT = Questo voucher riscattabile per
 ofBitcoinT = di Bitcoin
 thankYouT = Grazie
-scanMeClaimT = Scansionami con un portafoglio Lightning per ottenere il tuo Bitcoin
+scanMeClaimT = Scansionami con portafoglio Lightning per avere Bitcoin
 tooMuchFiatT = Troppo FIAT!
-contactOwnerT = Per favore contatta il proprietario
+contactOwnerT = Contatta il proprietario
 failedT = FALLITO
 unableT = impossibile leggere lnurl
-maxaT = AVVERTENZA: importo massimo
-willT = Verra utilizzato il valore predefinito
-loadT = AVVERTENZA: carica di carico
-maxrT = AVVERTENZA: ripristino massimo
-printY = AVVERTENZA: stampa bool
-langT = AVVERTENZA: errore di lingua
+maxaT = AVVISO: importo massimo
+willT = Usa valore predefinito
+loadT = AVVISO: carico
+maxrT = AVVISO: reset max
+printY = AVVISO: stampa bool
+langT = AVVISO: errore lingua
 
 [pt]
-usbT = Modo de configuracao USB
+usbT = Modo config USB
 tapScreenT = TOQUE NA TELA QUANDO TERMINAR
-scanMeT = ESCANEIE ME TOQUE NA TELA QUANDO TERMINAR
-totalT = Total:
-fossaT = FOSSA! Caixa eletronico Bitcoin
+scanMeT = ESCANEIE ME E TOQUE NA TELA QUANDO TERMINAR
+totalT = Total: 
+fossaT = FOSSA! Caixa Bitcoin
 satsT = SATS
 forT = PARA
 fiatT = FIAT!
-feedT = me de fiat
-chargeT = % de carga
+feedT = me de fiat.
+chargeT = % carga
 printingT = Imprimindo
 waitT = por favor aguarde
 workingT = Trabalhando...
-thisVoucherT = Este voucher pode ser resgatado por
+thisVoucherT = Voucher resgatavel por
 ofBitcoinT = de Bitcoin
 thankYouT = Obrigado
-scanMeClaimT = Escaneie me com uma carteira Lightning para obter seu Bitcoin
+scanMeClaimT = Escaneie com carteira Lightning para receber Bitcoin
 tooMuchFiatT = Muito FIAT!
-contactOwnerT = Por favor entre em contato com o proprietario
+contactOwnerT = Contate o proprietario
 failedT = FALHOU
-unableT = incapaz de ler lnurl
+unableT = nao consegue ler lnurl
 maxaT = AVISO: valor maximo
-willT = Usara o valor padrao
-loadT = AVISO: carga de valor
-maxrT = AVISO: redefinicao maxima
-printY = AVISO: bool de impressao
-langT = AVISO: falha no idioma
+willT = Usa padrao
+loadT = AVISO: carga
+maxrT = AVISO: reset max
+printY = AVISO: impressao bool
+langT = AVISO: erro idioma
 
 [pl]
 usbT = Tryb konfiguracji USB
-tapScreenT = DOTKNIJ EKRAN PO UKONCZENIU
-scanMeT = SCANUJ MNIE DOTKNIJ EKRAN PO UKONCZENIU
-totalT = Razem:
+tapScreenT = DOTKNIJ EKRAN KIEDY GOTOWE
+scanMeT = ZESKANUJ MNIE I DOTKNIJ EKRAN KIEDY GOTOWE
+totalT = Razem: 
 fossaT = FOSSA! Bankomat Bitcoin
 satsT = SATS
 forT = DLA
 fiatT = FIAT!
-feedT = daj mi fiat
-chargeT = % ladunku
+feedT = daj mi fiat.
+chargeT = % ladunek
 printingT = Drukowanie
 waitT = prosze czekac
 workingT = Pracuje...
-thisVoucherT = Ten bon moze byc wymieniony na
+thisVoucherT = Bon do wymiany na
 ofBitcoinT = Bitcoin
 thankYouT = Dziekuje
-scanMeClaimT = Zeskanuj mnie portfelem Lightning aby otrzymac swoj Bitcoin
+scanMeClaimT = Zeskanuj mnie portfelem Lightning aby dostac Bitcoin
 tooMuchFiatT = Za duzo FIAT!
-contactOwnerT = Prosze skontaktowac sie z wlascicielem
+contactOwnerT = Skontaktuj sie z wlascicielem
 failedT = NIEUDANE
 unableT = nie mozna odczytac lnurl
-maxaT = OSTRZEZENIE: maksymalna kwota
-willT = Zostanie uzyta wartosc domyslna
+maxaT = OSTRZEZENIE: max kwota
+willT = Uzywa domyslnej
 loadT = OSTRZEZENIE: ladunek
-maxrT = OSTRZEZENIE: maksymalne zresetowanie
-printY = OSTRZEZENIE: bool drukowania
+maxrT = OSTRZEZENIE: max reset
+printY = OSTRZEZENIE: druk bool
 langT = OSTRZEZENIE: blad jezyka
 
 [hu]
-usbT = USB konfiguracios mod
-tapScreenT = TAP IN EKRANRA HA VEGE
-scanMeT = SZKENNELJ ENGEM TAP IN EKRANRA HA VEGE
-totalT = Osszesen:
+usbT = USB konfiguracio mod
+tapScreenT = ERINTSD A KEPRNYOT HA KESZ
+scanMeT = SZKENNELJ ENGEM ES ERINTSD A KEPRNYOT HA KESZ
+totalT = Osszesen: 
 fossaT = FOSSA! Bitcoin ATM
 satsT = SATS
 forT = SZAMARA
 fiatT = FIAT!
-feedT = etess meg fiatot
+feedT = etess meg fiattal.
 chargeT = % toltes
 printingT = Nyomtatas
 waitT = kerlek varj
-workingT = Munkalkodik...
+workingT = Munkal...
 thisVoucherT = Ez a voucher bevalthato
 ofBitcoinT = Bitcoin ertekere
 thankYouT = Koszonom
-scanMeClaimT = Szkenneld meg egy Lightning tarcaval hogy megkapd a Bitcoinod
+scanMeClaimT = Szkenneld meg Lightning tarcaval hogy megkapd Bitcoin
 tooMuchFiatT = Tul sok FIAT!
-contactOwnerT = Kerlek lepj kapcsolatba a tulajdonossal
+contactOwnerT = Lelj kapcsolatba tulajdonossal
 failedT = HIBAS
-unableT = nem sikerult beolvasni az lnurl
+unableT = nem olvashato lnurl
 maxaT = FIGYELEM: max osszeg
-willT = Alapertelmezett ertek lesz hasznalva
-loadT = FIGYELEM: toltési arany
-maxrT = FIGYELEM: max visszaallitas
+willT = Alapertelmezett hasznalva
+loadT = FIGYELEM: toltes
+maxrT = FIGYELEM: max reset
 printY = FIGYELEM: nyomtatas bool
 langT = FIGYELEM: nyelvi hiba
 
 [tr]
 usbT = USB ayar modu
-tapScreenT = BITTIGINDE EKRANA DOKUNUN
-scanMeT = BENI TARAMAK BITTIGINDE EKRANA DOKUNUN
-totalT = Toplam:
+tapScreenT = BITTIGINDE EKRANA DOKUN
+scanMeT = BENI TARA VE BITTIGINDE EKRANA DOKUN
+totalT = Toplam: 
 fossaT = FOSSA! Bitcoin ATM
 satsT = SATS
 forT = ICIN
 fiatT = FIAT!
-feedT = fiat ver
+feedT = fiat ver.
 chargeT = % sarj
 printingT = Yazdiriliyor
-waitT = lutfen bekleyin
+waitT = lutfen bekle
 workingT = Calisiyor...
-thisVoucherT = Bu fis sunun karsiliginda kullanilabilir
+thisVoucherT = Bu fis karsiliginda kullanilabilir
 ofBitcoinT = Bitcoin
-thankYouT = Tesekkur ederim
-scanMeClaimT = Bitcoin almak icin beni bir Lightning cuzdaniyla tarayin
+thankYouT = Tesekkurler
+scanMeClaimT = Bitcoin almak icin beni Lightning cuzdaniyla tarayin
 tooMuchFiatT = Cok fazla FIAT!
 contactOwnerT = Lutfen sahibi ile iletisime gecin
 failedT = BASARISIZ
 unableT = lnurl okunamiyor
-maxaT = UYARI: maksimum miktar
+maxaT = UYARI: max miktar
 willT = Varsayilan kullanilacak
-loadT = UYARI: yukleme sarji
-maxrT = UYARI: maksimum sifirlama
+loadT = UYARI: yukleme
+maxrT = UYARI: max sifirlama
 printY = UYARI: yazdirma bool
 langT = UYARI: dil hatasi
 
 [ro]
-usbT = Mod configurare USB
-tapScreenT = ATINGE ECRANUL CAND GATA
-scanMeT = SCANEAZA MA ATINGE ECRANUL CAND GATA
-totalT = Total:
+usbT = Mod config USB
+tapScreenT = ATINGE ECRANUL CAND TERMINAT
+scanMeT = SCANEAZA MA SI ATINGE ECRANUL CAND TERMINAT
+totalT = Total: 
 fossaT = FOSSA! ATM Bitcoin
 satsT = SATS
 forT = PENTRU
 fiatT = FIAT!
-feedT = hraneste-ma cu fiat
+feedT = hraneste ma cu fiat.
 chargeT = % incarcare
 printingT = Imprimare
-waitT = te rog asteapta
+waitT = asteapta
 workingT = Se lucreaza...
-thisVoucherT = Acest voucher poate fi rascumparat pentru
+thisVoucherT = Voucher rascumparabil pentru
 ofBitcoinT = de Bitcoin
 thankYouT = Multumesc
-scanMeClaimT = Scaneaza-ma cu un portofel Lightning pentru a primi Bitcoin-ul tau
+scanMeClaimT = Scaneaza ma cu portofel Lightning pentru Bitcoin
 tooMuchFiatT = Prea mult FIAT!
-contactOwnerT = Va rugam sa contactati proprietarul
+contactOwnerT = Contacteaza proprietarul
 failedT = ESUAT
-unableT = incapabil sa citeasca lnurl
+unableT = nu se poate citi lnurl
 maxaT = AVERTISMENT: suma maxima
-willT = Va folosi valoarea implicita
-loadT = AVERTISMENT: incarcare tarifara
-maxrT = AVERTISMENT: resetare maxima
-printY = AVERTISMENT: bool imprimare
-langT = AVERTISMENT: esec de limba
+willT = Foloseste implicit
+loadT = AVERTISMENT: incarcare
+maxrT = AVERTISMENT: reset max
+printY = AVERTISMENT: imprimare bool
+langT = AVERTISMENT: eroare limba
 
 [fi]
-usbT = USB-moodi
+usbT = USB moodi
 tapScreenT = KOSKETA NAYTTOA KUN VALMIS
-scanMeT = SKANNAA MINUT KOSKETA NAYTTOA KUN VALMIS
-totalT = Yhteensa:
-fossaT = FOSSA! Bitcoin-automatti
+scanMeT = SKANNAA MINUT JA KOSKETA NAYTTOA KUN VALMIS
+totalT = Yhteensa: 
+fossaT = FOSSA! Bitcoin automaatti
 satsT = SATS
 forT = VASTAAN
 fiatT = FIAT!
-feedT = anna minulle fiat
+feedT = anna minulle fiat.
 chargeT = % lataus
 printingT = Tulostus
-waitT = ole hyva ja odota
+waitT = odota
 workingT = Toiminnassa...
-thisVoucherT = Tama kuponki voidaan lunastaa
+thisVoucherT = Kuponki lunastettavissa
 ofBitcoinT = Bitcoinista
 thankYouT = Kiitos
-scanMeClaimT = Skannaa minut Lightning-lompakolla saadaksesi Bitcoinisi
+scanMeClaimT = Skannaa minut Lightning lompakolla saadaksesi Bitcoin
 tooMuchFiatT = Liikaa FIAT!
-contactOwnerT = Ole hyva ja ota yhteytta omistajaan
+contactOwnerT = Ota yhteytta omistajaan
 failedT = EPAAONNISTUI
-unableT = ei pysty lukemaan lnurl
-maxaT = VAROITUS: enin maara
-willT = Oletusarvo kaytossa
-loadT = VAROITUS: latausmaksu
-maxrT = VAROITUS: enin nollaus
-printY = VAROITUS: tulosta bool
+unableT = ei voi lukea lnurl
+maxaT = VAROITUS: max maara
+willT = Oletus kaytossa
+loadT = VAROITUS: lataus
+maxrT = VAROITUS: reset max
+printY = VAROITUS: tulostus bool
 langT = VAROITUS: kielivirhe
 
 [sv]
-usbT = USB-konfigurationslage
+usbT = USB konfig lage
 tapScreenT = TRYCK PA SKARMEN NAR KLART
-scanMeT = SKANNA MIG TRYCK PA SKARMEN NAR KLART
-totalT = Totalt:
-fossaT = FOSSA! Bitcoin-automat
+scanMeT = SKANNA MIG OCH TRYCK PA SKARMEN NAR KLART
+totalT = Totalt: 
+fossaT = FOSSA! Bitcoin automat
 satsT = SATS
 forT = FOR
 fiatT = FIAT!
-feedT = mata mig med fiat
+feedT = mata mig med fiat.
 chargeT = % laddning
 printingT = Skriver ut
-waitT = var god vante
+waitT = vanligen vantar
 workingT = Arbetar...
-thisVoucherT = Denna kupong kan losas in for
+thisVoucherT = Kupong loses in for
 ofBitcoinT = av Bitcoin
 thankYouT = Tack
-scanMeClaimT = Skanna mig med en Lightning-plambok for att fa dina Bitcoin
+scanMeClaimT = Skanna mig med Lightning planbok for att fa Bitcoin
 tooMuchFiatT = For mycket FIAT!
-contactOwnerT = Var god kontakta agaren
+contactOwnerT = Kontakta agaren
 failedT = MISSLYCKADES
 unableT = kan inte lasa lnurl
-maxaT = VARNING: maxbelopp
-willT = Standardvardet anvands
-loadT = VARNING: laddningsavgift
+maxaT = VARNING: max belopp
+willT = Standard anvands
+loadT = VARNING: laddning
 maxrT = VARNING: max aterstallning
-printY = VARNING: skriv ut bool
-langT = VARNING: sprakfel
+printY = VARNING: skriv bool
+langT = VARNING: sprak fel
+
+[nl]
+usbT = USB config modus
+tapScreenT = TIK SCHERM WANNEER KLAAR
+scanMeT = SCAN MIJ EN TIK SCHERM WANNEER KLAAR
+totalT = Totaal: 
+fossaT = FOSSA! Bitcoin ATM
+satsT = SATS
+forT = VOOR
+fiatT = FIAT!
+feedT = voer mij fiat.
+chargeT = % lading
+printingT = Afdrukken
+waitT = even wachten
+workingT = Bezig...
+thisVoucherT = Voucher inwisselen voor
+ofBitcoinT = in Bitcoin
+thankYouT = Bedankt
+scanMeClaimT = Scan met Lightning wallet om Bitcoin te krijgen
+tooMuchFiatT = Te veel FIAT!
+contactOwnerT = Contacteer eigenaar
+failedT = MISLUKT
+unableT = kan lnurl niet lezen
+maxaT = WAARSCHUWING: max bedrag
+willT = Standaard gebruikt
+loadT = WAARSCHUWING: lading
+maxrT = WAARSCHUWING: max reset
+printY = WAARSCHUWING: print bool
+langT = WAARSCHUWING: taal fout
 )";
 
   String line;
@@ -355,45 +385,53 @@ langT = VARNING: sprakfel
   int startPos = 0;
   int endPos;
 
-  while (startPos < strlen(translations)) {
+  while (startPos < strlen(translations))
+  {
     endPos = startPos;
-    while (translations[endPos] != '\n' && translations[endPos] != '\0') {
+    while (translations[endPos] != '\n' && translations[endPos] != '\0')
+    {
       endPos++;
     }
     line = String(translations).substring(startPos, endPos);
-    line.trim();  // Trim line
+    line.trim(); // Trim line
     startPos = endPos + 1;
 
-    if (line.length() == 0) {
+    if (line.length() == 0)
+    {
       continue;
     }
 
     // Check for language section
-    if (line.startsWith("[")) {
+    if (line.startsWith("["))
+    {
       inCorrectLanguage = (line == "[" + language + "]");
       continue;
     }
 
-    if (inCorrectLanguage) {
+    if (inCorrectLanguage)
+    {
       int separatorPos = line.indexOf('=');
-      if (separatorPos != -1) {
+      if (separatorPos != -1)
+      {
         String currentKey = line.substring(0, separatorPos);
-        currentKey.trim();  // Trim key separately
+        currentKey.trim(); // Trim key separately
 
         String value = line.substring(separatorPos + 1);
-        value.trim();  // Trim value separately
+        value.trim(); // Trim value separately
 
-        if (currentKey == key) {
+        if (currentKey == key)
+        {
           return value;
         }
       }
     }
   }
 
-  return key;  // Return the key if no translation is found
+  return key; // Return the key if no translation is found
 }
 
-void translateAll(String language) {
+void translateAll(String language)
+{
   usbT = translate("usbT", language);
   tapScreenT = translate("tapScreenT", language);
   scanMeT = translate("scanMeT", language);

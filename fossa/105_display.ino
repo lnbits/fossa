@@ -33,12 +33,14 @@ void feedmefiatloop() {
   delay(100);
 }
 void qrShowCodeLNURL(String message) {
-  if (printerBool) {
+  Serial.println("poo");
+  if (printerBool == true) {
     printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
+    printReceipt();
     delay(3000);
   }
+  Serial.println("poo");
   Serial.println(qrData);
-  printReceipt();
   tft.fillScreen(TFT_WHITE);
   const char *qrDataChar = qrData.c_str();
   QRCode qrcoded;
