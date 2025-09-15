@@ -3,4 +3,3 @@ PCB/Gerbers
 build
 .venv
 .cache
-fossa/hardcoded_user_config.h
