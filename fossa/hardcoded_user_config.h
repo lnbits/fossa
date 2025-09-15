@@ -1,6 +1,8 @@
 // If using hardcoded options 'cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h',
 // then change the values on fossa/hardcoded_user_config.h
 
+#define HARDCODED false // true or false
+#define PRINTER false // true or false
 #define LANGUAGE "en" // Supports en, es, fr, de, it, pt, pl, hu, tr, ro, fi, sv
 #define CHARGE 5 // % You will charge people for service, set in LNbits extension
 #define MAX_AMOUNT 30 // Max amount per withdraw
