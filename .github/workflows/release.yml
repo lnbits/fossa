@@ -35,8 +35,13 @@ jobs:
           git push --tags
 
       - name: Install Arduino CLI
-        uses: arduino/setup-arduino-cli@v2
+        uses: arduino/setup-arduino-cli@v1
 
+      - name: Prepare Arduino deps
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@2.0.17
+    
       - name: build sketch with arduino cli
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
