@@ -5,11 +5,10 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-    contents: write
-    pages: write
-    id-token: write
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   release:
@@ -36,6 +35,12 @@ jobs:
 
       - name: Install Arduino CLI
         uses: arduino/setup-arduino-cli@v1
+
+      - name: Force 80MHz flash for ttgo-lora32
+        run: |
+          # Replace plain FQBN with FlashFreq=80 in build.sh (only change)
+          sed -i 's/esp32:esp32:ttgo-lora32/esp32:esp32:ttgo-lora32:FlashFreq=80/g' build.sh
+          echo "Patched build.sh to use FlashFreq=80"
 
       - name: build sketch with arduino cli
         env:
