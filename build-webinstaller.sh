@@ -4,7 +4,9 @@ REPO=https://github.com/lnbits/fossa/releases/download
 INSTALLER_PATH=./hardware-installer/public/firmware
 
 git clone https://github.com/lnbits/hardware-installer
+cd hardware-installer
 git checkout before_boot
+cd ..
 
 cp INSTALLER.md ./hardware-installer/public/INSTALLER.md
 cp versions.json ./hardware-installer/src/versions.json
