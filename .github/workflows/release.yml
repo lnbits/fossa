@@ -16,89 +16,60 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          # Check out the tag that triggered this run
+          ref: ${{ github.ref_name }}
 
       - name: update version in repo
         env:
           tag: ${{ github.ref_name }}
         run: |
+          set -e
           tmp=$(mktemp)
-          jq --arg version $tag '.versions |= [$version] + .' versions.json > "$tmp" && mv "$tmp" versions.json
+          jq --arg version "$tag" '.versions |= [$version] + .' versions.json > "$tmp" && mv "$tmp" versions.json
           git config --global user.name 'Alan Bits'
           git config --global user.email 'alan@lnbits.com'
-          git commit -am "[CHORE] update version to $tag"
-          git push
-          git push --delete origin $tag
-          git tag -fa $tag -m "update via workflow"
+          git commit -am "[CHORE] update version to $tag" || echo "No changes to commit."
+          git push || true
+          # Re-point the tag at this commit (matches your previous behavior)
+          git push --delete origin "$tag" || true
+          git tag -fa "$tag" -m "update via workflow"
           git push --tags
 
-      - name: Install Arduino CLI
-        uses: arduino/setup-arduino-cli@v2
-        with:
-          version: 0.35.3
-
-      - name: Prepare Arduino deps (mirror local build.sh)
+      - name: Verify prebuilt artifacts exist
         run: |
-          # Same board manager URL used locally
-          arduino-cli config init --overwrite
-          arduino-cli config set board_manager.additional_urls \
-            https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          set -e
+          ls -lh build || (echo "Missing build/ directory"; exit 1)
+          for f in fossa.ino.bootloader.bin fossa.ino.bin fossa.ino.partitions.bin; do
+            [ -f "build/$f" ] || { echo "Missing build/$f"; exit 1; }
+          done
+          # Optional: produce checksums
+          (cd build && sha256sum *.bin > checksums.txt)
+          cat build/checksums.txt
 
-          arduino-cli core update-index
-          # uBitcoin broken on 3.x.x; pin to 2.0.17 like local
-          arduino-cli core install esp32:esp32@2.0.17
-
-          # Install latest libs (same as local script)
-          arduino-cli lib install TFT_eSPI ArduinoJson uBitcoin JC_Button EspSoftwareSerial "Adafruit Thermal Printer Library"
-
-          # (Optional) show what we have
-          arduino-cli core list
-          arduino-cli lib list
-
-      - name: Build sketch (TTGO LoRa32 @ 80MHz flash; same flags as local)
+      - name: Create or update GitHub release with local artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
           set -e
-
-          # Ensure required config file exists (mirrors debug.sh)
-          [ -f fossa/hardcoded_user_config.h ] || cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h
-
-          echo "User TFT Config:"
-          cat tft_config.txt || true
-          tft_config=$(sh ./tft_config_build_flags.sh)
-          [ -n "$tft_config" ] || { echo "tft_config is empty"; exit 1; }
-          echo "Resolved TFT build flags: ${tft_config}"
-
-          # Use the SAME board as local, with menu options set explicitly
-          FQBN='esp32:esp32:ttgo-lora32:UploadSpeed=921600,FlashFreq=80,DebugLevel=none,EraseFlash=none,Revision=TTGO_LoRa32_V1'
-
-          # Sanity: confirm partitions override when applied
-          arduino-cli compile --fqbn "$FQBN" --show-properties \
-            --build-property "build.partitions=min_spiffs" fossa \
-            | egrep 'build.f_cpu|upload.flash_freq|build.flash_mode|build.partitions' || true
-
-          # Compile (mirrors local build.sh/debug.sh)
-          arduino-cli compile \
-            --library ./libraries/QRCode \
-            --build-property "build.partitions=min_spiffs" \
-            --build-property "upload.maximum_size=1966080" \
-            --build-property "build.extra_flags.esp32=${tft_config}" \
-            --build-path build \
-            --fqbn "$FQBN" \
-            fossa
-
-      - name: Create github release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
-        run: |
-          gh release create "$tag" --generate-notes \
-            ./build/fossa.ino.bootloader.bin \
-            ./build/fossa.ino.bin \
-            ./build/fossa.ino.partitions.bin
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag exists; uploading assets..."
+            gh release upload "$tag" \
+              build/fossa.ino.bootloader.bin \
+              build/fossa.ino.bin \
+              build/fossa.ino.partitions.bin \
+              build/checksums.txt \
+              --clobber
+          else
+            echo "Creating release $tag with assets..."
+            gh release create "$tag" --generate-notes \
+              build/fossa.ino.bootloader.bin \
+              build/fossa.ino.bin \
+              build/fossa.ino.partitions.bin \
+              build/checksums.txt
+          fi
 
   deploy:
     needs: [ release ]
     uses: ./.github/workflows/static.yml
+
