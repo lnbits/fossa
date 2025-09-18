@@ -14,7 +14,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -24,23 +23,48 @@ jobs:
           tag: ${{ github.ref_name }}
         run: |
           tmp=$(mktemp)
-          jq --arg version $tag '.versions |= [$version] + .' versions.json > "$tmp" && mv "$tmp" versions.json
+          jq --arg version "$tag" '.versions |= [$version] + .' versions.json > "$tmp" && mv "$tmp" versions.json
           git config --global user.name 'Alan Bits'
           git config --global user.email 'alan@lnbits.com'
-          git commit -am "[CHORE] update version to $tag"
-          git push
-          git push --delete origin $tag
-          git tag -fa $tag -m "update via workflow"
+          git commit -am "[CHORE] update version to $tag" || echo "No changes to commit."
+          git push || true
+          git push --delete origin "$tag" || true
+          git tag -fa "$tag" -m "update via workflow"
           git push --tags
 
-      - name: Install Arduino CLI
-        uses: arduino/setup-arduino-cli@v1
+      # === Pin arduino-cli to your local version ===
+      - name: Install Arduino CLI (match local)
+        uses: arduino/setup-arduino-cli@v2
+        with:
+          version: 1.2.2
 
-      - name: Force 80MHz flash for ttgo-lora32
+      # === Prepare exact toolchain & libs (match local) ===
+      - name: Prepare Arduino deps (pin core + libs)
         run: |
-          # Replace plain FQBN with FlashFreq=80 in build.sh (only change)
-          sed -i 's/esp32:esp32:ttgo-lora32/esp32:esp32:ttgo-lora32:FlashFreq=80/g' build.sh
-          echo "Patched build.sh to use FlashFreq=80"
+          set -e
+          arduino-cli config init --overwrite
+          arduino-cli config set board_manager.additional_urls \
+            https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@2.0.17
+
+          # Install the SAME library versions you have locally
+          arduino-cli lib install \
+            "TFT_eSPI@2.5.43" \
+            "ArduinoJson@7.2.0" \
+            "uBitcoin@0.2.0" \
+            "JC_Button@2.1.4" \
+            "EspSoftwareSerial@8.1.0" \
+            "Adafruit Thermal Printer Library@1.4.1"
+
+      # === Make your build.sh behave like local (no upgrade; no floating lib installs) ===
+      - name: Patch build.sh to avoid drift (no upgrade, no unpinned lib install)
+        run: |
+          set -e
+          # Disable the global upgrade (keeps core/tools identical to above)
+          sed -i 's/^arduino-cli upgrade/# arduino-cli upgrade (disabled in CI)/' build.sh
+          # Disable the unversioned lib install (we already installed pinned versions)
+          sed -i 's/^arduino-cli lib install /# &/' build.sh
 
       - name: build sketch with arduino cli
         env:
@@ -54,8 +78,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" --generate-notes ./build/fossa.ino.bootloader.bin \
-            ./build/fossa.ino.bin ./build/fossa.ino.partitions.bin
+          gh release create "$tag" --generate-notes \
+            ./build/fossa.ino.bootloader.bin \
+            ./build/fossa.ino.bin \
+            ./build/fossa.ino.partitions.bin
 
   deploy:
     needs: [ release ]
