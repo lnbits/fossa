@@ -31,7 +31,7 @@
 #include "hardcoded_user_config.h"
 
 bool hardcoded = HARDCODED; // set to true if you want to use the above hardcoded settings
-bool printerBool = PRINTER;
+bool printerBool = false;
 int billAmountInt[10];
 float coinAmountFloat[6];
 
@@ -116,11 +116,12 @@ void setup() {
   // initialize bill and coin acceptor
   SerialPort1.begin(300, SERIAL_8N2, BILL_TX, BILL_RX);
   SerialPort2.begin(4800, SERIAL_8N1, COIN_TX);
+  printerSerial.begin(9600);
   pinMode(COIN_INHIBIT, OUTPUT);
 
   // initialize printer
-  if(printerBool == true){
-    printerSerial.begin(9600);
+  if (printerSerial.available()) {
+    printerBool = true;
     printer.begin();
   }
 }
