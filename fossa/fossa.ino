@@ -30,8 +30,8 @@
 // default settings
 #include "hardcoded_user_config.h"
 
-bool hardcoded = true; // set to true if you want to use the above hardcoded settings
-bool printerBool = false;
+bool hardcoded = HARDCODED; // set to true if you want to use the above hardcoded settings
+bool printerBool = PRINTER;
 int billAmountInt[10];
 float coinAmountFloat[6];
 
