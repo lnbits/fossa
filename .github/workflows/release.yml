@@ -5,17 +5,15 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-    contents: write
-    pages: write
-    id-token: write
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -35,19 +33,44 @@ jobs:
           git push --tags
 
       - name: Install Arduino CLI
-        uses: arduino/setup-arduino-cli@v1
+        uses: arduino/setup-arduino-cli@v2
+        with:
+          version: 0.35.3
 
       - name: Prepare Arduino deps
         run: |
           arduino-cli core update-index
           arduino-cli core install esp32:esp32@2.0.17
-    
-      - name: build sketch with arduino cli
+
+      - name: Build sketch (ESP32 Dev Module @ 80MHz flash)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          sh build.sh
+          set -e
+
+          # Ensure required config file exists (mirrors your debug.sh behavior)
+          [ -f fossa/hardcoded_user_config.h ] || cp fossa/hardcoded_user_config.h.example fossa/hardcoded_user_config.h
+
+          # Show any user TFT config you have and compute extra flags
+          echo "User TFT Config:"
+          cat tft_config.txt || true
+          tft_config=$(sh ./tft_config_build_flags.sh)
+          [ -n "$tft_config" ] || { echo "tft_config is empty"; exit 1; }
+          echo "Resolved TFT build flags: ${tft_config}"
+
+          # ESP32 Dev Module with pinned menus so bootloader/flash timing is correct
+          FQBN="esp32:esp32:esp32,CPUFreq=240,FlashFreq=80,FlashMode=dio,PartitionScheme=min_spiffs,PSRAM=disabled"
+
+          # Sanity: print what the toolchain thinks these are
+          arduino-cli compile --fqbn "$FQBN" --show-properties fossa | egrep 'build.f_cpu|upload.flash_freq|build.flash_mode|build.partitions' || true
+
+          # Compile
+          arduino-cli compile \
+            --fqbn "$FQBN" \
+            --build-property "build.extra_flags.esp32=${tft_config}" \
+            --library ./libraries/QRCode \
+            --build-path build fossa
 
       - name: Create github release
         env:
