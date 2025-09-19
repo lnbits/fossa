@@ -117,13 +117,22 @@ void setup() {
   SerialPort1.begin(300, SERIAL_8N2, BILL_TX, BILL_RX);
   SerialPort2.begin(4800, SERIAL_8N1, COIN_TX);
   printerSerial.begin(9600);
-  pinMode(COIN_INHIBIT, OUTPUT);
+  printer.begin();
+  printer.wake();
+  printer.setDefault();
+  printer.justify('C');
+  printer.feed(3);
+  printer.boldOn();
+  printer.setSize('L');
+  printer.println("Printer Connected :)");
+  printer.println("");
+  printer.println("");
+  printer.println("");
+  printer.println("");
+  printer.println("");
+  printer.sleep();
 
-  // initialize printer
-  if (printerSerial.available()) {
-    printerBool = true;
-    printer.begin();
-  }
+  pinMode(COIN_INHIBIT, OUTPUT);
 }
 
 void loop() {
@@ -131,6 +140,8 @@ void loop() {
     printMessage("", tooMuchFiatT, contactOwnerT, TFT_WHITE, TFT_BLACK);
     delay(100000000);
   } else {
+    // initialize printer
+
     SerialPort1.write(184);
     digitalWrite(COIN_INHIBIT, HIGH);
     tft.fillScreen(TFT_BLACK);
@@ -146,9 +157,7 @@ void loop() {
     Serial.println(maxBeforeResetTally);
     maxBeforeResetTally = maxBeforeResetTally + (total / 100);
     Serial.println(maxBeforeResetTally);
-    Serial.println("poo");
     makeLNURL();
-    Serial.println("poo");
     qrShowCodeLNURL(scanMeT);
   }
 }

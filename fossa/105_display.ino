@@ -33,13 +33,6 @@ void feedmefiatloop() {
   delay(100);
 }
 void qrShowCodeLNURL(String message) {
-  Serial.println("poo");
-  if (printerBool == true) {
-    printMessage(printingT, waitT, "", TFT_WHITE, TFT_BLACK);
-    printReceipt();
-    delay(3000);
-  }
-  Serial.println("poo");
   Serial.println(qrData);
   tft.fillScreen(TFT_WHITE);
   const char *qrDataChar = qrData.c_str();
@@ -61,6 +54,8 @@ void qrShowCodeLNURL(String message) {
   tft.setTextSize(2);
   tft.setTextColor(TFT_BLACK, TFT_WHITE);
   tft.println(message);
+  Serial.println("Printing if printer exists");
+  printReceipt();
   delay(2000);
   waitForTap = true;
   while (waitForTap) {

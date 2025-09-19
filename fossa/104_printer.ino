@@ -1,53 +1,39 @@
 
+void printQRcode(const String& qrData, uint8_t moduleSize = 6, bool isMainQR = true) {
+  uint8_t ms = isMainQR ? moduleSize : (moduleSize > 1 ? moduleSize - 1 : 1);
+  if (ms < 1) ms = 1;
+  if (ms > 16) ms = 16;
 
-// define a list of quote Strings that can be used to print on the receipt
-const char* quotes[13] = {
-  "It's very attractive to the libertarian viewpoint if we can explain it properly. I'm better with code than with words though.\r\nSatoshi Nakamoto, Dec 14, 2008",
-  "In a few decades when the reward gets too small, the transaction fee will become the main compensation for nodes.\r\nSatoshi Nakamoto, Feb 14, 2010",
-  "I'm sure that in 20 years there will either be very large transaction volume or no volume.\r\nSatoshi Nakamoto, Feb 14, 2010",
-  "Imagine if gold turned to lead when stolen. If the thief gives it back, it turns to gold again.\r\nSatoshi Nakamoto, Aug 11, 2010",
-  "If you don't believe me or don't get it, I don't have time to try to convince you, sorry.\r\nSatoshi Nakamoto, Jul 29, 2010",
-  "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks.",
-  "It would have been nice to get this attention in any other context. WikiLeaks has kicked the hornet's nest, and the swarm is headed towards us.\r\nSatoshi Nakamoto, Dec 11, 2010",
-  "Lost coins only make everyone else's coins worth slightly more. Think of it as a donation to everyone.\r\nSatoshi Nakamoto, Jul 21, 2010",
-  "Sigh... why delete a wallet instead of moving it aside and keeping the old copy just in case?  You should never delete a wallet.\r\nSatoshi Nakamoto, October 3rd, 2010",
-  "It's very attractive to the libertarian viewpoint if we can explain it properly. I'm better with code than with words though.\r\nSatoshi Nakamoto, Nov 14 2008",
-  "It's time we had the same thing for money. With e-currency based on cryptographic proof, without the need to trust a third party middleman, money can be secure and transactions effortless.\r\nSatoshi Nakamoto, Jan 11 2009",
-  "Sorry to be a wet blanket.  Writing a description for this thing for general audiences is bloody hard.  There's nothing to relate it to.\r\nSatoshi Nakamoto, 05 Jul 2010",
-  "Yes, but we can win a major battle in the arms race and gain a new territory of freedom for several years.\r\nSatoshi Nakamoto, 6 Nov 2008"
-};
+  Stream& out = printerSerial;           // or your HardwareSerial if you swapped
+  const uint8_t ecc = '1';               // M is a good default for receipts
 
-//  function that returns a random quote from the list of quotes
-const char* getRandomQuote() {
-  return quotes[random(0, 13)];
+  // Some units like an init/reset
+  const uint8_t init[]   = { 0x1B, 0x40 };                                      // ESC @
+  const uint8_t model2[] = { 0x1D,0x28,0x6B, 0x04,0x00, 0x31,0x41, 0x32,0x00 }; // GS ( k ... 1 A '2' 0
+  const uint8_t sizeCmd[] = { 0x1D,0x28,0x6B, 0x03,0x00, 0x31,0x43, ms };       // module size
+  const uint8_t eccCmd[]  = { 0x1D,0x28,0x6B, 0x03,0x00, 0x31,0x45, ecc };      // ECC
+
+  out.write(init, sizeof(init));
+  out.write(model2, sizeof(model2));
+  out.write(sizeCmd, sizeof(sizeCmd));
+  out.write(eccCmd, sizeof(eccCmd));
+
+  // Store data: pL/pH = (len + 3), little-endian
+  const uint16_t k   = (uint16_t)qrData.length();   // your ~170 fits easily
+  const uint16_t len = k + 3;
+  const uint8_t storeHdr[] = { 0x1D,0x28,0x6B, (uint8_t)(len & 0xFF), (uint8_t)(len >> 8), 0x31,0x50,0x30 };
+  out.write(storeHdr, sizeof(storeHdr));
+  out.print(qrData);
+
+  // Print symbol
+  const uint8_t printCmd[] = { 0x1D,0x28,0x6B, 0x03,0x00, 0x31,0x51,0x30 };
+  out.write(printCmd, sizeof(printCmd));
+
+  out.flush();
+  delay(50);
+  printer.feed(1);   // ensure it renders out of the head
 }
 
-void printQRcode(String qrData, byte size = 2, bool isMainQR = true) {
-  // Using a smaller size or adjusting based on isMainQR
-  byte adjustedSize = isMainQR ? size : max(1, size - 10);  // Ensure minimum size of 1
-
-  // Adjust error correction: L (0x31), M (0x32), Q (0x33), H (0x34)
-  byte eccLevel = 0x31;  // Start with low and increase if errors persist
-
-  // Commands setup
-  const byte modelCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x43, adjustedSize };
-  const byte eccCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x45, eccLevel };
-  const byte printCommand[] = { 0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x51, 0x30 };
-
-  printerSerial.write(modelCommand, sizeof(modelCommand));
-  printerSerial.write(eccCommand, sizeof(eccCommand));
-
-  int len = qrData.length() + 3;
-  if (len > 255) {
-    // Simple error handling for data that is too large
-    Serial.println("Data too long for a single QR code!");
-    return;
-  }
-  byte dataCommand[] = { 0x1D, 0x28, 0x6B, (byte)len, 0x00, 0x31, 0x50, 0x30 };
-  printerSerial.write(dataCommand, sizeof(dataCommand));
-  printerSerial.print(qrData);
-  printerSerial.write(printCommand, sizeof(printCommand));
-}
 
 void printReceipt() {
   printer.wake();
@@ -67,9 +53,6 @@ void printReceipt() {
   printer.feed(1);
   printQRcode(qrData);
   printer.boldOff();
-  printer.feed(1);
-  printer.justify('L');
-  printer.println(getRandomQuote());
   printer.feed(3);
   printer.sleep();
 }
