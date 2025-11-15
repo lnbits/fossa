@@ -149,7 +149,7 @@ void loop() {
     if (SerialPort1.available()) {
       Serial.println("Bill acceptor connected");
     }
-    if (SerialPort1.available()) {
+    if (SerialPort2.available()) {
       Serial.println("Coin acceptor connected");
     }
     moneyTimerFun();
