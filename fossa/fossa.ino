@@ -32,8 +32,8 @@
 
 bool hardcoded = HARDCODED; // set to true if you want to use the above hardcoded settings
 bool printerBool = false;
-int billAmountInt[10];
-float coinAmountFloat[6];
+float billAmountFloat[10];
+float coinAmountFloat[10];
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -60,7 +60,7 @@ int maxBeforeResetTally;
 int bills;
 float coins;
 float total;
-int billAmountSize = sizeof(billAmountInt) / sizeof(int);
+float billAmountSize = sizeof(billAmountFloat) / sizeof(float);
 float coinAmountSize = sizeof(coinAmountFloat) / sizeof(float);
 int moneyTimer = 0;
 bool waitForTap = true;
@@ -92,6 +92,7 @@ void setup() {
   tft.setRotation(1);
   tft.invertDisplay(false);
   printMessage("", "Loading..", "", TFT_WHITE, TFT_BLACK);
+  printMessage("", "Loading..", "", TFT_BLACK, TFT_WHITE);
 
   // wait few secods for tap to start config mode
   while (waitForTap && total < 100) {
@@ -117,21 +118,6 @@ void setup() {
   SerialPort1.begin(300, SERIAL_8N2, BILL_TX, BILL_RX);
   SerialPort2.begin(4800, SERIAL_8N1, COIN_TX);
   printerSerial.begin(9600);
-  printer.begin();
-  printer.wake();
-  printer.setDefault();
-  printer.justify('C');
-  printer.feed(3);
-  printer.boldOn();
-  printer.setSize('L');
-  printer.println("Printer Connected :)");
-  printer.println("");
-  printer.println("");
-  printer.println("");
-  printer.println("");
-  printer.println("");
-  printer.sleep();
-
   pinMode(COIN_INHIBIT, OUTPUT);
 }
 
@@ -153,10 +139,10 @@ void loop() {
       Serial.println("Coin acceptor connected");
     }
     moneyTimerFun();
-    Serial.println(total);
-    Serial.println(maxBeforeResetTally);
+    Serial.println("total" + String(total));
+    Serial.println("maxBeforeResetTally" + String(maxBeforeResetTally));
     maxBeforeResetTally = maxBeforeResetTally + (total / 100);
-    Serial.println(maxBeforeResetTally);
+    Serial.println("maxBeforeResetTally" + String(maxBeforeResetTally));
     makeLNURL();
     qrShowCodeLNURL(scanMeT);
   }
@@ -180,9 +166,9 @@ void moneyTimerFun() {
       int x = SerialPort1.read();
       for (int i = 0; i < billAmountSize; i++) {
         if ((i + 1) == x) {
-          bills = bills + billAmountInt[i];
+          bills = bills + billAmountFloat[i];
           total = (coins + bills);
-          printMessage(billAmountInt[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
+          printMessage(billAmountFloat[i] + currencyATM, totalT + String(total) + currencyATM, tapScreenT, TFT_WHITE, TFT_BLACK);
         }
       }
     }

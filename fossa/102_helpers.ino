@@ -48,44 +48,16 @@ void splitSettings(String str) {
   Serial.println("currencyATM: " + currencyATM);
 }
 
-void convertStringToFloatArray(const char* str, float* floatArray) {
-  char buffer[30];  // Temporary buffer to hold each substring
-  int index = 0;  // Index for the float array
-  int bufferIndex = 0;  // Index for the buffer
+void convertToFloatArray(const char* str, float* floatArray) {
+  char temp[50];
+  strncpy(temp, str, sizeof(temp));   // copy input to mutable buffer
+  temp[sizeof(temp) - 1] = '\0';      // ensure null-termination
 
-  for (int i = 0; str[i] != '\0'; i++) {
-    if (str[i] == ',') {  // When a comma is found
-      buffer[bufferIndex] = '\0';  // Null-terminate the buffer string
-      floatArray[index] = atof(buffer);  // Convert buffer to float and store in array
-      index++;  // Move to the next position in float array
-      bufferIndex = 0;  // Reset buffer index
-    } else {
-      buffer[bufferIndex++] = str[i];  // Copy characters to buffer
-    }
+  int index = 0;
+  char* token = strtok(temp, ",");
+
+  while (token != NULL && index < 10) {
+    floatArray[index++] = strtof(token, NULL);  // convert substring to float
+    token = strtok(NULL, ",");
   }
-
-  // Don't forget to convert the last number in the string
-  buffer[bufferIndex] = '\0';  // Null-terminate the buffer
-  floatArray[index] = atof(buffer);  // Convert buffer to float
-}
-
-void convertStringToIntArray(const char* str, int* intArray) {
-  char buffer[20];  // Temporary buffer to hold each substring
-  int index = 0;    // Index for the integer array
-  int bufferIndex = 0;  // Index for the buffer
-
-  for (int i = 0; str[i] != '\0'; i++) {
-    if (str[i] == ',') {  // When a comma is found
-      buffer[bufferIndex] = '\0';  // Null-terminate the buffer string
-      intArray[index] = atoi(buffer);  // Convert buffer to int and store in array
-      index++;  // Move to the next position in integer array
-      bufferIndex = 0;  // Reset buffer index
-    } else {
-      buffer[bufferIndex++] = str[i];  // Copy characters to buffer
-    }
-  }
-
-  // Don't forget to convert the last number in the string
-  buffer[bufferIndex] = '\0';  // Null-terminate the buffer
-  intArray[index] = atoi(buffer);  // Convert buffer to int
 }
