@@ -1,5 +1,9 @@
 
 void printQRcode(const String& qrData, uint8_t moduleSize = 6, bool isMainQR = true) {
+  if (!printerBool) {
+    Serial.println("No printer connected");
+    return;
+  }
   uint8_t ms = isMainQR ? moduleSize : (moduleSize > 1 ? moduleSize - 1 : 1);
   if (ms < 1) ms = 1;
   if (ms > 16) ms = 16;
@@ -36,6 +40,10 @@ void printQRcode(const String& qrData, uint8_t moduleSize = 6, bool isMainQR = t
 
 
 void printReceipt() {
+  if (!printerBool) {
+    Serial.println("No printer connected");
+    return;
+  }
   printer.wake();
   printer.setDefault();
   printer.justify('C');  // Center align text
