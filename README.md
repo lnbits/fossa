@@ -134,12 +134,12 @@ You should hear the bill acceptor and coin acceptors turn on.
 
 ### Step 2: Configure LNBits
 
-To configure your LNBits instance to pull funds from:
+To configure your LNBits instance (requires v1.3.0+) to pull funds from:
 
 1. Login to your instance of LNBits.
 2. Create a wallet.
-3. Go to `Manage Extensions`, find `LNURLDevice`, and install/enable it.
-4. Open the `LNURLDevice` extension, click `New LNURLDevice Instance`, give it the title of `ATM`, and choose the appropriate wallet for the ATM. Select the correct currency (e.g., `GBP`), `ATM` mode, and a percentage for the commission.
+3. Go to `Manage Extensions`, find `FOSSA`, and install/enable it.
+4. Open the `FOSSA` extension, click `New FOSSA`, give it the title of `ATM`, and choose the appropriate wallet for the ATM. Select the correct currency (e.g., `GBP`), the wallet to use, and a percentage for the commission.
 5. Copy the link it gives you.
 
 ### Step 3: Programming the WT32-SC01
