@@ -1,0 +1,49 @@
+{
+  "id": "fossa",
+  "version": "1.2.0",
+  "name": "FOSSA",
+  "repo": "https://github.com/lnbits/fossa_extension",
+  "short_description": "Bitcoin ATMs",
+  "description": "",
+  "tile": "/fossa/static/image/fossa.png",
+  "min_lnbits_version": "1.3.0",
+  "contributors": [
+    {
+      "name": "Ben Arc",
+      "uri": "mailto:ben@lnbits.com",
+      "role": "Developer"
+    },
+    {
+      "name": "BlackCoffee",
+      "uri": "https://github.com/blackcoffee",
+      "role": "Developer"
+    },
+    {
+      "name": "Vlad Stan",
+      "uri": "https://github.com/motorina0",
+      "role": "Developer"
+    },
+    {
+      "name": "dni",
+      "uri": "https://github.com/dni",
+      "role": "Developer"
+    }
+  ],
+  "images": [
+    {
+      "uri": "https://raw.githubusercontent.com/lnbits/fossa_extension/main/static/image/oS5VEEf.png"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/lnbits/fossa_extension/main/static/image/uPxF8SO.png",
+      "link": "https://www.youtube.com/watch?v=98VYC99s770",
+      "tooltip": "demo video"
+    }
+  ],
+  "description_md": "https://raw.githubusercontent.com/lnbits/fossa_extension/main/description.md",
+  "terms_and_conditions_md": "https://raw.githubusercontent.com/lnbits/fossa_extension/main/toc.md",
+  "license": "MIT",
+  "paid_features": "",
+  "tags": ["Hardware", "ATM"],
+  "donate": "",
+  "hidden": false
+}
