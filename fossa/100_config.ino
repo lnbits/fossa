@@ -120,7 +120,7 @@ void readFiles() {
     }
   }
 
-  String maxAmountConfig = getJsonValue(doc, "config_max_amount, using default");
+  String maxAmountConfig = getJsonValue(doc, "config_max_amount");
   if (maxAmountConfig != "") {
     maxAmount = maxAmountConfig.toInt();
     Serial.println("maxAmount: " + maxAmountConfig);
@@ -156,13 +156,15 @@ void readFiles() {
     tft.fillScreen(TFT_BLACK);
   }
 
-  billAmounts = getJsonValue(doc, "config_bill_ints");
+  String billConfig = getJsonValue(doc, "config_bill_ints");
+  if (billConfig != "") billAmounts = billConfig; // else keep default from hardcoded_user_config.h
   convertToFloatArray(billAmounts.c_str(), billAmountFloat);
   Serial.println(billAmountFloat[0]);
 
-  coinAmounts = getJsonValue(doc, "config_coin_floats");
+  String coinConfig = getJsonValue(doc, "config_coin_floats");
+  if (coinConfig != "") coinAmounts = coinConfig; // else keep default from hardcoded_user_config.h
   convertToFloatArray(coinAmounts.c_str(), coinAmountFloat);
-  Serial.println(billAmountFloat[0]);
+  Serial.println(coinAmountFloat[0]);
 
   String langConfig = getJsonValue(doc, "config_lang");
   if (langConfig != "") {
